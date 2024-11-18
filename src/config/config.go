@@ -34,8 +34,8 @@ type amos struct {
 		Endpoint     string
 		BaseCurrency string `toml:"base_currency"`
 		Applicables  []struct {
-			CurrencyCode string `toml:"currency_code"`
-			CurrencyName string `toml:"currency_name"`
+			CurrencyCode string `toml:"currency_code" json:"currency_code"`
+			CurrencyName string `toml:"currency_name" json:"currency_name"`
 		}
 	} `toml:"import_currency"`
 }

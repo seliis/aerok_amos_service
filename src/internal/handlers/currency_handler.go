@@ -32,6 +32,21 @@ func (h *CurrencyHandler) GetExchangeRates(c *gin.Context) {
 	}
 }
 
+func (h *CurrencyHandler) GetExchangeRate(c *gin.Context) {
+	request, err := dto.NewGetExchangeRateRequest(c)
+	if err != nil {
+		c.JSON(400, dto.NewErrorResponse(err))
+		return
+	}
+
+	if data, err := h.currencyService.GetExchangeRate(c, request); err != nil {
+		c.JSON(500, dto.NewErrorResponse(err))
+		return
+	} else {
+		c.JSON(200, dto.NewSuccessResponse(data))
+	}
+}
+
 func (h *CurrencyHandler) UpdateAmos(c *gin.Context) {
 	request, err := dto.NewGetExchangeRatesRequest(c)
 	if err != nil {
@@ -45,4 +60,9 @@ func (h *CurrencyHandler) UpdateAmos(c *gin.Context) {
 	}
 
 	c.JSON(200, dto.NewSuccessResponse(nil))
+}
+
+func (h *CurrencyHandler) GetApplicables(c *gin.Context) {
+	data := h.currencyService.GetApplicables(c)
+	c.JSON(200, dto.NewSuccessResponse(data))
 }

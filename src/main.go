@@ -38,7 +38,9 @@ func setRoute(api *gin.RouterGroup) {
 		h := handlers.NewCurrencyHandler()
 
 		g := api.Group("/currency")
-		g.GET("/getExchangeRates", h.GetExchangeRates)
+		g.GET("/exchangeRates", h.GetExchangeRates)
+		g.GET("/exchangeRate", h.GetExchangeRate)
+		g.GET("/applicables", h.GetApplicables)
 		g.POST("/updateAmos", h.UpdateAmos)
 	}()
 }

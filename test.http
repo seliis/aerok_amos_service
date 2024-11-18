@@ -1,6 +1,14 @@
 @addr = https://127.0.0.1:8080/api
 
-GET {{addr}}/currency/getExchangeRates?date=2024-11-18
+GET {{addr}}/currency/exchangeRates?date=2024-11-18
+
+###
+
+GET {{addr}}/currency/exchangeRate?currencyCode=USD&date=2024-11-18
+
+###
+
+GET {{addr}}/currency/applicables
 
 ###
 

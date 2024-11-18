@@ -42,7 +42,7 @@ func createScheme(client *sql.DB) error {
         create table exchange_rates (
 			currency_code char(3) not null,
 			currency_name varchar(50) not null,
-			date date not null,
+			date char(10) not null,
 			direct_rate real not null,
 			primary key (currency_code, date)
 		)

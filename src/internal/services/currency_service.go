@@ -67,6 +67,24 @@ func (s *CurrencyService) GetExchangeRates(context *gin.Context, request *dto.Ge
 	return data, nil
 }
 
+func (s *CurrencyService) GetExchangeRate(context *gin.Context, request *dto.GetExchangeRateRequest) (*entities.ExchangeRate, error) {
+	exists, err := s.currencyRepository.IsExists(request.CurrencyCode, request.Date)
+	if err != nil {
+		return nil, err
+	}
+
+	if !exists {
+		_, err := s.GetExchangeRates(context, &dto.GetExchangeRatesRequest{
+			Date: request.Date,
+		})
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	return s.currencyRepository.GetExchangeRate(request.CurrencyCode, request.Date)
+}
+
 func (s *CurrencyService) UpdateAmos(context *gin.Context, request *dto.GetExchangeRatesRequest) error {
 	data, err := s.GetExchangeRates(context, request)
 	if err != nil {
@@ -78,4 +96,8 @@ func (s *CurrencyService) UpdateAmos(context *gin.Context, request *dto.GetExcha
 	}
 
 	return nil
+}
+
+func (s *CurrencyService) GetApplicables(context *gin.Context) any {
+	return config.Amos.ImportCurrency.Applicables
 }

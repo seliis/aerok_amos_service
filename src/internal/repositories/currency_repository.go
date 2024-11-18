@@ -76,3 +76,23 @@ func (r *CurrencyRepository) SaveExchangeRate(data []entities.ExchangeRate) erro
 
 	return nil
 }
+
+func (r *CurrencyRepository) GetExchangeRate(currencyCode, date string) (*entities.ExchangeRate, error) {
+	var exchangeRate entities.ExchangeRate
+
+	if err := database.Client.QueryRow("select currency_code, currency_name, date, direct_rate from exchange_rates where currency_code = ? and date = ?", currencyCode, date).Scan(&exchangeRate.CurrencyCode, &exchangeRate.CurrencyName, &exchangeRate.Date, &exchangeRate.DirectRate); err != nil {
+		return nil, err
+	}
+
+	return &exchangeRate, nil
+}
+
+func (r *CurrencyRepository) IsExists(currencyCode, date string) (bool, error) {
+	var count int
+
+	if err := database.Client.QueryRow("select count(*) from exchange_rates where currency_code = ? and date = ?", currencyCode, date).Scan(&count); err != nil {
+		return false, err
+	}
+
+	return count > 0, nil
+}
