@@ -1,0 +1,9 @@
+# Server
+go.sum
+*.db
+
+# Credentials
+*.pem
+*.key
+*.p12
+*.crt

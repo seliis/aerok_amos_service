@@ -1,0 +1,7 @@
+@addr = https://127.0.0.1:8080/api
+
+GET {{addr}}/currency/getExchangeRates?date=2024-11-18
+
+###
+
+POST {{addr}}/currency/updateAmos?date=2024-11-18

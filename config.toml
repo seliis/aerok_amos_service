@@ -1,0 +1,29 @@
+[server]
+port = 8080
+
+[server.cert]
+key = "cert.key"
+pem = "cert.pem"
+
+[server.service]
+data_source = "https://www.koreaexim.go.kr/site/program/financial/exchangeJSON?authkey=CtRNXmPEu3mUfNA8XqDXOHzZHlFxvWBL&searchdate=%s&data=AP01"
+base_currency = "KRW"
+
+[amos]
+base_url = "https://10.0.54.68:5081/service"
+webservice_id = "admin"
+webservice_password = "8Z7Plc3p!!"
+
+[amos.import_currency]
+endpoint = "/updateCurrency"
+base_currency = "USD"
+applicables = [
+    { currency_code = "CHF", currency_name = "Swiss Franc" },
+    { currency_code = "EUR", currency_name = "Euro" },
+    { currency_code = "GBP", currency_name = "British Pound" },
+    { currency_code = "JPY", currency_name = "Japanese Yen" },
+    { currency_code = "KRW", currency_name = "Korean Won" },
+    { currency_code = "SGD", currency_name = "Singapore Dollar" },
+    { currency_code = "THB", currency_name = "Thai Baht" },
+    { currency_code = "USD", currency_name = "United States Dollar" },
+]
