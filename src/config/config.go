@@ -21,8 +21,8 @@ type server struct {
 		Pem string
 	}
 	Service struct {
-		DataSource   string `toml:"data_source"`
-		BaseCurrency string `toml:"base_currency"`
+		BaseCurrency     string `toml:"base_currency"`
+		KoreaEximAuthKey string `toml:"korea_exim_auth_key"`
 	}
 }
 

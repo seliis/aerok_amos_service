@@ -6,8 +6,8 @@ key = "cert.key"
 pem = "cert.pem"
 
 [server.service]
-data_source = "https://www.koreaexim.go.kr/site/program/financial/exchangeJSON?authkey=CtRNXmPEu3mUfNA8XqDXOHzZHlFxvWBL&searchdate=%s&data=AP01"
 base_currency = "KRW"
+korea_exim_auth_key = "CtRNXmPEu3mUfNA8XqDXOHzZHlFxvWBL"
 
 [amos]
 base_url = "https://10.0.54.68:5081/service"

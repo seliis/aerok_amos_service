@@ -60,19 +60,11 @@ func (s *CurrencyService) GetExchangeRates(context *gin.Context, request *dto.Ge
 
 	}
 
-	if err := s.SaveExchangeRate(data); err != nil {
+	if err := s.currencyRepository.SaveExchangeRate(data); err != nil {
 		return nil, err
 	}
 
 	return data, nil
-}
-
-func (s *CurrencyService) SaveExchangeRate(data []entities.ExchangeRate) error {
-	if err := s.currencyRepository.SaveExchangeRate(data); err != nil {
-		return err
-	}
-
-	return nil
 }
 
 func (s *CurrencyService) UpdateAmos(context *gin.Context, request *dto.GetExchangeRatesRequest) error {
