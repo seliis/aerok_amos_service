@@ -98,7 +98,7 @@ func (s *CurrencyService) UpdateAmos(context *gin.Context, request *dto.GetExcha
 	return nil
 }
 
-func (s *CurrencyService) GetCurrencies(context *gin.Context) any {
+func (s *CurrencyService) GetCurrencies(context *gin.Context) []map[string]string {
 	var data []map[string]string
 
 	for _, currency := range config.Amos.ImportCurrency.Currencies {
