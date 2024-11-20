@@ -1,4 +1,6 @@
 [server]
+static = "public"
+debug = true
 port = 8080
 
 [server.cert]

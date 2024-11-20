@@ -35,7 +35,7 @@ final class _DialogState extends State<_Dialog> {
             ListTile(
               contentPadding: EdgeInsets.zero,
               title: const Text(
-                "Currency",
+                "Currency Code",
                 style: TextStyle(
                   fontWeight: FontWeight.w700,
                 ),

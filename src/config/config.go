@@ -20,8 +20,10 @@ type _Config struct {
 }
 
 type _Server struct {
-	Port int `toml:"port"`
-	Cert struct {
+	Static string `toml:"static"`
+	Debug  bool   `toml:"debug"`
+	Port   int    `toml:"port"`
+	Cert   struct {
 		Key string `toml:"key"`
 		Pem string `toml:"pem"`
 	} `toml:"cert"`

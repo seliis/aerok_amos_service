@@ -24,15 +24,21 @@ func init() {
 func main() {
 	app := gin.Default()
 
+	if config.Server.Debug {
+		gin.SetMode(gin.DebugMode)
+	} else {
+		gin.SetMode(gin.ReleaseMode)
+	}
+
 	app.Use(cors.New(cors.Config{
 		AllowOrigins: []string{"*"},
 	}))
 
-	app.Use(static.Serve("/", static.LocalFile("public", true)))
+	app.Use(static.Serve("/", static.LocalFile(config.Server.Static, true)))
 
 	setRoute(app.Group("/api"))
 
-	app.Run(fmt.Sprintf(":%d", config.Server.Port))
+	app.RunTLS(fmt.Sprintf(":%d", config.Server.Port), config.Server.Cert.Pem, config.Server.Cert.Key)
 
 	defer func() {
 		if err := database.Client.Close(); err != nil {

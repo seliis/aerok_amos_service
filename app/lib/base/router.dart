@@ -10,10 +10,5 @@ MaterialPageRoute<void> onGenerateRoute(RouteSettings settings) {
 }
 
 MaterialPageRoute<void> _getRoute(Widget screen) {
-  return MaterialPageRoute(
-    builder: (_) => Padding(
-      padding: const EdgeInsets.all(16),
-      child: screen,
-    ),
-  );
+  return MaterialPageRoute(builder: (_) => screen);
 }
