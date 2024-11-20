@@ -57,9 +57,9 @@ func NewImportCurrency(exchangeRates []entities.ExchangeRate) importCurrency {
 }
 
 func getDescription() string {
-	for _, applicable := range config.Amos.ImportCurrency.Applicables {
-		if applicable.CurrencyCode == config.Server.Service.BaseCurrency {
-			return applicable.CurrencyName
+	for _, currency := range config.Amos.ImportCurrency.Currencies {
+		if currency.Code == config.Server.Service.BaseCurrency {
+			return currency.Name
 		}
 	}
 

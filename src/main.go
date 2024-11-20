@@ -3,9 +3,11 @@ package main
 import (
 	"fmt"
 	"packages/src/config"
-	"packages/src/infra/database"
 	"packages/src/internal/handlers"
+	"packages/src/pkg/database"
 
+	"github.com/gin-contrib/cors"
+	"github.com/gin-contrib/static"
 	"github.com/gin-gonic/gin"
 )
 
@@ -22,9 +24,15 @@ func init() {
 func main() {
 	app := gin.Default()
 
+	app.Use(cors.New(cors.Config{
+		AllowOrigins: []string{"*"},
+	}))
+
+	app.Use(static.Serve("/", static.LocalFile("public", true)))
+
 	setRoute(app.Group("/api"))
 
-	app.RunTLS(fmt.Sprintf(":%d", config.Server.Port), config.Server.Cert.Pem, config.Server.Cert.Key)
+	app.Run(fmt.Sprintf(":%d", config.Server.Port))
 
 	defer func() {
 		if err := database.Client.Close(); err != nil {
@@ -40,7 +48,7 @@ func setRoute(api *gin.RouterGroup) {
 		g := api.Group("/currency")
 		g.GET("/exchangeRates", h.GetExchangeRates)
 		g.GET("/exchangeRate", h.GetExchangeRate)
-		g.GET("/applicables", h.GetApplicables)
+		g.GET("/currencies", h.GetCurrencies)
 		g.POST("/updateAmos", h.UpdateAmos)
 	}()
 }

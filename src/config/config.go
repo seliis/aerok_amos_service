@@ -2,58 +2,76 @@ package config
 
 import (
 	"os"
+	"sync"
 
 	"github.com/pelletier/go-toml/v2"
 )
 
-var Server server
-var Amos amos
+var (
+	once     sync.Once
+	instance *_Config
+	Server   *_Server
+	Amos     *_Amos
+)
 
-type config struct {
-	Server server
-	Amos   amos
+type _Config struct {
+	Server _Server `toml:"server"`
+	Amos   _Amos   `toml:"amos"`
 }
 
-type server struct {
-	Port int
+type _Server struct {
+	Port int `toml:"port"`
 	Cert struct {
-		Key string
-		Pem string
-	}
+		Key string `toml:"key"`
+		Pem string `toml:"pem"`
+	} `toml:"cert"`
 	Service struct {
 		BaseCurrency     string `toml:"base_currency"`
 		KoreaEximAuthKey string `toml:"korea_exim_auth_key"`
 	}
 }
 
-type amos struct {
+type _Amos struct {
 	BaseUrl            string `toml:"base_url"`
 	WebserviceId       string `toml:"webservice_id"`
 	WebservicePassword string `toml:"webservice_password"`
 	ImportCurrency     struct {
 		Endpoint     string
 		BaseCurrency string `toml:"base_currency"`
-		Applicables  []struct {
-			CurrencyCode string `toml:"currency_code" json:"currency_code"`
-			CurrencyName string `toml:"currency_name" json:"currency_name"`
+		Currencies   []struct {
+			Code string `toml:"code" json:"code"`
+			Name string `toml:"name" json:"name"`
 		}
 	} `toml:"import_currency"`
 }
 
 func Load(path string) error {
-	var config config
+	var err error
+
+	once.Do(func() {
+		instance, err = read(path)
+		if err != nil {
+			return
+		}
+
+		Server = &instance.Server
+		Amos = &instance.Amos
+	})
+
+	return err
+}
+
+func read(path string) (*_Config, error) {
+	var config _Config
 
 	bytes, err := os.ReadFile(path)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	if err := toml.Unmarshal(bytes, &config); err != nil {
-		return err
+		return nil, err
 	}
 
-	Server = config.Server
-	Amos = config.Amos
-
-	return nil
+	return &config, nil
 }

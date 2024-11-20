@@ -3,9 +3,9 @@ package repositories
 import (
 	"packages/src/amos"
 	"packages/src/config"
-	"packages/src/infra/client"
-	"packages/src/infra/database"
 	"packages/src/internal/entities"
+	"packages/src/pkg/client"
+	"packages/src/pkg/database"
 )
 
 type CurrencyRepository struct{}

@@ -27,7 +27,7 @@ func (s *CurrencyService) GetExchangeRates(context *gin.Context, request *dto.Ge
 		return nil, err
 	}
 
-	applicables := config.Amos.ImportCurrency.Applicables
+	currencies := config.Amos.ImportCurrency.Currencies
 	var data []entities.ExchangeRate
 
 	for _, primitive := range primitives {
@@ -45,12 +45,12 @@ func (s *CurrencyService) GetExchangeRates(context *gin.Context, request *dto.Ge
 			rate = rate / 100
 		}
 
-		for _, applicable := range applicables {
-			if applicable.CurrencyCode == primitive.CurrencyCode {
+		for _, currency := range currencies {
+			if currency.Code == primitive.CurrencyCode {
 
 				data = append(data, entities.ExchangeRate{
 					CurrencyCode: primitive.CurrencyCode,
-					CurrencyName: applicable.CurrencyName,
+					CurrencyName: currency.Name,
 					Date:         request.Date,
 					DirectRate:   rate,
 				})
@@ -98,6 +98,17 @@ func (s *CurrencyService) UpdateAmos(context *gin.Context, request *dto.GetExcha
 	return nil
 }
 
-func (s *CurrencyService) GetApplicables(context *gin.Context) any {
-	return config.Amos.ImportCurrency.Applicables
+func (s *CurrencyService) GetCurrencies(context *gin.Context) any {
+	var data []map[string]string
+
+	for _, currency := range config.Amos.ImportCurrency.Currencies {
+		if currency.Code != config.Server.Service.BaseCurrency {
+			data = append(data, map[string]string{
+				"code": currency.Code,
+				"name": currency.Name,
+			})
+		}
+	}
+
+	return data
 }

@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"net/http"
 	"packages/src/internal/dto"
 	"packages/src/internal/services"
 
@@ -20,49 +21,49 @@ func NewCurrencyHandler() *CurrencyHandler {
 func (h *CurrencyHandler) GetExchangeRates(c *gin.Context) {
 	request, err := dto.NewGetExchangeRatesRequest(c)
 	if err != nil {
-		c.JSON(400, dto.NewErrorResponse(err))
+		c.JSON(http.StatusBadRequest, dto.NewErrorResponse(err))
 		return
 	}
 
 	if data, err := h.currencyService.GetExchangeRates(c, request); err != nil {
-		c.JSON(500, dto.NewErrorResponse(err))
+		c.JSON(http.StatusInternalServerError, dto.NewErrorResponse(err))
 		return
 	} else {
-		c.JSON(200, dto.NewSuccessResponse(data))
+		c.JSON(http.StatusOK, dto.NewSuccessResponse(data))
 	}
 }
 
 func (h *CurrencyHandler) GetExchangeRate(c *gin.Context) {
 	request, err := dto.NewGetExchangeRateRequest(c)
 	if err != nil {
-		c.JSON(400, dto.NewErrorResponse(err))
+		c.JSON(http.StatusBadRequest, dto.NewErrorResponse(err))
 		return
 	}
 
 	if data, err := h.currencyService.GetExchangeRate(c, request); err != nil {
-		c.JSON(500, dto.NewErrorResponse(err))
+		c.JSON(http.StatusInternalServerError, dto.NewErrorResponse(err))
 		return
 	} else {
-		c.JSON(200, dto.NewSuccessResponse(data))
+		c.JSON(http.StatusOK, dto.NewSuccessResponse(data))
 	}
 }
 
 func (h *CurrencyHandler) UpdateAmos(c *gin.Context) {
 	request, err := dto.NewGetExchangeRatesRequest(c)
 	if err != nil {
-		c.JSON(400, dto.NewErrorResponse(err))
+		c.JSON(http.StatusBadRequest, dto.NewErrorResponse(err))
 		return
 	}
 
 	if err := h.currencyService.UpdateAmos(c, request); err != nil {
-		c.JSON(500, dto.NewErrorResponse(err))
+		c.JSON(http.StatusInternalServerError, dto.NewErrorResponse(err))
 		return
 	}
 
-	c.JSON(200, dto.NewSuccessResponse(nil))
+	c.JSON(http.StatusOK, dto.NewSuccessResponse(nil))
 }
 
-func (h *CurrencyHandler) GetApplicables(c *gin.Context) {
-	data := h.currencyService.GetApplicables(c)
-	c.JSON(200, dto.NewSuccessResponse(data))
+func (h *CurrencyHandler) GetCurrencies(c *gin.Context) {
+	data := h.currencyService.GetCurrencies(c)
+	c.JSON(http.StatusOK, dto.NewSuccessResponse(data))
 }

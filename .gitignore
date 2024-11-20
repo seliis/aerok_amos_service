@@ -1,5 +1,13 @@
+# App
+.flutter-plugins*
+pubspec.lock
+.dart_tool
+public
+build
+
 # Server
 go.sum
+*.exe
 *.db
 
 # Credentials
