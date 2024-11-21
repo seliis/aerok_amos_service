@@ -2,6 +2,7 @@ package database
 
 import (
 	"database/sql"
+	"packages/src/config"
 
 	_ "github.com/mattn/go-sqlite3"
 )
@@ -14,8 +15,10 @@ func NewClient() error {
 		return err
 	}
 
-	if err := dropTables(client); err != nil {
-		return err
+	if config.Server.Debug {
+		if err := dropTables(client); err != nil {
+			return err
+		}
 	}
 
 	if err := createScheme(client); err != nil {
