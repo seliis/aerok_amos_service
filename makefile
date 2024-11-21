@@ -1,4 +1,4 @@
-COPY_FILES = cert.pem cert.key config.toml
+COPY_FILES = config.toml
 TARGET_DIR = public
 BUILD_DIR = build
 BINARY = main.exe

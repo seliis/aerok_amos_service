@@ -15,9 +15,14 @@ final class CurrencyScreen extends StatelessWidget {
 
   @override
   Widget build(context) {
+    final size = MediaQuery.of(context).size;
+
     return BlocListener(
       bloc: BlocProvider.of<usecases.GetExchangeRate>(context),
       listener: (context, state) {
+        final width = size.width * 0.75;
+        final height = size.height * 0.25;
+
         if (state is usecases.GetExchangeRateStateError) {
           showDialog<void>(
             context: context,
@@ -25,6 +30,8 @@ final class CurrencyScreen extends StatelessWidget {
               return common_ui.ErrorDialog(
                 message: state.error.toString(),
                 stackTrace: state.stackTrace,
+                width: width,
+                height: height,
               );
             },
           );
@@ -36,8 +43,8 @@ final class CurrencyScreen extends StatelessWidget {
             builder: (context) {
               return _Dialog(
                 exchangeRate: state.exchangeRate,
-                width: MediaQuery.of(context).size.width * 0.75,
-                height: MediaQuery.of(context).size.height * 0.25,
+                width: width,
+                height: height,
               );
             },
           );

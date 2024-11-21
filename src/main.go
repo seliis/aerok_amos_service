@@ -38,7 +38,7 @@ func main() {
 
 	setRoute(app.Group("/api"))
 
-	app.RunTLS(fmt.Sprintf(":%d", config.Server.Port), config.Server.Cert.Pem, config.Server.Cert.Key)
+	app.Run(fmt.Sprintf(":%d", config.Server.Port))
 
 	defer func() {
 		if err := database.Client.Close(); err != nil {
