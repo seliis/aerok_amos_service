@@ -35,12 +35,12 @@ func (r *CurrencyRepository) GetPrimitiveExchangeRates(date string) ([]entities.
 	return primitives, nil
 }
 
-func (r *CurrencyRepository) UpdateAmos(exchangeRates []entities.ExchangeRate) error {
+func (r *CurrencyRepository) UpdateAmos(id, password string, exchangeRates []entities.ExchangeRate) error {
 	client := client.New(config.Amos.BaseUrl)
 
 	_, err := client.R().
+		SetBasicAuth(id, password).
 		SetHeader("Content-Type", "application/xml").
-		SetBasicAuth(config.Amos.WebserviceId, config.Amos.WebservicePassword).
 		SetBody(amos.NewImportCurrency(exchangeRates)).
 		Post(config.Amos.ImportCurrency.Endpoint)
 

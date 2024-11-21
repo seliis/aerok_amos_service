@@ -22,9 +22,9 @@ final class GetCurrencies extends Cubit<GetCurrenciesState> {
         ),
       );
     } catch (error, stackTrace) {
-      emit(GetCurrenciesStateError(
-        error: error,
-        stackTrace: stackTrace,
+      emit(GetCurrenciesStateFailure(
+        messsage: error.toString(),
+        stackTrace: stackTrace.toString(),
       ));
     }
   }
@@ -66,12 +66,12 @@ final class GetCurrenciesStateSuccess extends GetCurrenciesState {
   }
 }
 
-final class GetCurrenciesStateError extends GetCurrenciesState {
-  GetCurrenciesStateError({
-    required this.error,
+final class GetCurrenciesStateFailure extends GetCurrenciesState {
+  GetCurrenciesStateFailure({
+    required this.messsage,
     required this.stackTrace,
   });
 
-  final Object error;
-  final StackTrace stackTrace;
+  final String messsage;
+  final String stackTrace;
 }

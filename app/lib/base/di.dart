@@ -32,6 +32,11 @@ final class DependencyInjector extends StatelessWidget {
               currencyRepository: RepositoryProvider.of<repositories.CurrencyRepository>(context),
             ),
           ),
+          BlocProvider<usecases.UpdateAmosCurrency>(
+            create: (context) => usecases.UpdateAmosCurrency(
+              currencyRepository: RepositoryProvider.of<repositories.CurrencyRepository>(context),
+            ),
+          ),
         ],
         child: app,
       ),

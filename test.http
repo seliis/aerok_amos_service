@@ -1,4 +1,4 @@
-@addr = https://127.0.0.1:8080/api
+@addr = http://127.0.0.1:8080/api
 
 GET {{addr}}/currency/exchangeRates?date=2024-11-18
 
@@ -12,4 +12,11 @@ GET {{addr}}/currency/applicables
 
 ###
 
-POST {{addr}}/currency/updateAmos?date=2024-11-18
+POST {{addr}}/currency/updateAmos
+Content-Type: application/json
+
+{
+  "id": "admin",
+  "password": "8Z7Plc3p",
+  "date": "2024-11-21"
+}

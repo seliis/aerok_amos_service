@@ -27,9 +27,9 @@ final class GetExchangeRate extends Cubit<GetExchangeRateState> {
         ),
       );
     } catch (error, stackTrace) {
-      emit(GetExchangeRateStateError(
-        error: error,
-        stackTrace: stackTrace,
+      emit(GetExchangeRateStateFailure(
+        message: error.toString(),
+        stackTrace: stackTrace.toString(),
       ));
     }
   }
@@ -49,12 +49,12 @@ final class GetExchangeRateStateSuccess extends GetExchangeRateState {
   final entities.ExchangeRate exchangeRate;
 }
 
-final class GetExchangeRateStateError extends GetExchangeRateState {
-  GetExchangeRateStateError({
-    required this.error,
+final class GetExchangeRateStateFailure extends GetExchangeRateState {
+  GetExchangeRateStateFailure({
+    required this.message,
     required this.stackTrace,
   });
 
-  final Object error;
-  final StackTrace stackTrace;
+  final String message;
+  final String stackTrace;
 }

@@ -1,6 +1,7 @@
 package services
 
 import (
+	"errors"
 	"packages/src/config"
 	"packages/src/internal/dto"
 	"packages/src/internal/entities"
@@ -85,13 +86,23 @@ func (s *CurrencyService) GetExchangeRate(context *gin.Context, request *dto.Get
 	return s.currencyRepository.GetExchangeRate(request.CurrencyCode, request.Date)
 }
 
-func (s *CurrencyService) UpdateAmos(context *gin.Context, request *dto.GetExchangeRatesRequest) error {
-	data, err := s.GetExchangeRates(context, request)
+func (s *CurrencyService) UpdateAmos(context *gin.Context, request *dto.UpdateAmosRequest) error {
+	if request.ID != config.Amos.WebserviceId {
+		return errors.New("invalid id")
+	}
+
+	if request.Password != config.Amos.WebservicePassword {
+		return errors.New("invalid password")
+	}
+
+	data, err := s.GetExchangeRates(context, &dto.GetExchangeRatesRequest{
+		Date: request.Date,
+	})
 	if err != nil {
 		return err
 	}
 
-	if err := s.currencyRepository.UpdateAmos(data); err != nil {
+	if err := s.currencyRepository.UpdateAmos(request.ID, request.Password, data); err != nil {
 		return err
 	}
 

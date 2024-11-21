@@ -12,7 +12,7 @@ final class _Container extends StatelessWidget {
           height: 16,
         ),
         common_ui.DateField(
-          controller: presenters.Currency.controller,
+          controller: presenters.CurrencyControllers.date,
         ),
         const SizedBox(
           height: 16,
@@ -60,30 +60,23 @@ final class _Button extends StatelessWidget {
   Widget build(context) {
     final bool isLoading = context.watch<usecases.GetExchangeRate>().state is usecases.GetExchangeRateStateLoading;
 
-    void Function()? onPressed() {
-      if (isLoading) {
-        return null;
-      }
-
-      return () {
-        context.read<usecases.GetExchangeRate>().execute(
-              currencyCode: (context.read<usecases.GetCurrencies>().state as usecases.GetCurrenciesStateSuccess).currentCurrency.code,
-              date: presenters.Currency.controller.text,
-            );
-      };
-    }
-
     return FilledButton(
-      onPressed: onPressed(),
+      onPressed: isLoading
+          ? null
+          : () {
+              context.read<usecases.GetExchangeRate>().execute(
+                    currencyCode: (context.read<usecases.GetCurrencies>().state as usecases.GetCurrenciesStateSuccess).currentCurrency.code,
+                    date: presenters.CurrencyControllers.date.text,
+                  );
+            },
       style: FilledButton.styleFrom(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8),
         ),
       ),
       child: isLoading
-          ? Transform.scale(
-              scale: 0.50,
-              child: const CircularProgressIndicator(),
+          ? const common_ui.ProgressIndicator(
+              scale: 0.5,
             )
           : const Text("Query"),
     );

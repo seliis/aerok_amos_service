@@ -31,7 +31,10 @@ func main() {
 	}
 
 	app.Use(cors.New(cors.Config{
-		AllowOrigins: []string{"*"},
+		AllowAllOrigins:  true,
+		AllowMethods:     []string{"GET", "POST"},
+		AllowHeaders:     []string{"*"},
+		AllowCredentials: true,
 	}))
 
 	app.Use(static.Serve("/", static.LocalFile(config.Server.Static, true)))

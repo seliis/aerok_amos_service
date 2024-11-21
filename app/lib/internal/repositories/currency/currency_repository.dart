@@ -29,4 +29,22 @@ final class CurrencyRepository {
       },
     );
   }
+
+  Future<void> updateAmosCurrency({
+    required String id,
+    required String password,
+    required String date,
+  }) async {
+    return const infra.Client().post("/currency/updateAmos", body: {
+      "id": id,
+      "password": password,
+      "date": date,
+    }).then(
+      (response) {
+        if (!response.isSuccess) {
+          throw Exception(response.message);
+        }
+      },
+    );
+  }
 }

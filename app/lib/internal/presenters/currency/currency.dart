@@ -1,9 +1,15 @@
 import "package:flutter/material.dart";
 
-final class Currency {
-  const Currency();
+final class CurrencyControllers {
+  const CurrencyControllers();
 
-  static final controller = TextEditingController(
+  static final date = TextEditingController(
     text: DateTime.now().toString().substring(0, 10),
   );
+
+  static final amosId = TextEditingController(
+    text: "admin",
+  );
+
+  static final amosPassword = TextEditingController();
 }

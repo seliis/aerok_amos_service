@@ -1,7 +1,7 @@
 part of "screen.dart";
 
-final class _Dialog extends StatefulWidget {
-  const _Dialog({
+final class _ExchangeRateDialog extends StatefulWidget {
+  const _ExchangeRateDialog({
     required this.exchangeRate,
     required this.width,
     required this.height,
@@ -12,10 +12,10 @@ final class _Dialog extends StatefulWidget {
   final double height;
 
   @override
-  State<_Dialog> createState() => _DialogState();
+  State<_ExchangeRateDialog> createState() => _DialogState();
 }
 
-final class _DialogState extends State<_Dialog> {
+final class _DialogState extends State<_ExchangeRateDialog> {
   bool isCopied = false;
 
   @override

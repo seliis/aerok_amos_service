@@ -1,14 +1,15 @@
-import "package:flutter/services.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:flutter/material.dart";
+import "package:flutter/services.dart";
 
 import "package:app/internal/presenters/__index.dart" as presenters;
 import "package:app/internal/common_ui/__index.dart" as common_ui;
 import "package:app/internal/usecases/__index.dart" as usecases;
 import "package:app/internal/entities/__index.dart" as entities;
 
+part "exchange_rate_dialog.dart";
+part "amos_auth_dialog.dart";
 part "container.dart";
-part "dialog.dart";
 
 final class CurrencyScreen extends StatelessWidget {
   const CurrencyScreen({super.key});
@@ -23,12 +24,12 @@ final class CurrencyScreen extends StatelessWidget {
         final width = size.width * 0.75;
         final height = size.height * 0.25;
 
-        if (state is usecases.GetExchangeRateStateError) {
+        if (state is usecases.GetExchangeRateStateFailure) {
           showDialog<void>(
             context: context,
             builder: (context) {
               return common_ui.ErrorDialog(
-                message: state.error.toString(),
+                message: state.message,
                 stackTrace: state.stackTrace,
                 width: width,
                 height: height,
@@ -41,7 +42,7 @@ final class CurrencyScreen extends StatelessWidget {
           showDialog<void>(
             context: context,
             builder: (context) {
-              return _Dialog(
+              return _ExchangeRateDialog(
                 exchangeRate: state.exchangeRate,
                 width: width,
                 height: height,
@@ -56,7 +57,7 @@ final class CurrencyScreen extends StatelessWidget {
           if (state is usecases.GetCurrenciesStateLoading) {
             return const Scaffold(
               body: Center(
-                child: CircularProgressIndicator(),
+                child: common_ui.ProgressIndicator(),
               ),
             );
           }
@@ -65,11 +66,11 @@ final class CurrencyScreen extends StatelessWidget {
             return _View(state: state);
           }
 
-          if (state is usecases.GetCurrenciesStateError) {
+          if (state is usecases.GetCurrenciesStateFailure) {
             return Column(
               children: [
-                Text(state.error.toString()),
-                Text(state.stackTrace.toString()),
+                Text(state.messsage),
+                Text(state.stackTrace),
               ],
             );
           }
@@ -93,6 +94,7 @@ final class _View extends StatelessWidget {
     final screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
+      appBar: const _AppBar(),
       body: Padding(
         padding: EdgeInsets.symmetric(
           horizontal: screenWidth * 0.10,
@@ -100,6 +102,46 @@ final class _View extends StatelessWidget {
         ),
         child: const _Body(),
       ),
+    );
+  }
+}
+
+final class _AppBar extends StatelessWidget implements PreferredSizeWidget {
+  const _AppBar();
+
+  @override
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
+
+  @override
+  Widget build(context) {
+    return AppBar(
+      actions: [
+        PopupMenuButton(
+          itemBuilder: (context) {
+            return [
+              PopupMenuItem<void>(
+                child: const Text("Update AMOS Currency"),
+                onTap: () {
+                  showDialog<void>(
+                    context: context,
+                    builder: (context) {
+                      final size = MediaQuery.of(context).size;
+
+                      return _AmosAuthDialog(
+                        width: size.width * 0.75,
+                        height: size.height * 0.25,
+                      );
+                    },
+                  );
+                },
+              ),
+            ];
+          },
+        ),
+        const SizedBox(
+          width: 8,
+        ),
+      ],
     );
   }
 }

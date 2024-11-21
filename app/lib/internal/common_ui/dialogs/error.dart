@@ -10,7 +10,7 @@ final class ErrorDialog extends StatelessWidget {
   });
 
   final String message;
-  final StackTrace stackTrace;
+  final String stackTrace;
   final double width;
   final double height;
 
@@ -45,7 +45,7 @@ final class ErrorDialog extends StatelessWidget {
             ),
             Expanded(
               child: SingleChildScrollView(
-                child: Text(stackTrace.toString()),
+                child: Text(stackTrace),
               ),
             ),
           ],
