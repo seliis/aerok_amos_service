@@ -19,16 +19,16 @@ func init() {
 	if err := database.NewClient(); err != nil {
 		panic(err)
 	}
-}
-
-func main() {
-	app := gin.Default()
 
 	if config.Server.Debug {
 		gin.SetMode(gin.DebugMode)
 	} else {
 		gin.SetMode(gin.ReleaseMode)
 	}
+}
+
+func main() {
+	app := gin.Default()
 
 	app.Use(cors.New(cors.Config{
 		AllowAllOrigins:  true,
