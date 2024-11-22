@@ -42,7 +42,7 @@ func dropTables(client *sql.DB) error {
 
 func createScheme(client *sql.DB) error {
 	if _, err := client.Exec(`
-        create table exchange_rates (
+        create table if not exists exchange_rates (
 			currency_code char(3) not null,
 			currency_name varchar(50) not null,
 			date char(10) not null,
