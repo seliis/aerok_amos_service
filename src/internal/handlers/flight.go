@@ -17,9 +17,16 @@ func NewFlightHandler() *FlightHandler {
 }
 
 func (h *FlightHandler) UpdateAmos(c *gin.Context) {
-	if err := h.flightService.UpdateAmos(); err != nil {
-		c.JSON(http.StatusInternalServerError, dto.NewErrorResponse(err))
-	} else {
-		c.JSON(http.StatusOK, dto.NewSuccessResponse(nil))
+	request, err := dto.NewUpdateAmosFutureFlightsRequest(c)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, dto.NewErrorResponse(err))
+		return
 	}
+
+	if err := h.flightService.UpdateAmos(c, request); err != nil {
+		c.JSON(http.StatusInternalServerError, dto.NewErrorResponse(err))
+		return
+	}
+
+	c.JSON(http.StatusOK, dto.NewSuccessResponse(nil))
 }

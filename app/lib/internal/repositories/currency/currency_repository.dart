@@ -36,8 +36,10 @@ final class CurrencyRepository {
     required String date,
   }) async {
     return const infra.Client().post("/currency/updateAmos", body: {
-      "id": id,
-      "password": password,
+      "web_service_auth": {
+        "id": id,
+        "password": password,
+      },
       "date": date,
     }).then(
       (response) {

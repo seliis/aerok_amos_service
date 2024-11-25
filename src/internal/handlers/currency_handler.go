@@ -49,7 +49,7 @@ func (h *CurrencyHandler) GetExchangeRate(c *gin.Context) {
 }
 
 func (h *CurrencyHandler) UpdateAmos(c *gin.Context) {
-	request, err := dto.NewUpdateAmosRequest(c)
+	request, err := dto.NewUpdateAmosCurrencyRequest(c)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, dto.NewErrorResponse(err))
 		return

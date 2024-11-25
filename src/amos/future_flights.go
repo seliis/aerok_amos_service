@@ -20,26 +20,26 @@ type _FlightsForDateAndAircraft struct {
 type _Leg struct {
 	Carrier                                  string        `xml:"carrier"`
 	FlightNumber                             uint          `xml:"flightNumber"`
-	FlightSuffix                             string        `xml:"flightSuffix"` // Optional
-	ServiceType                              string        `xml:"serviceType"`  // Optional
+	FlightSuffix                             *string       `xml:"flightSuffix"` // Optional
+	ServiceType                              *string       `xml:"serviceType"`  // Optional
 	ScheduledDepartureDateTime               string        `xml:"scheduledDepartureDateTime"`
-	EstimatedDepartureDateTime               string        `xml:"estimatedDepartureDateTime"` // Optional
+	EstimatedDepartureDateTime               *string       `xml:"estimatedDepartureDateTime"` // Optional
 	ScheduledDepartureAirport                string        `xml:"scheduledDepartureAirport"`
-	DepartureStand                           string        `xml:"departureStand"` // Optional
-	DepartureGate                            string        `xml:"departureGate"`  // Optional
+	DepartureStand                           *string       `xml:"departureStand"` // Optional
+	DepartureGate                            *string       `xml:"departureGate"`  // Optional
 	ScheduledArrivalDateTime                 string        `xml:"scheduledArrivalDateTime"`
-	EstimatedArrivalDateTime                 string        `xml:"estimatedArrivalDateTime"` // Optional
+	EstimatedArrivalDateTime                 *string       `xml:"estimatedArrivalDateTime"` // Optional
 	ScheduledArrivalAirport                  string        `xml:"scheduledArrivalAirport"`
-	ArrivalStand                             string        `xml:"arrivalStand"` // Optional
-	ArrivalGate                              string        `xml:"arrivalGate"`  // Optional
+	ArrivalStand                             *string       `xml:"arrivalStand"` // Optional
+	ArrivalGate                              *string       `xml:"arrivalGate"`  // Optional
 	EstimatedLegDuration                     uint          `xml:"estimatedLegDuration"`
 	LegCycles                                uint          `xml:"legCycles"`
-	EstimatedTotalAircraftMinutesAtTouchdown uint          `xml:"estimatedTotalAircraftMinutesAtTouchdown"` // Optional
-	EstimatedTotalAircraftCyclesAtTouchdown  uint          `xml:"estimatedTotalAircraftCyclesAtTouchdown"`  // Optional
-	ExternalSystemLegId                      uint          `xml:"externalSystemLegId"`                      // Optional
+	EstimatedTotalAircraftMinutesAtTouchdown *uint         `xml:"estimatedTotalAircraftMinutesAtTouchdown"` // Optional
+	EstimatedTotalAircraftCyclesAtTouchdown  *uint         `xml:"estimatedTotalAircraftCyclesAtTouchdown"`  // Optional
+	ExternalSystemLegId                      *uint         `xml:"externalSystemLegId"`                      // Optional
 	Stickers                                 []_Sticker    `xml:"sticker"`                                  // Optional
 	CrewMembers                              []_CrewMember `xml:"crewMember"`                               // Optional
-	State                                    string        `xml:"state"`                                    // Optional
+	State                                    *string       `xml:"state"`                                    // Optional
 }
 
 type _Sticker struct {
@@ -56,41 +56,31 @@ func NewFutureFlights() _FutureFlights {
 	testData := []_FlightsForDateAndAircraft{
 		{
 			SchedDepartureDate:   "2024-12-01",
-			AircraftRegistration: "HL8385",
+			AircraftRegistration: "8385",
 			Legs: []_Leg{
 				{
-					Carrier:                                  "EOK",
+					Carrier:                                  "RF",
 					FlightNumber:                             321,
-					FlightSuffix:                             "K",
-					ServiceType:                              "J", // IATA Code; J: Scheduled Flight, Passenger, Normal Service
+					FlightSuffix:                             nil,
+					ServiceType:                              nil, // IATA Code; J: Scheduled Flight, Passenger, Normal Service
 					ScheduledDepartureDateTime:               "2024-12-01T00:00:00.00",
-					EstimatedDepartureDateTime:               "2024-12-01T00:10:00.00",
+					EstimatedDepartureDateTime:               nil,
 					ScheduledDepartureAirport:                "CJJ",
-					DepartureStand:                           "314",
-					DepartureGate:                            "314",
+					DepartureStand:                           nil,
+					DepartureGate:                            nil,
 					ScheduledArrivalDateTime:                 "2024-12-01T02:00:00.00",
-					EstimatedArrivalDateTime:                 "2024-12-01T02:10:00.00",
+					EstimatedArrivalDateTime:                 nil,
 					ScheduledArrivalAirport:                  "NRT",
-					ArrivalStand:                             "419",
-					ArrivalGate:                              "419",
+					ArrivalStand:                             nil,
+					ArrivalGate:                              nil,
 					EstimatedLegDuration:                     120,
 					LegCycles:                                1,
-					EstimatedTotalAircraftMinutesAtTouchdown: 120,
-					EstimatedTotalAircraftCyclesAtTouchdown:  1,
-					ExternalSystemLegId:                      1,
-					Stickers: []_Sticker{
-						{
-							Header:      "Header",
-							StickerText: "StickerText",
-						},
-					},
-					CrewMembers: []_CrewMember{
-						{
-							LetterCode:   "123456",
-							FunctionCode: "CPT",
-						},
-					},
-					State: "N",
+					EstimatedTotalAircraftMinutesAtTouchdown: nil,
+					EstimatedTotalAircraftCyclesAtTouchdown:  nil,
+					ExternalSystemLegId:                      nil,
+					Stickers:                                 nil,
+					CrewMembers:                              nil,
+					State:                                    nil,
 				},
 			},
 		},

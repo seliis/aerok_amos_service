@@ -16,11 +16,22 @@ POST {{addr}}/currency/updateAmos
 Content-Type: application/json
 
 {
-  "id": "admin",
-  "password": "8Z7Plc3p",
+  "web_service_auth": {
+    "id": "admin",
+    "password": "8Z7Plc3p"
+  },
   "date": "2024-11-21"
 }
 
 ###
 
 POST {{addr}}/flight/updateAmos
+Content-Type: application/json
+
+{
+  "web_service_auth": {
+    "id": "admin",
+    "password": "8Z7Plc3p"
+  },
+  "data": []
+}
