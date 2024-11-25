@@ -38,13 +38,16 @@ type _Amos struct {
 	WebserviceId       string `toml:"webservice_id"`
 	WebservicePassword string `toml:"webservice_password"`
 	ImportCurrency     struct {
-		Endpoint     string
+		Endpoint     string `toml:"endpoint"`
 		BaseCurrency string `toml:"base_currency"`
 		Currencies   []struct {
 			Code string `toml:"code" json:"code"`
 			Name string `toml:"name" json:"name"`
 		}
 	} `toml:"import_currency"`
+	FutureFlights struct {
+		Endpoint string `toml:"endpoint"`
+	} `toml:"future_flights"`
 }
 
 func Load(path string) error {

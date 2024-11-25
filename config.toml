@@ -29,3 +29,6 @@ currencies = [
     { code = "THB", name = "Thai Baht" },
     { code = "USD", name = "United States Dollar" },
 ]
+
+[amos.future_flights]
+endpoint = "/updateFutureFlights"

@@ -60,4 +60,11 @@ func setRoute(api *gin.RouterGroup) {
 		g.GET("/currencies", h.GetCurrencies)
 		g.POST("/updateAmos", h.UpdateAmos)
 	}()
+
+	func() {
+		h := handlers.NewFlightHandler()
+
+		g := api.Group("/flight")
+		g.POST("/updateAmos", h.UpdateAmos)
+	}()
 }

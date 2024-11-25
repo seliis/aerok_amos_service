@@ -14,7 +14,7 @@ func TestLoad(t *testing.T) {
 		t.Error(err)
 	}
 
-	bytes, err := json.MarshalIndent(config.Server, "", "  ")
+	bytes, err := json.MarshalIndent(config.Amos, "", "  ")
 	if err != nil {
 		t.Error(err)
 	}

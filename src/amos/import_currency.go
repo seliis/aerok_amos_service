@@ -6,13 +6,13 @@ import (
 	"packages/src/internal/entities"
 )
 
-type importCurrency struct {
-	XMLName    string     `xml:"importCurrency"`
-	Version    xml.Attr   `xml:"version,attr"`
-	Currencies []currency `xml:"currency"`
+type _ImportCurrency struct {
+	XMLName    string      `xml:"importCurrency"`
+	Version    xml.Attr    `xml:"version,attr"`
+	Currencies []_Currency `xml:"currency"`
 }
 
-type currency struct {
+type _Currency struct {
 	XMLName      string  `xml:"currency"`
 	CurrencyCode string  `xml:"currencyCode"`
 	Description  string  `xml:"description"`
@@ -20,8 +20,8 @@ type currency struct {
 	ExchangeBase uint    `xml:"exchangeBase"`
 }
 
-func NewImportCurrency(exchangeRates []entities.ExchangeRate) importCurrency {
-	var currencies []currency
+func NewImportCurrency(exchangeRates []entities.ExchangeRate) _ImportCurrency {
+	var currencies []_Currency
 	var baseRate float64
 
 	for _, exchangeRate := range exchangeRates {
@@ -32,7 +32,7 @@ func NewImportCurrency(exchangeRates []entities.ExchangeRate) importCurrency {
 	}
 
 	for _, exchangeRate := range exchangeRates {
-		currencies = append(currencies, currency{
+		currencies = append(currencies, _Currency{
 			CurrencyCode: exchangeRate.CurrencyCode,
 			Description:  exchangeRate.CurrencyName,
 			ExchangeRate: exchangeRate.DirectRate / baseRate,
@@ -40,14 +40,14 @@ func NewImportCurrency(exchangeRates []entities.ExchangeRate) importCurrency {
 		})
 	}
 
-	currencies = append(currencies, currency{
+	currencies = append(currencies, _Currency{
 		CurrencyCode: config.Server.Service.BaseCurrency,
-		Description:  getDescription(),
+		Description:  getBaseCurrencyDescription(),
 		ExchangeRate: 1 / baseRate,
 		ExchangeBase: 1,
 	})
 
-	return importCurrency{
+	return _ImportCurrency{
 		Version: xml.Attr{
 			Name:  xml.Name{Local: "version"},
 			Value: "0.2",
@@ -56,7 +56,7 @@ func NewImportCurrency(exchangeRates []entities.ExchangeRate) importCurrency {
 	}
 }
 
-func getDescription() string {
+func getBaseCurrencyDescription() string {
 	for _, currency := range config.Amos.ImportCurrency.Currencies {
 		if currency.Code == config.Server.Service.BaseCurrency {
 			return currency.Name
