@@ -19,6 +19,9 @@ final class DependencyInjector extends StatelessWidget {
         RepositoryProvider<repositories.CurrencyRepository>(
           create: (context) => const repositories.CurrencyRepository(),
         ),
+        RepositoryProvider<repositories.FlightRepository>(
+          create: (context) => const repositories.FlightRepository(),
+        ),
       ],
       child: MultiBlocProvider(
         providers: [
@@ -35,6 +38,11 @@ final class DependencyInjector extends StatelessWidget {
           BlocProvider<usecases.UpdateAmosCurrency>(
             create: (context) => usecases.UpdateAmosCurrency(
               currencyRepository: RepositoryProvider.of<repositories.CurrencyRepository>(context),
+            ),
+          ),
+          BlocProvider<usecases.OpenFutureFlights>(
+            create: (context) => usecases.OpenFutureFlights(
+              flightRepository: RepositoryProvider.of<repositories.FlightRepository>(context),
             ),
           ),
         ],

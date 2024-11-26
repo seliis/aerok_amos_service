@@ -13,13 +13,13 @@ func NewFlightRepository() *FlightRepository {
 	return &FlightRepository{}
 }
 
-func (r *FlightRepository) UpdateAmos(id, password string) error {
+func (r *FlightRepository) UpdateAmos(id, password string, data []*amos.FlightsForDateAndAircraft) error {
 	client := client.New(config.Amos.BaseUrl)
 
 	response, err := client.R().
 		SetBasicAuth(id, password).
 		SetHeader("Content-Type", "application/xml").
-		SetBody(amos.NewFutureFlights()).
+		SetBody(amos.NewFutureFlights(data)).
 		Post(config.Amos.FutureFlights.Endpoint)
 
 	if err != nil {

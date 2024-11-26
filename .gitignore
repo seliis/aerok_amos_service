@@ -1,3 +1,6 @@
+# General
+data
+
 # App
 .flutter-plugins*
 pubspec.lock

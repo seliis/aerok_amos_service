@@ -5,7 +5,7 @@ import "package:app/internal/ui/__index.dart" as ui;
 MaterialPageRoute<void> onGenerateRoute(RouteSettings settings) {
   switch (settings.name) {
     default:
-      return _getRoute(const ui.CurrencyScreen());
+      return _getRoute(const ui.HomeScreen());
   }
 }
 

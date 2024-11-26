@@ -8,7 +8,7 @@ import (
 
 type UpdateAmosFutureFlightsRequest struct {
 	WebServiceAuth *amos.WebServiceAuth `json:"web_service_auth" binding:"required"`
-	Data           string               `json:"data" binding:"required"`
+	Data           []byte               `json:"data" binding:"required"`
 }
 
 func NewUpdateAmosFutureFlightsRequest(c *gin.Context) (*UpdateAmosFutureFlightsRequest, error) {

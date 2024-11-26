@@ -35,6 +35,7 @@ final class _DropdownMenu extends StatelessWidget {
     final state = context.watch<usecases.GetCurrencies>().state as usecases.GetCurrenciesStateSuccess;
 
     return DropdownMenu(
+      label: const Text("Currency Code"),
       initialSelection: state.currentCurrency,
       expandedInsets: EdgeInsets.zero,
       dropdownMenuEntries: [

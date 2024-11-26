@@ -8,16 +8,16 @@ type _FutureFlights struct {
 	XMLName                    string                       `xml:"future_flights"`
 	PublishedAt                xml.Attr                     `xml:"published_at,attr"`
 	Version                    xml.Attr                     `xml:"version,attr"`
-	FlightsForDateAndAircrafts []_FlightsForDateAndAircraft `xml:"flights_for_date_and_aircraft"`
+	FlightsForDateAndAircrafts []*FlightsForDateAndAircraft `xml:"flights_for_date_and_aircraft"`
 }
 
-type _FlightsForDateAndAircraft struct {
+type FlightsForDateAndAircraft struct {
 	SchedDepartureDate   string `xml:"sched_departure_date"`
 	AircraftRegistration string `xml:"aircraft_registration"`
-	Legs                 []_Leg `xml:"leg"`
+	Legs                 []Leg  `xml:"leg"`
 }
 
-type _Leg struct {
+type Leg struct {
 	Carrier                                  string        `xml:"carrier"`
 	FlightNumber                             uint          `xml:"flightNumber"`
 	FlightSuffix                             *string       `xml:"flightSuffix"` // Optional
@@ -52,49 +52,49 @@ type _CrewMember struct {
 	FunctionCode string `xml:"functionCode"`
 }
 
-func NewFutureFlights() _FutureFlights {
-	testData := []_FlightsForDateAndAircraft{
-		{
-			SchedDepartureDate:   "2024-12-01",
-			AircraftRegistration: "8385",
-			Legs: []_Leg{
-				{
-					Carrier:                                  "RF",
-					FlightNumber:                             321,
-					FlightSuffix:                             nil,
-					ServiceType:                              nil, // IATA Code; J: Scheduled Flight, Passenger, Normal Service
-					ScheduledDepartureDateTime:               "2024-12-01T00:00:00.00",
-					EstimatedDepartureDateTime:               nil,
-					ScheduledDepartureAirport:                "CJJ",
-					DepartureStand:                           nil,
-					DepartureGate:                            nil,
-					ScheduledArrivalDateTime:                 "2024-12-01T02:00:00.00",
-					EstimatedArrivalDateTime:                 nil,
-					ScheduledArrivalAirport:                  "NRT",
-					ArrivalStand:                             nil,
-					ArrivalGate:                              nil,
-					EstimatedLegDuration:                     120,
-					LegCycles:                                1,
-					EstimatedTotalAircraftMinutesAtTouchdown: nil,
-					EstimatedTotalAircraftCyclesAtTouchdown:  nil,
-					ExternalSystemLegId:                      nil,
-					Stickers:                                 nil,
-					CrewMembers:                              nil,
-					State:                                    nil,
-				},
-			},
-		},
-	}
+func NewFutureFlights(data []*FlightsForDateAndAircraft) _FutureFlights {
+	// testData := []FlightsForDateAndAircraft{
+	// 	{
+	// 		SchedDepartureDate:   "2024-12-01",
+	// 		AircraftRegistration: "8385",
+	// 		Legs: []Leg{
+	// 			{
+	// 				Carrier:                                  "RF",
+	// 				FlightNumber:                             321,
+	// 				FlightSuffix:                             nil,
+	// 				ServiceType:                              nil, // IATA Code; J: Scheduled Flight, Passenger, Normal Service
+	// 				ScheduledDepartureDateTime:               "2024-12-01T00:00:00.00",
+	// 				EstimatedDepartureDateTime:               nil,
+	// 				ScheduledDepartureAirport:                "CJJ",
+	// 				DepartureStand:                           nil,
+	// 				DepartureGate:                            nil,
+	// 				ScheduledArrivalDateTime:                 "2024-12-01T02:00:00.00",
+	// 				EstimatedArrivalDateTime:                 nil,
+	// 				ScheduledArrivalAirport:                  "NRT",
+	// 				ArrivalStand:                             nil,
+	// 				ArrivalGate:                              nil,
+	// 				EstimatedLegDuration:                     120,
+	// 				LegCycles:                                1,
+	// 				EstimatedTotalAircraftMinutesAtTouchdown: nil,
+	// 				EstimatedTotalAircraftCyclesAtTouchdown:  nil,
+	// 				ExternalSystemLegId:                      nil,
+	// 				Stickers:                                 nil,
+	// 				CrewMembers:                              nil,
+	// 				State:                                    nil,
+	// 			},
+	// 		},
+	// 	},
+	// }
 
 	return _FutureFlights{
 		PublishedAt: xml.Attr{
 			Name:  xml.Name{Local: "published_at"},
-			Value: "2024-11-22T00:00:00.00",
+			Value: "2024-11-26T00:00:00.00",
 		},
 		Version: xml.Attr{
 			Name:  xml.Name{Local: "version"},
 			Value: "1.1",
 		},
-		FlightsForDateAndAircrafts: testData,
+		FlightsForDateAndAircrafts: data,
 	}
 }

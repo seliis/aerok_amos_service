@@ -43,18 +43,12 @@ final class Client {
   }
 
   Future<Response> get(String path, {Map<String, String>? queryParameters}) async {
-    // TODO: Remove before production
-    await Future<void>.delayed(const Duration(seconds: 3));
-
     final response = await http.get(_getUri(path, queryParameters: queryParameters));
 
     return Response.fromBody(response.body);
   }
 
   Future<Response> post(String path, {Map<String, String>? queryParameters, Map<String, dynamic>? body}) async {
-    // TODO: Remove before production
-    await Future<void>.delayed(const Duration(seconds: 3));
-
     final response = await http.post(
       _getUri(path, queryParameters: queryParameters),
       body: jsonEncode(body),

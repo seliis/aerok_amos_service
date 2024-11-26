@@ -16,14 +16,9 @@ final class CurrencyScreen extends StatelessWidget {
 
   @override
   Widget build(context) {
-    final size = MediaQuery.of(context).size;
-
     return BlocListener(
       bloc: BlocProvider.of<usecases.GetExchangeRate>(context),
       listener: (context, state) {
-        final width = size.width * 0.75;
-        final height = size.height * 0.25;
-
         if (state is usecases.GetExchangeRateStateFailure) {
           showDialog<void>(
             context: context,
@@ -31,8 +26,8 @@ final class CurrencyScreen extends StatelessWidget {
               return common_ui.ErrorDialog(
                 message: state.message,
                 stackTrace: state.stackTrace,
-                width: width,
-                height: height,
+                width: 640,
+                height: 480,
               );
             },
           );
@@ -44,8 +39,8 @@ final class CurrencyScreen extends StatelessWidget {
             builder: (context) {
               return _ExchangeRateDialog(
                 exchangeRate: state.exchangeRate,
-                width: width,
-                height: height,
+                width: 640,
+                height: 480,
               );
             },
           );
@@ -91,16 +86,13 @@ final class _View extends StatelessWidget {
 
   @override
   Widget build(context) {
-    final screenWidth = MediaQuery.of(context).size.width;
-
-    return Scaffold(
-      appBar: const _AppBar(),
+    return const Scaffold(
+      appBar: _AppBar(),
       body: Padding(
-        padding: EdgeInsets.symmetric(
-          horizontal: screenWidth * 0.10,
-          vertical: screenWidth * 0.025,
+        padding: EdgeInsets.all(16),
+        child: Center(
+          child: _Body(),
         ),
-        child: const _Body(),
       ),
     );
   }
@@ -115,6 +107,7 @@ final class _AppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(context) {
     return AppBar(
+      title: const Text("Currency Rates"),
       actions: [
         PopupMenuButton(
           itemBuilder: (context) {
@@ -125,11 +118,9 @@ final class _AppBar extends StatelessWidget implements PreferredSizeWidget {
                   showDialog<void>(
                     context: context,
                     builder: (context) {
-                      final size = MediaQuery.of(context).size;
-
-                      return _AmosAuthDialog(
-                        width: size.width * 0.75,
-                        height: size.height * 0.25,
+                      return const _AmosAuthDialog(
+                        width: 640,
+                        height: 480,
                       );
                     },
                   );
@@ -154,27 +145,11 @@ final class _Body extends StatelessWidget {
     return const Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Spacer(),
-        _Container(),
-        Spacer(),
-        _Footer(),
+        SizedBox(
+          width: 512,
+          child: _Container(),
+        ),
       ],
-    );
-  }
-}
-
-final class _Footer extends StatelessWidget {
-  const _Footer();
-
-  @override
-  Widget build(context) {
-    return const Text(
-      "© 2024 Aero K Airlines, Developed by In Son",
-      textAlign: TextAlign.center,
-      style: TextStyle(
-        fontWeight: FontWeight.w100,
-        fontSize: 12,
-      ),
     );
   }
 }
