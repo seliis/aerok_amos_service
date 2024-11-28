@@ -16,11 +16,22 @@ final class OpenFutureFlights extends Cubit<OpenFutureFlightsState> {
     try {
       final result = await FilePicker.platform.pickFiles(
         allowedExtensions: [
-          "csv"
+          "xlsx"
         ],
         type: FileType.custom,
       );
-      print(result?.files.first.bytes);
+
+      if (result == null) {
+        emit(OpenFutureFlightsStateInitial());
+        return;
+      }
+
+      await flightRepository.updateAmosFutureFlights(
+        id: "admin",
+        password: "8Z7Plc3p!!",
+        data: result.files.single.bytes,
+      );
+
       emit(OpenFutureFlightsStateSuccess());
     } on Exception catch (exception, stackTrace) {
       emit(OpenFutureFlightsStateFailure(

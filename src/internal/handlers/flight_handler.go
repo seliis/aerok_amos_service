@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"fmt"
 	"net/http"
 	"packages/src/internal/dto"
 	"packages/src/internal/services"
@@ -20,6 +21,11 @@ func (h *FlightHandler) UpdateAmos(c *gin.Context) {
 	request, err := dto.NewUpdateAmosFutureFlightsRequest(c)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, dto.NewErrorResponse(err))
+		return
+	}
+
+	if request.Data == nil {
+		c.JSON(http.StatusBadRequest, dto.NewErrorResponse(fmt.Errorf("data is null")))
 		return
 	}
 
