@@ -1,59 +1,58 @@
 import "package:flutter/material.dart";
 
-import "package:app/internal/ui/__index.dart" as ui;
+import "package:app/internal/common_ui/__index.dart" as common_ui;
 
-final class HomeScreen extends StatefulWidget {
+final class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
-
-  List<NavigationRailDestination> get destinations {
-    return [
-      const NavigationRailDestination(
-        icon: Icon(Icons.currency_exchange),
-        label: Text("Currency Rates"),
-      ),
-      const NavigationRailDestination(
-        icon: Icon(Icons.flight),
-        label: Text("Future Flights"),
-      ),
-    ];
-  }
-
-  @override
-  State<HomeScreen> createState() => _HomeScreenState();
-}
-
-final class _HomeScreenState extends State<HomeScreen> {
-  int selectedIndex = 1;
 
   @override
   Widget build(context) {
     return Scaffold(
-      body: Row(
-        children: [
-          NavigationRail(
-            onDestinationSelected: (index) {
-              setState(() {
-                selectedIndex = index;
-              });
+      appBar: AppBar(
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.key),
+            onPressed: () {
+              showDialog<void>(
+                context: context,
+                builder: (context) {
+                  return AlertDialog(
+                    title: Text("AMOS Web Service Authentication"),
+                    content: SizedBox(
+                      width: 512,
+                      child: common_ui.TextField(
+                        autofocus: true,
+                        labelText: "Password",
+                        controller: TextEditingController(),
+                      ),
+                    ),
+                    actions: [
+                      TextButton(
+                        onPressed: () {},
+                        child: Text("Submit"),
+                      ),
+                    ],
+                  );
+                },
+              );
             },
-            selectedIndex: selectedIndex,
-            destinations: widget.destinations,
           ),
-          const VerticalDivider(
-            thickness: 0.5,
-            width: 1,
-          ),
-          Expanded(
-            child: IndexedStack(
-              index: selectedIndex,
-              children: const [
-                ui.CurrencyScreen(),
-                ui.FutureFlightsScreen(),
-              ],
-            ),
+          const SizedBox(
+            width: 16,
           ),
         ],
       ),
+      drawer: _Drawer(),
+      body: SizedBox.shrink(),
     );
+  }
+}
+
+final class _Drawer extends StatelessWidget {
+  const _Drawer();
+
+  @override
+  Widget build(context) {
+    return Drawer();
   }
 }

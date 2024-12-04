@@ -35,3 +35,8 @@ Content-Type: application/json
   },
   "data": []
 }
+
+###
+
+GET http://127.0.0.1:8080/api/amos/auth
+Authorization: Basic admin:8Z7Plc3p!!

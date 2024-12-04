@@ -7,7 +7,6 @@ import (
 	"packages/src/pkg/database"
 
 	"github.com/gin-contrib/cors"
-	"github.com/gin-contrib/static"
 	"github.com/gin-gonic/gin"
 )
 
@@ -27,7 +26,7 @@ func init() {
 	}
 }
 
-func main() {
+func getServer() *gin.Engine {
 	app := gin.Default()
 
 	app.Use(cors.New(cors.Config{
@@ -37,11 +36,27 @@ func main() {
 		AllowCredentials: true,
 	}))
 
-	app.Use(static.Serve("/", static.LocalFile(config.Server.Static, true)))
+	api := app.Group("/api")
+	setAmos(api)
 
-	setRoute(app.Group("/api"))
+	return app
+}
 
-	app.Run(fmt.Sprintf(":%d", config.Server.Port))
+func setAmos(api *gin.RouterGroup) {
+	webService := config.Amos.WebService
+
+	r := api.Group("/amos", gin.BasicAuth(gin.Accounts{
+		webService.Id: webService.Password,
+	}))
+
+	h := handlers.NewWebServiceHandler(webService.Id, webService.Password)
+	r.GET("/auth", h.GetBasicAuth)
+}
+
+func main() {
+	server := getServer()
+
+	server.Run(fmt.Sprintf(":%d", config.Server.Port))
 
 	defer func() {
 		if err := database.Client.Close(); err != nil {
@@ -50,21 +65,21 @@ func main() {
 	}()
 }
 
-func setRoute(api *gin.RouterGroup) {
-	func() {
-		h := handlers.NewCurrencyHandler()
+// func setRoute(api *gin.RouterGroup) {
+// 	func() {
+// 		h := handlers.NewCurrencyHandler()
 
-		g := api.Group("/currency")
-		g.GET("/exchangeRates", h.GetExchangeRates)
-		g.GET("/exchangeRate", h.GetExchangeRate)
-		g.GET("/currencies", h.GetCurrencies)
-		g.POST("/updateAmos", h.UpdateAmos)
-	}()
+// 		g := api.Group("/currency")
+// 		g.GET("/exchangeRates", h.GetExchangeRates)
+// 		g.GET("/exchangeRate", h.GetExchangeRate)
+// 		g.GET("/currencies", h.GetCurrencies)
+// 		g.POST("/updateAmos", h.UpdateAmos)
+// 	}()
 
-	func() {
-		h := handlers.NewFlightHandler()
+// 	func() {
+// 		h := handlers.NewFlightHandler()
 
-		g := api.Group("/flight")
-		g.POST("/updateAmos", h.UpdateAmos)
-	}()
-}
+// 		g := api.Group("/flight")
+// 		g.POST("/updateAmos", h.UpdateAmos)
+// 	}()
+// }

@@ -11,11 +11,11 @@ type WebServiceAuth struct {
 }
 
 func CheckWebServiceAuth(webService *WebServiceAuth) error {
-	if webService.Id != config.Amos.WebserviceId {
+	if webService.Id != config.Amos.WebService.Id {
 		return errors.New("invalid amos web-service id")
 	}
 
-	if webService.Password != config.Amos.WebservicePassword {
+	if webService.Password != config.Amos.WebService.Password {
 		return errors.New("invalid amos web-service password")
 	}
 

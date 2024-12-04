@@ -13,8 +13,10 @@ korea_exim_auth_key = "CtRNXmPEu3mUfNA8XqDXOHzZHlFxvWBL"
 
 [amos]
 base_url = "https://10.0.54.68:5081/service"
-webservice_id = "admin"
-webservice_password = "8Z7Plc3p!!"
+
+[amos.web_service]
+id = "admin"
+password = "8Z7Plc3p!!"
 
 [amos.import_currency]
 endpoint = "/updateCurrency"
