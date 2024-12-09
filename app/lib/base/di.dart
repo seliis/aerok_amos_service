@@ -22,6 +22,9 @@ final class DependencyInjector extends StatelessWidget {
         RepositoryProvider<repositories.FlightRepository>(
           create: (context) => const repositories.FlightRepository(),
         ),
+        RepositoryProvider<repositories.AmosRepository>(
+          create: (context) => const repositories.AmosRepository(),
+        ),
       ],
       child: MultiBlocProvider(
         providers: [
@@ -43,6 +46,11 @@ final class DependencyInjector extends StatelessWidget {
           BlocProvider<usecases.OpenFutureFlights>(
             create: (context) => usecases.OpenFutureFlights(
               flightRepository: RepositoryProvider.of<repositories.FlightRepository>(context),
+            ),
+          ),
+          BlocProvider<usecases.RequestWebServiceKey>(
+            create: (context) => usecases.RequestWebServiceKey(
+              amosRepository: RepositoryProvider.of<repositories.AmosRepository>(context),
             ),
           ),
         ],

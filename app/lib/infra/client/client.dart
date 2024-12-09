@@ -42,8 +42,8 @@ final class Client {
     );
   }
 
-  Future<Response> get(String path, {Map<String, String>? queryParameters}) async {
-    final response = await http.get(_getUri(path, queryParameters: queryParameters));
+  Future<Response> get(String path, {Map<String, String>? queryParameters, Map<String, String>? headers}) async {
+    final response = await http.get(_getUri(path, queryParameters: queryParameters), headers: headers);
 
     return Response.fromBody(response.body);
   }
