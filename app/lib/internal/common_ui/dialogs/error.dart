@@ -18,7 +18,7 @@ final class ErrorDialog extends StatelessWidget {
   Widget build(context) {
     return AlertDialog(
       title: const Text(
-        "ERROR",
+        "Error",
         style: TextStyle(
           fontWeight: FontWeight.w700,
         ),
@@ -33,9 +33,24 @@ final class ErrorDialog extends StatelessWidget {
             const SizedBox(
               height: 16,
             ),
+            const Divider(),
+            const Text(
+              "Stack Trace",
+              style: TextStyle(
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+            const SizedBox(
+              height: 8,
+            ),
             Expanded(
               child: SingleChildScrollView(
-                child: Text(stackTrace),
+                child: Text(
+                  stackTrace,
+                  style: const TextStyle(
+                    fontFamily: "monospace",
+                  ),
+                ),
               ),
             ),
           ],

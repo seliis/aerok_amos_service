@@ -18,6 +18,7 @@ final class MasterAppBar extends StatelessWidget implements PreferredSizeWidget 
         return AppBar(
           actions: const [
             _RequestWebServiceKeyButton(),
+            _PopUpMenuButton(),
             SizedBox(
               width: 16,
             ),
@@ -28,46 +29,65 @@ final class MasterAppBar extends StatelessWidget implements PreferredSizeWidget 
   }
 }
 
+final class _PopUpMenuButton extends StatelessWidget {
+  const _PopUpMenuButton();
+
+  @override
+  Widget build(context) {
+    return PopupMenuButton(
+      enabled: context.watch<usecases.RequestWebServiceKey>().state is usecases.RequestWebServiceKeyStateSuccess,
+      itemBuilder: (context) {
+        return [];
+      },
+    );
+  }
+}
+
 final class _RequestWebServiceKeyButton extends StatelessWidget {
   const _RequestWebServiceKeyButton();
 
   @override
   Widget build(context) {
+    final bool isLoading = context.watch<usecases.RequestWebServiceKey>().state is usecases.RequestWebServiceKeyStateLoading;
     final bool isSuccess = context.watch<usecases.RequestWebServiceKey>().state is usecases.RequestWebServiceKeyStateSuccess;
 
-    return IconButton(
-      icon: Icon(isSuccess ? Icons.vpn_key_outlined : Icons.vpn_key_off_outlined),
-      onPressed: isSuccess
-          ? null
-          : () {
-              showDialog<void>(
-                context: context,
-                builder: (context) {
-                  return AlertDialog(
-                    title: const Text("Request AMOS WebService Key"),
-                    content: SizedBox(
-                      width: 512,
-                      child: common_ui.TextField(
-                        enabled: false,
-                        autofocus: true,
-                        obscureText: true,
-                        labelText: "Password",
-                        controller: TextEditingController(),
-                      ),
-                    ),
-                    actions: [
-                      TextButton(
-                        onPressed: () {
-                          context.read<usecases.RequestWebServiceKey>().execute("8Z7Plc3p!!");
-                          Navigator.of(context).pop();
-                        },
-                        child: const Text("Request"),
-                      ),
-                    ],
-                  );
-                },
-              );
-            },
-    );
+    return isLoading
+        ? const common_ui.ProgressIndicator(
+            scale: 0.5,
+          )
+        : IconButton(
+            icon: Icon(isSuccess ? Icons.vpn_key_outlined : Icons.vpn_key_off_outlined),
+            onPressed: isSuccess
+                ? null
+                : () {
+                    showDialog<void>(
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                          title: const Text("Request AMOS WebService Key"),
+                          content: SizedBox(
+                            width: 512,
+                            child: common_ui.TextField(
+                              enabled: false,
+                              autofocus: true,
+                              obscureText: true,
+                              labelText: "Password",
+                              controller: TextEditingController(),
+                            ),
+                          ),
+                          actions: [
+                            TextButton(
+                              onPressed: () {
+                                context.read<usecases.RequestWebServiceKey>().execute("8Z7Plc3p!!");
+                                Navigator.of(context).pop();
+                              },
+                              child: const Text("Request"),
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  },
+          );
   }
 }
