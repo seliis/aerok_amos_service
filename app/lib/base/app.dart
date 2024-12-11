@@ -1,6 +1,6 @@
 import "package:flutter/material.dart";
 
-import "package:app/base/router.dart";
+import "package:app/base/router.dart" as router;
 
 final class App extends StatelessWidget {
   const App({super.key});
@@ -9,7 +9,8 @@ final class App extends StatelessWidget {
   Widget build(context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      onGenerateRoute: onGenerateRoute,
+      onGenerateRoute: router.onGenerateRoute,
+      initialRoute: router.Route.currency.path,
       theme: ThemeData(
         colorSchemeSeed: Colors.teal,
         fontFamily: "NanumSquareNeo",

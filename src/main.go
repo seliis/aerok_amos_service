@@ -37,20 +37,30 @@ func getServer() *gin.Engine {
 	}))
 
 	api := app.Group("/api")
-	setAmos(api)
+	setRoute(api)
 
 	return app
 }
 
-func setAmos(api *gin.RouterGroup) {
-	webService := config.Amos.WebService
+func setRoute(api *gin.RouterGroup) {
+	{
+		h := handlers.NewCurrencyHandler()
 
-	r := api.Group("/amos", gin.BasicAuth(gin.Accounts{
-		webService.Id: webService.Password,
-	}))
+		g := api.Group("/currency")
+		g.GET("/currencies", h.GetCurrencies)
+		g.GET("/exchangeRate", h.GetExchangeRate)
+	}
 
-	h := handlers.NewWebServiceHandler(webService.Id, webService.Password)
-	r.GET("/auth", h.GetBasicAuth)
+	{
+		webService := config.Amos.WebService
+
+		g := api.Group("/amos", gin.BasicAuth(gin.Accounts{
+			webService.Id: webService.Password,
+		}))
+
+		h := handlers.NewWebServiceHandler(webService.Id, webService.Password)
+		g.GET("/auth", h.GetBasicAuth)
+	}
 }
 
 func main() {

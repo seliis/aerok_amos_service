@@ -3,13 +3,11 @@ part of "screen.dart";
 final class _ExchangeRateDialog extends StatefulWidget {
   const _ExchangeRateDialog({
     required this.exchangeRate,
-    required this.width,
-    required this.height,
+    required this.size,
   });
 
   final entities.ExchangeRate exchangeRate;
-  final double width;
-  final double height;
+  final Size size;
 
   @override
   State<_ExchangeRateDialog> createState() => _DialogState();
@@ -28,8 +26,8 @@ final class _DialogState extends State<_ExchangeRateDialog> {
         ),
       ),
       content: SizedBox(
-        width: widget.width,
-        height: widget.height,
+        width: widget.size.width,
+        height: widget.size.height,
         child: ListView(
           children: [
             ListTile(

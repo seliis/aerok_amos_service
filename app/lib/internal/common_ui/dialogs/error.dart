@@ -17,27 +17,17 @@ final class ErrorDialog extends StatelessWidget {
   @override
   Widget build(context) {
     return AlertDialog(
-      title: const Row(
-        children: [
-          Icon(
-            Icons.error,
-            color: Colors.pink,
-          ),
-          SizedBox(
-            width: 16,
-          ),
-          Text(
-            "Error",
-            style: TextStyle(
-              fontWeight: FontWeight.w700,
-            ),
-          ),
-        ],
+      title: const Text(
+        "ERROR",
+        style: TextStyle(
+          fontWeight: FontWeight.w700,
+        ),
       ),
       content: SizedBox(
         width: width,
         height: height,
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(message),
             const SizedBox(
