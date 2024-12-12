@@ -3,16 +3,18 @@ import "package:flutter/material.dart";
 import "package:app/internal/ui/__index.dart" as ui;
 
 enum Route {
-  home(path: "/", name: "Home"),
-  currency(path: "/currency", name: "Currency");
+  home(path: "/", name: "Home", icon: Icons.home),
+  currency(path: "/currency", name: "Currency", icon: Icons.attach_money);
 
   const Route({
     required this.path,
     required this.name,
+    required this.icon,
   });
 
   final String path;
   final String name;
+  final IconData icon;
 }
 
 PageRoute<void> onGenerateRoute(RouteSettings settings) {

@@ -9,14 +9,14 @@ final class UpdateAmosCurrency extends Cubit<UpdateAmosCurrencyState> {
 
   final repositories.AmosRepository amosRepository;
 
-  void execute({
-    required String authKey,
+  Future<void> execute({
+    required String authorization,
     required String date,
   }) async {
     emit(UpdateAmosCurrencyStateLoading());
 
     try {
-      await amosRepository.updateCurrency(authKey: authKey, date: date);
+      await amosRepository.updateCurrency(authorization: authorization, date: date);
       emit(UpdateAmosCurrencyStateSuccess());
     } on Exception catch (exception, stackTrace) {
       emit(UpdateAmosCurrencyStateFailure(

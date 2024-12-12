@@ -8,15 +8,23 @@ final class MasterDrawer extends StatelessWidget {
   @override
   Widget build(context) {
     return Drawer(
-      child: ListView(
-        children: base.Route.values.map((route) {
-          return ListTile(
-            title: Text(route.name),
-            onTap: () {
-              Navigator.of(context).pushReplacementNamed(route.path);
-            },
-          );
-        }).toList(),
+      child: Column(
+        children: [
+          const DrawerHeader(
+            child: Text("Aero K Airlines"),
+          ),
+          Column(
+            children: base.Route.values.map((route) {
+              return ListTile(
+                title: Text(route.name),
+                leading: Icon(route.icon),
+                onTap: () {
+                  Navigator.of(context).pushReplacementNamed(route.path);
+                },
+              );
+            }).toList(),
+          ),
+        ],
       ),
     );
   }

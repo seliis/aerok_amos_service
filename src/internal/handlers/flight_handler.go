@@ -1,12 +1,7 @@
 package handlers
 
 import (
-	"fmt"
-	"net/http"
-	"packages/src/internal/dto"
 	"packages/src/internal/services"
-
-	"github.com/gin-gonic/gin"
 )
 
 type FlightHandler struct {
@@ -15,24 +10,4 @@ type FlightHandler struct {
 
 func NewFlightHandler() *FlightHandler {
 	return &FlightHandler{flightService: services.NewFlightService()}
-}
-
-func (h *FlightHandler) UpdateAmos(c *gin.Context) {
-	request, err := dto.NewUpdateAmosFutureFlightsRequest(c)
-	if err != nil {
-		c.JSON(http.StatusBadRequest, dto.NewErrorResponse(err))
-		return
-	}
-
-	if request.Data == nil {
-		c.JSON(http.StatusBadRequest, dto.NewErrorResponse(fmt.Errorf("data is null")))
-		return
-	}
-
-	if err := h.flightService.UpdateAmos(c, request); err != nil {
-		c.JSON(http.StatusInternalServerError, dto.NewErrorResponse(err))
-		return
-	}
-
-	c.JSON(http.StatusOK, dto.NewSuccessResponse(nil))
 }

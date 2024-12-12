@@ -22,72 +22,72 @@ final class CurrencyScreen extends StatelessWidget {
         _GetCurrenciesListener(),
         _GetExchangeRateListener(),
       ],
-      child: BlocBuilder(
-        bloc: BlocProvider.of<usecases.GetCurrencies>(context)..execute(),
-        builder: (context, state) {
-          if (state is usecases.GetCurrenciesStateLoading) {
-            return const Scaffold(
-              body: Center(
-                child: common_ui.ProgressIndicator(),
-              ),
-            );
-          }
-
-          if (state is usecases.GetCurrenciesStateSuccess) {
-            return const _View();
-          }
-
-          return const SizedBox.shrink();
-        },
+      child: Scaffold(
+        appBar: common_ui.MasterAppBar(
+          popupMenuEntries: [
+            PopupMenuItem(
+              onTap: () {
+                showDialog<void>(
+                  context: context,
+                  builder: (context) {
+                    return _UpdateAmosCurrencyDialog(
+                      dateController: TextEditingController.fromValue(
+                        TextEditingValue(
+                          text: presenters.CurrencyControllers.date.text,
+                        ),
+                      ),
+                    );
+                  },
+                );
+              },
+              child: const Text("Update AMOS"),
+            ),
+          ],
+        ),
+        drawer: const common_ui.MasterDrawer(),
+        body: const _Body(),
       ),
     );
   }
 }
 
-final class _View extends StatelessWidget {
-  const _View();
+final class _Body extends StatelessWidget {
+  const _Body();
 
   @override
   Widget build(context) {
-    return Scaffold(
-      appBar: common_ui.MasterAppBar(
-        popupMenuEntries: [
-          PopupMenuItem(
-            onTap: () {
-              showDialog<void>(
-                context: context,
-                builder: (context) {
-                  return _UpdateAmosCurrencyDialog(
-                    dateController: TextEditingController.fromValue(
-                      TextEditingValue(
-                        text: presenters.CurrencyControllers.date.text,
-                      ),
-                    ),
-                  );
-                },
-              );
-            },
-            child: const Text("Update AMOS"),
-          ),
-        ],
-      ),
-      drawer: const common_ui.MasterDrawer(),
-      body: const Padding(
-        padding: EdgeInsets.all(16),
-        child: Column(
-          children: [
-            _DropdownMenu(),
-            SizedBox(
-              height: 16,
+    return BlocBuilder(
+      bloc: BlocProvider.of<usecases.GetCurrencies>(context)..execute(),
+      builder: (context, state) {
+        if (state is usecases.GetCurrenciesStateLoading) {
+          return const Scaffold(
+            body: Center(
+              child: common_ui.ProgressIndicator(),
             ),
-            _DateForm(),
-            SizedBox(
-              height: 16,
+          );
+        }
+
+        if (state is usecases.GetCurrenciesStateSuccess) {
+          return const Padding(
+            padding: EdgeInsets.all(16),
+            child: Column(
+              children: [
+                _DropdownMenu(),
+                SizedBox(
+                  height: 16,
+                ),
+                _DateForm(),
+                SizedBox(
+                  height: 16,
+                ),
+                _QueryButton(),
+              ],
             ),
-            _QueryButton(),
-          ],
-        ),
-      ),
+          );
+        }
+
+        return const SizedBox.shrink();
+      },
     );
   }
 }

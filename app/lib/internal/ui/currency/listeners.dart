@@ -40,8 +40,8 @@ final class _GetExchangeRateListener extends BlocListener<usecases.GetExchangeRa
                 context: context,
                 builder: (context) {
                   return _ExchangeRateDialog(
-                    size: MediaQuery.of(context).size * 0.5,
                     exchangeRate: state.exchangeRate,
+                    width: 512,
                   );
                 },
               );
