@@ -48,21 +48,6 @@ func (h *CurrencyHandler) GetExchangeRate(c *gin.Context) {
 	}
 }
 
-func (h *CurrencyHandler) UpdateAmos(c *gin.Context) {
-	request, err := dto.NewUpdateAmosCurrencyRequest(c)
-	if err != nil {
-		c.JSON(http.StatusBadRequest, dto.NewErrorResponse(err))
-		return
-	}
-
-	if err := h.currencyService.UpdateAmos(c, request); err != nil {
-		c.JSON(http.StatusInternalServerError, dto.NewErrorResponse(err))
-		return
-	}
-
-	c.JSON(http.StatusOK, dto.NewSuccessResponse(nil))
-}
-
 func (h *CurrencyHandler) GetCurrencies(c *gin.Context) {
 	data := h.currencyService.GetCurrencies(c)
 	c.JSON(http.StatusOK, dto.NewSuccessResponse(data))

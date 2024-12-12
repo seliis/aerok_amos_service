@@ -4,24 +4,19 @@ import "package:app/internal/repositories/__index.dart" as repositories;
 
 final class UpdateAmosCurrency extends Cubit<UpdateAmosCurrencyState> {
   UpdateAmosCurrency({
-    required this.currencyRepository,
+    required this.amosRepository,
   }) : super(UpdateAmosCurrencyStateInitial());
 
-  final repositories.CurrencyRepository currencyRepository;
+  final repositories.AmosRepository amosRepository;
 
   void execute({
-    required String id,
-    required String password,
+    required String authKey,
     required String date,
   }) async {
     emit(UpdateAmosCurrencyStateLoading());
 
     try {
-      await currencyRepository.updateAmosCurrency(
-        id: id,
-        password: password,
-        date: date,
-      );
+      await amosRepository.updateCurrency(authKey: authKey, date: date);
       emit(UpdateAmosCurrencyStateSuccess());
     } on Exception catch (exception, stackTrace) {
       emit(UpdateAmosCurrencyStateFailure(

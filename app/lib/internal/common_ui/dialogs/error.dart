@@ -4,7 +4,7 @@ final class ErrorDialog extends StatelessWidget {
   const ErrorDialog({
     super.key,
     this.width = 512,
-    this.height = 256,
+    this.height = 384,
     required this.message,
     required this.stackTrace,
   });

@@ -5,7 +5,12 @@ import "package:app/internal/common_ui/__index.dart" as common_ui;
 import "package:app/internal/usecases/__index.dart" as usecases;
 
 final class MasterAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const MasterAppBar({super.key});
+  const MasterAppBar({
+    super.key,
+    required this.popupMenuEntries,
+  });
+
+  final List<PopupMenuEntry<dynamic>> popupMenuEntries;
 
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
@@ -16,10 +21,12 @@ final class MasterAppBar extends StatelessWidget implements PreferredSizeWidget 
       bloc: BlocProvider.of<usecases.RequestWebServiceKey>(context),
       builder: (context, state) {
         return AppBar(
-          actions: const [
-            _RequestWebServiceKeyButton(),
-            _PopUpMenuButton(),
-            SizedBox(
+          actions: [
+            const _RequestWebServiceKeyButton(),
+            _PopUpMenuButton(
+              popupMenuEntries: popupMenuEntries,
+            ),
+            const SizedBox(
               width: 16,
             ),
           ],
@@ -30,14 +37,18 @@ final class MasterAppBar extends StatelessWidget implements PreferredSizeWidget 
 }
 
 final class _PopUpMenuButton extends StatelessWidget {
-  const _PopUpMenuButton();
+  const _PopUpMenuButton({
+    required this.popupMenuEntries,
+  });
+
+  final List<PopupMenuEntry<dynamic>> popupMenuEntries;
 
   @override
   Widget build(context) {
     return PopupMenuButton(
       enabled: context.watch<usecases.RequestWebServiceKey>().state is usecases.RequestWebServiceKeyStateSuccess,
       itemBuilder: (context) {
-        return [];
+        return popupMenuEntries;
       },
     );
   }

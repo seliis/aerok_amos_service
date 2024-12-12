@@ -1,6 +1,5 @@
 import "package:flutter/material.dart";
 
-import "package:app/internal/common_ui/__index.dart" as common_ui;
 import "package:app/internal/ui/__index.dart" as ui;
 
 enum Route {
@@ -24,17 +23,8 @@ PageRoute<void> onGenerateRoute(RouteSettings settings) {
   return _getRoute(const ui.HomeScreen());
 }
 
-PageRoute<void> _getRoute(Widget body) {
-  return NoTransition(
-    widget: Scaffold(
-      appBar: const common_ui.MasterAppBar(),
-      drawer: const common_ui.MasterDrawer(),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: body,
-      ),
-    ),
-  );
+PageRoute<void> _getRoute(Widget widget) {
+  return NoTransition(widget: widget);
 }
 
 final class NoTransition extends PageRouteBuilder<void> {

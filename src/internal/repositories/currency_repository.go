@@ -1,7 +1,6 @@
 package repositories
 
 import (
-	"packages/src/amos"
 	"packages/src/config"
 	"packages/src/internal/entities"
 	"packages/src/pkg/client"
@@ -33,22 +32,6 @@ func (r *CurrencyRepository) GetPrimitiveExchangeRates(date string) ([]entities.
 	}
 
 	return primitives, nil
-}
-
-func (r *CurrencyRepository) UpdateAmos(id, password string, exchangeRates []entities.ExchangeRate) error {
-	client := client.New(config.Amos.BaseUrl)
-
-	_, err := client.R().
-		SetBasicAuth(id, password).
-		SetHeader("Content-Type", "application/xml").
-		SetBody(amos.NewImportCurrency(exchangeRates)).
-		Post(config.Amos.ImportCurrency.Endpoint)
-
-	if err != nil {
-		return err
-	}
-
-	return nil
 }
 
 func (r *CurrencyRepository) SaveExchangeRate(data []entities.ExchangeRate) error {

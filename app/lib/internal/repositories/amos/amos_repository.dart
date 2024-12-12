@@ -20,4 +20,19 @@ final class AmosRepository {
       },
     );
   }
+
+  Future<void> updateCurrency({
+    required String authKey,
+    required String date,
+  }) async {
+    return const infra.Client().post("/amos/updateCurrency/$date", headers: {
+      "Authorization": "Basic $authKey",
+    }).then(
+      (response) {
+        if (!response.isSuccess) {
+          throw Exception(response.message);
+        }
+      },
+    );
+  }
 }

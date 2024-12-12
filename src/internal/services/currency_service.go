@@ -1,7 +1,6 @@
 package services
 
 import (
-	"packages/src/amos"
 	"packages/src/config"
 	"packages/src/internal/dto"
 	"packages/src/internal/entities"
@@ -84,25 +83,6 @@ func (s *CurrencyService) GetExchangeRate(context *gin.Context, request *dto.Get
 	}
 
 	return s.currencyRepository.GetExchangeRate(request.CurrencyCode, request.Date)
-}
-
-func (s *CurrencyService) UpdateAmos(context *gin.Context, request *dto.UpdateAmosCurrencyRequest) error {
-	if err := amos.CheckWebServiceAuth(request.WebServiceAuth); err != nil {
-		return err
-	}
-
-	data, err := s.GetExchangeRates(context, &dto.GetExchangeRatesRequest{
-		Date: request.Date,
-	})
-	if err != nil {
-		return err
-	}
-
-	if err := s.currencyRepository.UpdateAmos(request.WebServiceAuth.Id, request.WebServiceAuth.Password, data); err != nil {
-		return err
-	}
-
-	return nil
 }
 
 func (s *CurrencyService) GetCurrencies(context *gin.Context) []map[string]string {

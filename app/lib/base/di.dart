@@ -38,11 +38,6 @@ final class DependencyInjector extends StatelessWidget {
               currencyRepository: RepositoryProvider.of<repositories.CurrencyRepository>(context),
             ),
           ),
-          BlocProvider<usecases.UpdateAmosCurrency>(
-            create: (context) => usecases.UpdateAmosCurrency(
-              currencyRepository: RepositoryProvider.of<repositories.CurrencyRepository>(context),
-            ),
-          ),
           BlocProvider<usecases.OpenFutureFlights>(
             create: (context) => usecases.OpenFutureFlights(
               flightRepository: RepositoryProvider.of<repositories.FlightRepository>(context),
@@ -50,6 +45,11 @@ final class DependencyInjector extends StatelessWidget {
           ),
           BlocProvider<usecases.RequestWebServiceKey>(
             create: (context) => usecases.RequestWebServiceKey(
+              amosRepository: RepositoryProvider.of<repositories.AmosRepository>(context),
+            ),
+          ),
+          BlocProvider<usecases.UpdateAmosCurrency>(
+            create: (context) => usecases.UpdateAmosCurrency(
               amosRepository: RepositoryProvider.of<repositories.AmosRepository>(context),
             ),
           ),

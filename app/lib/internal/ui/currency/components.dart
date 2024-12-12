@@ -17,10 +17,6 @@ final class _QueryButton extends StatelessWidget {
   @override
   Widget build(context) {
     return common_ui.Button(
-      size: const Size(
-        double.infinity,
-        48,
-      ),
       isLoading: context.watch<usecases.GetExchangeRate>().state is usecases.GetExchangeRateStateLoading,
       onPressed: () {
         context.read<usecases.GetExchangeRate>().execute(
@@ -28,6 +24,7 @@ final class _QueryButton extends StatelessWidget {
               date: presenters.CurrencyControllers.date.text,
             );
       },
+      isFullWidth: true,
       child: const Text("Query"),
     );
   }

@@ -58,8 +58,9 @@ func setRoute(api *gin.RouterGroup) {
 			webService.Id: webService.Password,
 		}))
 
-		h := handlers.NewWebServiceHandler(webService.Id, webService.Password)
+		h := handlers.NewAmosHandler(webService.Id, webService.Password)
 		g.GET("/auth", h.GetBasicAuth)
+		g.POST("/updateCurrency/:date", h.UpdateCurrency)
 	}
 }
 
