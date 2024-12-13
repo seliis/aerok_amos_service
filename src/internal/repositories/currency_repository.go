@@ -40,19 +40,19 @@ func (r *CurrencyRepository) SaveExchangeRate(data []entities.ExchangeRate) erro
 			into exchange_rates (
 				currency_code,
 				currency_name,
-				date,
+				currency_date,
 				direct_rate
 			) values (
 			 	?, ?, ?, ?
 			) on conflict(
 				currency_code,
-				date
+				currency_date
 			) do update set
 				direct_rate = excluded.direct_rate
 		`
 
 	for _, e := range data {
-		if _, err := database.Client.Exec(statement, e.CurrencyCode, e.CurrencyName, e.Date, e.DirectRate); err != nil {
+		if _, err := database.Client.Exec(statement, e.CurrencyCode, e.CurrencyName, e.CurrencyDate, e.DirectRate); err != nil {
 			return err
 		}
 	}
@@ -63,7 +63,7 @@ func (r *CurrencyRepository) SaveExchangeRate(data []entities.ExchangeRate) erro
 func (r *CurrencyRepository) GetExchangeRate(currencyCode, date string) (*entities.ExchangeRate, error) {
 	var exchangeRate entities.ExchangeRate
 
-	if err := database.Client.QueryRow("select currency_code, currency_name, date, direct_rate from exchange_rates where currency_code = ? and date = ?", currencyCode, date).Scan(&exchangeRate.CurrencyCode, &exchangeRate.CurrencyName, &exchangeRate.Date, &exchangeRate.DirectRate); err != nil {
+	if err := database.Client.QueryRow("select * from exchange_rates where currency_code = ? and currency_date = ?", currencyCode, date).Scan(&exchangeRate.CurrencyCode, &exchangeRate.CurrencyName, &exchangeRate.CurrencyDate, &exchangeRate.DirectRate); err != nil {
 		return nil, err
 	}
 
@@ -73,7 +73,7 @@ func (r *CurrencyRepository) GetExchangeRate(currencyCode, date string) (*entiti
 func (r *CurrencyRepository) IsExists(currencyCode, date string) (bool, error) {
 	var count int
 
-	if err := database.Client.QueryRow("select count(*) from exchange_rates where currency_code = ? and date = ?", currencyCode, date).Scan(&count); err != nil {
+	if err := database.Client.QueryRow("select count(*) from exchange_rates where currency_code = ? and currency_date = ?", currencyCode, date).Scan(&count); err != nil {
 		return false, err
 	}
 

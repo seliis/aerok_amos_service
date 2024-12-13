@@ -3,6 +3,8 @@ import "package:flutter/material.dart";
 final class TextField extends StatelessWidget {
   const TextField({
     super.key,
+    this.helperText,
+    this.hintText,
     this.enabled = true,
     this.autofocus = false,
     this.obscureText = false,
@@ -14,6 +16,8 @@ final class TextField extends StatelessWidget {
   final bool autofocus;
   final bool obscureText;
   final String labelText;
+  final String? helperText;
+  final String? hintText;
   final TextEditingController controller;
 
   @override
@@ -25,7 +29,9 @@ final class TextField extends StatelessWidget {
       obscureText: obscureText,
       decoration: InputDecoration(
         border: const OutlineInputBorder(),
+        hintText: hintText,
         labelText: labelText,
+        helperText: helperText,
       ),
     );
   }

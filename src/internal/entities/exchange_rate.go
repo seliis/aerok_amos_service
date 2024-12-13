@@ -17,6 +17,6 @@ type ExchangeRatePrimitive struct {
 type ExchangeRate struct {
 	CurrencyCode string  `json:"currency_code"`
 	CurrencyName string  `json:"currency_name"`
-	Date         string  `json:"date"`
+	CurrencyDate string  `json:"currency_date"`
 	DirectRate   float64 `json:"direct_rate"`
 }

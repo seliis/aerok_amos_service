@@ -28,6 +28,7 @@ final class _UpdateAmosCurrencyDialog extends StatelessWidget {
           Navigator.pop(context);
           ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
             content: Text("Updated"),
+            backgroundColor: Colors.teal,
           ));
         }
       },

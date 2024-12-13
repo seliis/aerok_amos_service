@@ -4,22 +4,26 @@ import "package:flutter/services.dart";
 final class DateField extends StatelessWidget {
   const DateField({
     super.key,
+    this.helperText = "e.g.; 19910314",
+    this.labelText = "Date",
     this.enabled = true,
     required this.controller,
   });
 
   final TextEditingController controller;
+  final String? helperText;
+  final String? labelText;
   final bool enabled;
 
   @override
   Widget build(context) {
     return TextField(
       enabled: enabled,
-      decoration: const InputDecoration(
+      decoration: InputDecoration(
         floatingLabelBehavior: FloatingLabelBehavior.always,
-        border: OutlineInputBorder(),
-        helperText: "e.g.; 19910314",
-        labelText: "Date",
+        border: const OutlineInputBorder(),
+        helperText: helperText,
+        labelText: labelText,
       ),
       controller: controller,
       keyboardType: TextInputType.number,

@@ -51,7 +51,7 @@ func (s *CurrencyService) GetExchangeRates(context *gin.Context, request *dto.Ge
 				data = append(data, entities.ExchangeRate{
 					CurrencyCode: primitive.CurrencyCode,
 					CurrencyName: currency.Name,
-					Date:         request.Date,
+					CurrencyDate: request.Date,
 					DirectRate:   rate,
 				})
 				break

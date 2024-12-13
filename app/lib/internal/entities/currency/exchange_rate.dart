@@ -15,7 +15,7 @@ final class ExchangeRate {
     return ExchangeRate(
       currencyCode: map["currency_code"] as String,
       currencyName: map["currency_name"] as String,
-      date: map["date"] as String,
+      date: map["currency_date"] as String,
       directRate: map["direct_rate"] as double,
     );
   }
