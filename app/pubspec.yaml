@@ -37,3 +37,6 @@ flutter:
           weight: 400
         - asset: assets/fonts/NanumSquareNeo-dEb.ttf
           weight: 700
+    - family: CascadiaCode
+      fonts:
+        - asset: assets/fonts/CascadiaCode.ttf

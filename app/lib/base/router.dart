@@ -3,23 +3,28 @@ import "package:flutter/material.dart";
 import "package:app/internal/ui/__index.dart" as ui;
 
 enum Route {
-  home(path: "/", name: "Home", icon: Icons.home),
-  currency(path: "/currency", name: "Currency", icon: Icons.attach_money);
+  home(path: "/", title: "Home", icon: Icons.home),
+  currency(path: "/currency", title: "Currency", icon: Icons.attach_money),
+  futureFlights(path: "/futureFlights", title: "Future Flights", icon: Icons.flight);
 
   const Route({
     required this.path,
-    required this.name,
+    required this.title,
     required this.icon,
   });
 
   final String path;
-  final String name;
+  final String title;
   final IconData icon;
 }
 
 PageRoute<void> onGenerateRoute(RouteSettings settings) {
   if (settings.name == Route.currency.path) {
     return _getRoute(const ui.CurrencyScreen());
+  }
+
+  if (settings.name == Route.futureFlights.path) {
+    return _getRoute(const ui.FutureFlightScreen());
   }
 
   return _getRoute(const ui.HomeScreen());

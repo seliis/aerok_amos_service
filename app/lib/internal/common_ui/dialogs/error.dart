@@ -29,7 +29,10 @@ final class ErrorDialog extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(message),
+            Text(
+              message,
+              textAlign: TextAlign.start,
+            ),
             const SizedBox(
               height: 16,
             ),
@@ -48,7 +51,7 @@ final class ErrorDialog extends StatelessWidget {
                 child: Text(
                   stackTrace,
                   style: const TextStyle(
-                    fontFamily: "monospace",
+                    fontFamily: "CascadiaCode",
                   ),
                 ),
               ),

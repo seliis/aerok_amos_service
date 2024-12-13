@@ -34,22 +34,6 @@ final class _UpdateAmosCurrencyDialog extends StatelessWidget {
       child: BlocBuilder<usecases.UpdateAmosCurrency, usecases.UpdateAmosCurrencyState>(
         bloc: BlocProvider.of<usecases.UpdateAmosCurrency>(context),
         builder: (context, state) {
-          final keyState = context.read<usecases.RequestWebServiceKey>().state;
-          final isSuccessKeyState = keyState is usecases.RequestWebServiceKeyStateSuccess;
-
-          void Function()? onPressed() {
-            if (isSuccessKeyState) {
-              return () {
-                BlocProvider.of<usecases.UpdateAmosCurrency>(context).execute(
-                  authorization: keyState.key,
-                  date: dateController.text,
-                );
-              };
-            }
-
-            return null;
-          }
-
           return AlertDialog(
             title: const Text("Update AMOS Currency"),
             content: SizedBox(
@@ -65,10 +49,17 @@ final class _UpdateAmosCurrencyDialog extends StatelessWidget {
                     height: 16,
                   ),
                   common_ui.Button(
-                    onPressed: isSuccessKeyState ? onPressed() : null,
+                    onPressed: () {
+                      final authorization = BlocProvider.of<usecases.RequestWebServiceKey>(context).state as usecases.RequestWebServiceKeyStateSuccess;
+
+                      BlocProvider.of<usecases.UpdateAmosCurrency>(context).execute(
+                        authorization: authorization.key,
+                        date: dateController.text,
+                      );
+                    },
                     isFullWidth: true,
                     isLoading: state is usecases.UpdateAmosCurrencyStateLoading,
-                    child: Text(isSuccessKeyState ? "Update" : "Unauthorized"),
+                    child: const Text("Update"),
                   ),
                 ],
               ),

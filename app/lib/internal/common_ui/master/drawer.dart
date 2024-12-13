@@ -16,7 +16,7 @@ final class MasterDrawer extends StatelessWidget {
           Column(
             children: base.Route.values.map((route) {
               return ListTile(
-                title: Text(route.name),
+                title: Text(route.title),
                 leading: Icon(route.icon),
                 onTap: () {
                   Navigator.of(context).pushReplacementNamed(route.path);

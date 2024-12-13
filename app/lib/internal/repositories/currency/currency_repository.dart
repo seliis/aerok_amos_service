@@ -20,10 +20,13 @@ final class CurrencyRepository {
     required String currencyCode,
     required String date,
   }) async {
-    return const infra.Client().get("/currency/exchangeRate", queryParameters: {
-      "currencyCode": currencyCode,
-      "date": date,
-    }).then(
+    return const infra.Client().get(
+      "/currency/exchangeRate",
+      queryParameters: {
+        "currencyCode": currencyCode,
+        "date": date,
+      },
+    ).then(
       (response) {
         return entities.ExchangeRate.fromMap(response.data as Map<String, dynamic>);
       },

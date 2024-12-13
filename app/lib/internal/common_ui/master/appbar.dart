@@ -7,9 +7,11 @@ import "package:app/internal/usecases/__index.dart" as usecases;
 final class MasterAppBar extends StatelessWidget implements PreferredSizeWidget {
   const MasterAppBar({
     super.key,
+    this.title,
     required this.popupMenuEntries,
   });
 
+  final String? title;
   final List<PopupMenuEntry<dynamic>> popupMenuEntries;
 
   @override
@@ -21,6 +23,7 @@ final class MasterAppBar extends StatelessWidget implements PreferredSizeWidget 
       bloc: BlocProvider.of<usecases.RequestWebServiceKey>(context),
       builder: (context, state) {
         return AppBar(
+          title: Text(title ?? ""),
           actions: [
             const _RequestWebServiceKeyButton(),
             _PopUpMenuButton(

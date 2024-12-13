@@ -34,11 +34,11 @@ type _Server struct {
 }
 
 type _Amos struct {
-	BaseUrl    string `toml:"base_url"`
-	WebService struct {
+	BaseUrl   string `toml:"base_url"`
+	BasicAuth struct {
 		Id       string `toml:"id"`
 		Password string `toml:"password"`
-	} `toml:"web_service"`
+	} `toml:"basic_auth"`
 	ImportCurrency struct {
 		Endpoint     string `toml:"endpoint"`
 		BaseCurrency string `toml:"base_currency"`

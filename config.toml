@@ -14,7 +14,7 @@ korea_exim_auth_key = "CtRNXmPEu3mUfNA8XqDXOHzZHlFxvWBL"
 [amos]
 base_url = "https://10.0.54.68:5081/service"
 
-[amos.web_service]
+[amos.basic_auth]
 id = "admin"
 password = "8Z7Plc3p!!"
 

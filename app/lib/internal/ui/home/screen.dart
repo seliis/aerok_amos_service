@@ -9,6 +9,7 @@ final class HomeScreen extends StatelessWidget {
   Widget build(context) {
     return const Scaffold(
       appBar: common_ui.MasterAppBar(
+        title: "Home",
         popupMenuEntries: [],
       ),
       drawer: common_ui.MasterDrawer(),

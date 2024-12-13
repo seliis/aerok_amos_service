@@ -10,7 +10,7 @@ final class App extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       onGenerateRoute: router.onGenerateRoute,
-      initialRoute: router.Route.currency.path,
+      initialRoute: router.Route.home.path,
       theme: ThemeData(
         colorSchemeSeed: Colors.teal,
         fontFamily: "NanumSquareNeo",

@@ -1,20 +1,18 @@
-import "package:flutter_bloc/flutter_bloc.dart";
-import "package:file_picker/file_picker.dart";
+import "dart:typed_data";
 
-import "package:app/internal/repositories/__index.dart" as repositories;
+import "package:file_picker/file_picker.dart";
+import "package:flutter_bloc/flutter_bloc.dart";
 
 final class OpenFutureFlights extends Cubit<OpenFutureFlightsState> {
-  OpenFutureFlights({
-    required this.flightRepository,
-  }) : super(OpenFutureFlightsStateInitial());
+  OpenFutureFlights() : super(OpenFutureFlightsStateInitial());
 
-  final repositories.FlightRepository flightRepository;
-
-  void execute() async {
+  Future<void> execute() async {
     emit(OpenFutureFlightsStateLoading());
 
     try {
       final result = await FilePicker.platform.pickFiles(
+        initialDirectory: "%USERPROFILE%/Downloads",
+        allowMultiple: false,
         allowedExtensions: [
           "xlsx"
         ],
@@ -26,13 +24,12 @@ final class OpenFutureFlights extends Cubit<OpenFutureFlightsState> {
         return;
       }
 
-      await flightRepository.updateAmosFutureFlights(
-        id: "admin",
-        password: "8Z7Plc3p!!",
-        data: result.files.single.bytes,
-      );
+      final file = result.files.first;
 
-      emit(OpenFutureFlightsStateSuccess());
+      emit(OpenFutureFlightsStateSuccess(
+        name: file.name,
+        data: file.bytes,
+      ));
     } on Exception catch (exception, stackTrace) {
       emit(OpenFutureFlightsStateFailure(
         message: exception.toString(),
@@ -53,7 +50,15 @@ final class OpenFutureFlightsStateInitial extends OpenFutureFlightsState {}
 
 final class OpenFutureFlightsStateLoading extends OpenFutureFlightsState {}
 
-final class OpenFutureFlightsStateSuccess extends OpenFutureFlightsState {}
+final class OpenFutureFlightsStateSuccess extends OpenFutureFlightsState {
+  OpenFutureFlightsStateSuccess({
+    required this.name,
+    required this.data,
+  });
+
+  final String name;
+  final Uint8List? data;
+}
 
 final class OpenFutureFlightsStateFailure extends OpenFutureFlightsState {
   OpenFutureFlightsStateFailure({

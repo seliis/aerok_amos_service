@@ -52,15 +52,16 @@ func setRoute(api *gin.RouterGroup) {
 	}
 
 	{
-		webService := config.Amos.WebService
+		basicAuth := config.Amos.BasicAuth
 
 		g := api.Group("/amos", gin.BasicAuth(gin.Accounts{
-			webService.Id: webService.Password,
+			basicAuth.Id: basicAuth.Password,
 		}))
 
-		h := handlers.NewAmosHandler(webService.Id, webService.Password)
+		h := handlers.NewAmosHandler(basicAuth.Id, basicAuth.Password)
 		g.GET("/auth", h.GetBasicAuth)
 		g.POST("/updateCurrency/:date", h.UpdateCurrency)
+		g.POST("/updateFutureFlights", h.UpdateFutureFlights)
 	}
 }
 
@@ -75,22 +76,3 @@ func main() {
 		}
 	}()
 }
-
-// func setRoute(api *gin.RouterGroup) {
-// 	func() {
-// 		h := handlers.NewCurrencyHandler()
-
-// 		g := api.Group("/currency")
-// 		g.GET("/exchangeRates", h.GetExchangeRates)
-// 		g.GET("/exchangeRate", h.GetExchangeRate)
-// 		g.GET("/currencies", h.GetCurrencies)
-// 		g.POST("/updateAmos", h.UpdateAmos)
-// 	}()
-
-// 	func() {
-// 		h := handlers.NewFlightHandler()
-
-// 		g := api.Group("/flight")
-// 		g.POST("/updateAmos", h.UpdateAmos)
-// 	}()
-// }

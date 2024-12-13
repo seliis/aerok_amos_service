@@ -24,6 +24,7 @@ final class CurrencyScreen extends StatelessWidget {
       ],
       child: Scaffold(
         appBar: common_ui.MasterAppBar(
+          title: "Currency",
           popupMenuEntries: [
             PopupMenuItem(
               onTap: () {
