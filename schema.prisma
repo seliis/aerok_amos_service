@@ -1,0 +1,18 @@
+datasource db {
+  provider = "sqlite"
+  url      = "file:prisma/database.db"
+}
+ 
+generator db {
+  provider = "go run github.com/steebchen/prisma-client-go"
+  output = "prisma"
+}
+ 
+model CurrencyCode {
+    @@map("currency_codes")
+
+    ID String @id @default(uuid()) @map("id")
+    Code String @unique @map("code")
+    Name String @unique @map("name")
+    Base Int @map("base")
+}
