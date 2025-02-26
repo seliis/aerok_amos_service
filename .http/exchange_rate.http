@@ -1,0 +1,34 @@
+@addr=http://127.0.0.1:8080/api/exchange-rate
+
+POST {{addr}}
+Content-Type: application/json
+
+{
+    "id": null,
+    "date": "2025-01-01T11:00:00+09:00",
+    "rate": 1.0,
+    "currency_id": "dfced9b7-9466-43b6-8ac4-7f039984653b"
+}
+
+###
+
+GET {{addr}}/1dac4a80-ad3c-4a8a-b4b4-f7ce058ea488
+
+###
+
+PUT {{addr}}
+
+{
+    "id": "1dac4a80-ad3c-4a8a-b4b4-f7ce058ea488",
+    "date": "2025-01-01T11:00:00+09:00",
+    "rate": 1000.0,
+    "currency_id": "dfced9b7-9466-43b6-8ac4-7f039984653b"
+}
+
+###
+
+DELETE {{addr}}/1dac4a80-ad3c-4a8a-b4b4-f7ce058ea488
+
+###
+
+GET {{addr}}

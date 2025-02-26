@@ -15,4 +15,17 @@ model Currency {
     Code String @unique @map("code")
     Name String @unique @map("name")
     Base Int @map("base")
+
+    ExchangeRates ExchangeRate[]
+}
+
+model ExchangeRate {
+    @@map("exchange_rates")
+
+    ID String @id @default(uuid()) @map("id")
+    Date DateTime @map("date")
+    Rate Float @map("rate")
+
+    Currency Currency @relation(fields: [CurrencyID], references: [ID])
+    CurrencyID String @map("currency_id")
 }

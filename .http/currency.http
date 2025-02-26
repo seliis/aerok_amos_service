@@ -12,14 +12,14 @@ Content-Type: application/json
 
 ###
 
-GET {{addr}}/e122ad84-b7e6-4a6d-9bff-8ebc29baabc6
+GET {{addr}}/dfced9b7-9466-43b6-8ac4-7f039984653b
 
 ###
 
 PUT {{addr}}
 
 {
-    "id": "e122ad84-b7e6-4a6d-9bff-8ebc29baabc6",
+    "id": "dfced9b7-9466-43b6-8ac4-7f039984653b",
     "code": "USD",
     "name": "United States Dollar",
     "base": 10
@@ -27,7 +27,7 @@ PUT {{addr}}
 
 ###
 
-DELETE {{addr}}/e122ad84-b7e6-4a6d-9bff-8ebc29baabc6
+DELETE {{addr}}/dfced9b7-9466-43b6-8ac4-7f039984653b
 
 ###
 

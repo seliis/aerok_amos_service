@@ -28,4 +28,16 @@ func setRoutes(api *gin.RouterGroup) {
 			g.GET("/", h.All)
 		}
 	}
+
+	{
+		h := handlers.NewExchangeRateHandler()
+		g := api.Group("/exchange-rate")
+		{
+			g.POST("/", h.Create)
+			g.GET("/:id", h.Read)
+			g.PUT("/", h.Update)
+			g.DELETE("/:id", h.Delete)
+			g.GET("/", h.All)
+		}
+	}
 }
