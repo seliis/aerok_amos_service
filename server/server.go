@@ -18,8 +18,8 @@ func Start() {
 
 func setRoutes(api *gin.RouterGroup) {
 	{
-		h := handlers.NewCurrencyCodeHandler()
-		g := api.Group("/currency/code")
+		h := handlers.NewCurrencyHandler()
+		g := api.Group("/currency")
 		{
 			g.POST("/", h.Create)
 			g.GET("/:id", h.Read)

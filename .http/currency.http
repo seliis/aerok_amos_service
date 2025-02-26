@@ -1,4 +1,4 @@
-@addr=http://127.0.0.1:8080/api/currency/code
+@addr=http://127.0.0.1:8080/api/currency
 
 POST {{addr}}
 Content-Type: application/json
@@ -12,14 +12,14 @@ Content-Type: application/json
 
 ###
 
-GET {{addr}}/b0cc81ee-18c2-4c19-808c-c65bcb8d3f8b
+GET {{addr}}/e122ad84-b7e6-4a6d-9bff-8ebc29baabc6
 
 ###
 
 PUT {{addr}}
 
 {
-    "id": "b0cc81ee-18c2-4c19-808c-c65bcb8d3f8b",
+    "id": "e122ad84-b7e6-4a6d-9bff-8ebc29baabc6",
     "code": "USD",
     "name": "United States Dollar",
     "base": 10
@@ -27,7 +27,7 @@ PUT {{addr}}
 
 ###
 
-DELETE {{addr}}/b0cc81ee-18c2-4c19-808c-c65bcb8d3f8b
+DELETE {{addr}}/e122ad84-b7e6-4a6d-9bff-8ebc29baabc6
 
 ###
 

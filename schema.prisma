@@ -8,8 +8,8 @@ generator db {
   output = "prisma"
 }
  
-model CurrencyCode {
-    @@map("currency_codes")
+model Currency {
+    @@map("currencies")
 
     ID String @id @default(uuid()) @map("id")
     Code String @unique @map("code")

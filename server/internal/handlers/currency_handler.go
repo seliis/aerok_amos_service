@@ -10,25 +10,25 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type CurrencyCodeHandler struct {
-	_CurrencyCodeService *services.CurrencyCodeService
+type CurrencyHandler struct {
+	_CurrencyService *services.CurrencyService
 }
 
-func NewCurrencyCodeHandler() *CurrencyCodeHandler {
-	return &CurrencyCodeHandler{
-		_CurrencyCodeService: services.NewCurrencyCodeService(),
+func NewCurrencyHandler() *CurrencyHandler {
+	return &CurrencyHandler{
+		_CurrencyService: services.NewCurrencyService(),
 	}
 }
 
-func (h *CurrencyCodeHandler) Create(context *gin.Context) {
-	var entity *entities.CurrencyCode
+func (h *CurrencyHandler) Create(context *gin.Context) {
+	var entity *entities.Currency
 
 	if err := context.ShouldBindBodyWithJSON(&entity); err != nil {
 		context.JSON(http.StatusBadRequest, responses.NewErrorResponse(err))
 		return
 	}
 
-	result, err := h._CurrencyCodeService.Create(context, entity)
+	result, err := h._CurrencyService.Create(context, entity)
 	if err != nil {
 		context.JSON(http.StatusInternalServerError, responses.NewErrorResponse(err))
 		return
@@ -37,8 +37,8 @@ func (h *CurrencyCodeHandler) Create(context *gin.Context) {
 	context.JSON(http.StatusCreated, responses.NewSuccessResponse(result))
 }
 
-func (h *CurrencyCodeHandler) Read(context *gin.Context) {
-	result, err := h._CurrencyCodeService.Read(context, requests.GetID(context))
+func (h *CurrencyHandler) Read(context *gin.Context) {
+	result, err := h._CurrencyService.Read(context, requests.GetID(context))
 	if err != nil {
 		context.JSON(http.StatusInternalServerError, responses.NewErrorResponse(err))
 		return
@@ -47,15 +47,15 @@ func (h *CurrencyCodeHandler) Read(context *gin.Context) {
 	context.JSON(http.StatusOK, responses.NewSuccessResponse(result))
 }
 
-func (h *CurrencyCodeHandler) Update(context *gin.Context) {
-	var entity *entities.CurrencyCode
+func (h *CurrencyHandler) Update(context *gin.Context) {
+	var entity *entities.Currency
 
 	if err := context.ShouldBindBodyWithJSON(&entity); err != nil {
 		context.JSON(http.StatusBadRequest, responses.NewErrorResponse(err))
 		return
 	}
 
-	result, err := h._CurrencyCodeService.Update(context, entity)
+	result, err := h._CurrencyService.Update(context, entity)
 	if err != nil {
 		context.JSON(http.StatusInternalServerError, responses.NewErrorResponse(err))
 		return
@@ -64,8 +64,8 @@ func (h *CurrencyCodeHandler) Update(context *gin.Context) {
 	context.JSON(http.StatusOK, responses.NewSuccessResponse(result))
 }
 
-func (h *CurrencyCodeHandler) Delete(context *gin.Context) {
-	result, err := h._CurrencyCodeService.Delete(context, requests.GetID(context))
+func (h *CurrencyHandler) Delete(context *gin.Context) {
+	result, err := h._CurrencyService.Delete(context, requests.GetID(context))
 	if err != nil {
 		context.JSON(http.StatusInternalServerError, responses.NewErrorResponse(err))
 		return
@@ -74,8 +74,8 @@ func (h *CurrencyCodeHandler) Delete(context *gin.Context) {
 	context.JSON(http.StatusOK, responses.NewSuccessResponse(result))
 }
 
-func (h *CurrencyCodeHandler) All(context *gin.Context) {
-	result, err := h._CurrencyCodeService.All(context)
+func (h *CurrencyHandler) All(context *gin.Context) {
+	result, err := h._CurrencyService.All(context)
 	if err != nil {
 		context.JSON(http.StatusInternalServerError, responses.NewErrorResponse(err))
 		return
