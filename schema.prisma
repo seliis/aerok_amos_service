@@ -21,9 +21,10 @@ model Currency {
 
 model ExchangeRate {
     @@map("exchange_rates")
+    @@unique([CurrencyID, Date])
 
     ID String @id @default(uuid()) @map("id")
-    Date DateTime @map("date")
+    Date String @map("date")
     Rate Float @map("rate")
 
     Currency Currency @relation(fields: [CurrencyID], references: [ID])

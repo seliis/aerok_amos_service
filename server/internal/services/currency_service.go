@@ -35,3 +35,7 @@ func (s *CurrencyService) Delete(context context.Context, id string) (*entities.
 func (s *CurrencyService) All(context context.Context) ([]*entities.Currency, error) {
 	return s._CurrencyRepository.All(context)
 }
+
+func (s *CurrencyService) Import(context context.Context, entities []*entities.Currency) ([]*entities.Currency, error) {
+	return s._CurrencyRepository.Import(context, entities)
+}

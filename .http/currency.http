@@ -32,3 +32,149 @@ DELETE {{addr}}/dfced9b7-9466-43b6-8ac4-7f039984653b
 ###
 
 GET {{addr}}
+
+###
+
+POST {{addr}}/import
+Content-Type: application/json
+
+[
+    {
+        "id": null,
+        "code": "AED",
+        "name": "United Arab Emirates Dirham",
+        "base": 1
+    },
+    {
+        "id": null,
+        "code": "AUD",
+        "name": "Australian Dollar",
+        "base": 1
+    },
+    {
+        "id": null,
+        "code": "BHD",
+        "name": "Bahraini Dinar",
+        "base": 1
+    },
+    {
+        "id": null,
+        "code": "BND",
+        "name": "Brunei Dollar",
+        "base": 1
+    },
+    {
+        "id": null,
+        "code": "CAD",
+        "name": "Canadian Dollar",
+        "base": 1
+    },
+    {
+        "id": null,
+        "code": "CHF",
+        "name": "Swiss Franc",
+        "base": 1
+    },
+    {
+        "id": null,
+        "code": "CNH",
+        "name": "Chinese Yuan",
+        "base": 1
+    },
+    {
+        "id": null,
+        "code": "DKK",
+        "name": "Danish Krone",
+        "base": 1
+    },
+    {
+        "id": null,
+        "code": "EUR",
+        "name": "Euro",
+        "base": 1
+    },
+    {
+        "id": null,
+        "code": "GBP",
+        "name": "British Pound",
+        "base": 1
+    },
+    {
+        "id": null,
+        "code": "HKD",
+        "name": "Hong Kong Dollar",
+        "base": 1
+    },
+    {
+        "id": null,
+        "code": "IDR",
+        "name": "Indonesian Rupiah",
+        "base": 100
+    },
+    {
+        "id": null,
+        "code": "JPY",
+        "name": "Japanese Yen",
+        "base": 100
+    },
+    {
+        "id": null,
+        "code": "KRW",
+        "name": "South Korean Won",
+        "base": 1
+    },
+    {
+        "id": null,
+        "code": "KWD",
+        "name": "Kuwaiti Dinar",
+        "base": 1
+    },
+    {
+        "id": null,
+        "code": "MYR",
+        "name": "Malaysian Ringgit",
+        "base": 1
+    },
+    {
+        "id": null,
+        "code": "NOK",
+        "name": "Norwegian Krone",
+        "base": 1
+    },
+    {
+        "id": null,
+        "code": "NZD",
+        "name": "New Zealand Dollar",
+        "base": 1
+    },
+    {
+        "id": null,
+        "code": "SAR",
+        "name": "Saudi Riyal",
+        "base": 1
+    },
+    {
+        "id": null,
+        "code": "SEK",
+        "name": "Swedish Krona",
+        "base": 1
+    },
+    {
+        "id": null,
+        "code": "SGD",
+        "name": "Singapore Dollar",
+        "base": 1
+    },
+    {
+        "id": null,
+        "code": "THB",
+        "name": "Thai Baht",
+        "base": 1
+    },
+    {
+        "id": null,
+        "code": "USD",
+        "name": "United States Dollar",
+        "base": 1
+    }
+]

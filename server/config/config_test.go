@@ -7,9 +7,10 @@ import (
 
 func TestLoad(t *testing.T) {
 	if err := config.Load("../../settings.toml"); err != nil {
-		t.Fatal(err)
+		t.Error(err)
 	}
 
 	t.Logf("Server.Port: %d", config.Server.Port)
-	t.Logf("Server.Database.URL: %s", config.Server.Database.URL)
+	t.Logf("Database.URL: %s", config.Database.URL)
+	t.Logf("AMOS.ImportCurrency.Path: %s", config.AMOS.Services.ImportCurrency.EndPoint)
 }

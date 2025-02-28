@@ -83,3 +83,34 @@ func (h *ExchangeRateHandler) All(context *gin.Context) {
 
 	context.JSON(http.StatusOK, responses.NewSuccessResponse(result))
 }
+
+func (h *ExchangeRateHandler) UpdateExchangeRates(context *gin.Context) {
+	date, err := requests.GetDate(context)
+	if err != nil {
+		context.JSON(http.StatusBadRequest, responses.NewErrorResponse(err))
+		return
+	}
+
+	if err := h._ExchangeRateService.UpdateExchangeRates(context, date); err != nil {
+		context.JSON(http.StatusInternalServerError, responses.NewErrorResponse(err))
+		return
+	}
+
+	context.JSON(http.StatusOK, responses.NewSuccessResponse(nil))
+}
+
+func (h *ExchangeRateHandler) GetExchangeRates(context *gin.Context) {
+	date, err := requests.GetDate(context)
+	if err != nil {
+		context.JSON(http.StatusBadRequest, responses.NewErrorResponse(err))
+		return
+	}
+
+	result, err := h._ExchangeRateService.GetExchangeRates(context, date)
+	if err != nil {
+		context.JSON(http.StatusInternalServerError, responses.NewErrorResponse(err))
+		return
+	}
+
+	context.JSON(http.StatusOK, responses.NewSuccessResponse(result))
+}

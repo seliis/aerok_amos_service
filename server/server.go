@@ -17,27 +17,36 @@ func Start() {
 }
 
 func setRoutes(api *gin.RouterGroup) {
-	{
-		h := handlers.NewCurrencyHandler()
-		g := api.Group("/currency")
-		{
-			g.POST("/", h.Create)
-			g.GET("/:id", h.Read)
-			g.PUT("/", h.Update)
-			g.DELETE("/:id", h.Delete)
-			g.GET("/", h.All)
-		}
-	}
+	setCurrencyRoutes(api.Group("/currency"))
+	setExchangeRateRoutes(api.Group("/exchange-rate"))
+	setAmosRoutes(api.Group("/amos-aim-webservice"))
+}
 
-	{
-		h := handlers.NewExchangeRateHandler()
-		g := api.Group("/exchange-rate")
-		{
-			g.POST("/", h.Create)
-			g.GET("/:id", h.Read)
-			g.PUT("/", h.Update)
-			g.DELETE("/:id", h.Delete)
-			g.GET("/", h.All)
-		}
-	}
+func setCurrencyRoutes(g *gin.RouterGroup) {
+	h := handlers.NewCurrencyHandler()
+
+	g.POST("/", h.Create)
+	g.GET("/:id", h.Read)
+	g.PUT("/", h.Update)
+	g.DELETE("/:id", h.Delete)
+	g.GET("/", h.All)
+	g.POST("/import", h.Import)
+}
+
+func setExchangeRateRoutes(g *gin.RouterGroup) {
+	h := handlers.NewExchangeRateHandler()
+
+	g.POST("/", h.Create)
+	g.GET("/:id", h.Read)
+	g.PUT("/", h.Update)
+	g.DELETE("/:id", h.Delete)
+	g.GET("/", h.All)
+	g.PATCH("/", h.UpdateExchangeRates)
+	g.GET("/data", h.GetExchangeRates)
+}
+
+func setAmosRoutes(g *gin.RouterGroup) {
+	h := handlers.NewAmosHandler()
+
+	g.POST("/import-currency", h.ImportCurrency)
 }

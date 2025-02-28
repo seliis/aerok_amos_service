@@ -2,17 +2,24 @@ package services
 
 import (
 	"context"
+	"packages/server/client"
 	"packages/server/internal/entities"
 	"packages/server/internal/repositories"
+	"strconv"
+	"strings"
+
+	"github.com/google/uuid"
 )
 
 type ExchangeRateService struct {
 	_ExchangeRateRepository *repositories.ExchangeRateRepository
+	_CurrencyRepository     *repositories.CurrencyRepository
 }
 
 func NewExchangeRateService() *ExchangeRateService {
 	return &ExchangeRateService{
 		_ExchangeRateRepository: repositories.NewExchangeRateRepository(),
+		_CurrencyRepository:     repositories.NewCurrencyRepository(),
 	}
 }
 
@@ -34,4 +41,66 @@ func (s *ExchangeRateService) Delete(context context.Context, id string) (*entit
 
 func (s *ExchangeRateService) All(context context.Context) ([]*entities.ExchangeRate, error) {
 	return s._ExchangeRateRepository.All(context)
+}
+
+func (s *ExchangeRateService) UpdateExchangeRates(context context.Context, date string) error {
+	primitives, err := client.RequestCurrencyExchangeDataFromKoreaExim(date)
+	if err != nil {
+		return err
+	}
+
+	currencies, err := s._CurrencyRepository.All(context)
+	if err != nil {
+		return err
+	}
+
+	for _, currency := range currencies {
+		for _, primitive := range primitives {
+			if strings.Contains(primitive.CurrencyCode, currency.Code) {
+				exchangeRate, err := strconv.ParseFloat(strings.ReplaceAll(primitive.ExchangeRate, ",", ""), 64)
+				if err != nil {
+					return err
+				}
+
+				entity := &entities.ExchangeRate{
+					ID:         uuid.NewString(),
+					Date:       date,
+					Rate:       exchangeRate,
+					CurrencyID: currency.ID,
+				}
+
+				if err = s._ExchangeRateRepository.UpsertExchangeRate(context, entity); err != nil {
+					return err
+				}
+			}
+		}
+	}
+
+	return nil
+}
+
+func (s *ExchangeRateService) GetExchangeRates(context context.Context, date string) ([]*entities.ExchangeRateWithCurrency, error) {
+	currencies, err := s._CurrencyRepository.All(context)
+	if err != nil {
+		return nil, err
+	}
+
+	arr, err := s._ExchangeRateRepository.ListByDate(context, date)
+	if err != nil {
+		return nil, err
+	}
+
+	if len(arr) != len(currencies) {
+		err := s.UpdateExchangeRates(context, date)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	exchangeRates, err := s._ExchangeRateRepository.GetExchangeRates(context, date)
+	if err != nil {
+		return nil, err
+	}
+
+	return exchangeRates, nil
 }

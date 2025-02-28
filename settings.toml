@@ -1,4 +1,22 @@
+[server]
 port = 8080
 
 [database]
 url = "file:prisma/database.db"
+
+[korea-exim]
+host = "https://www.koreaexim.go.kr"
+path = "/site/program/financial/exchangeJSON"
+auth = "CtRNXmPEu3mUfNA8XqDXOHzZHlFxvWBL"
+
+[amos]
+host = "https://10.0.54.70"
+port = 5081
+
+[amos.auth]
+id = "admin"
+password = "8Z7Plc3p!!"
+
+[amos.services.import_currency]
+end_point = "importCurrency"
+amos_currency_code = "USD"

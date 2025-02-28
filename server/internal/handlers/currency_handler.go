@@ -83,3 +83,20 @@ func (h *CurrencyHandler) All(context *gin.Context) {
 
 	context.JSON(http.StatusOK, responses.NewSuccessResponse(result))
 }
+
+func (h *CurrencyHandler) Import(context *gin.Context) {
+	var entities []*entities.Currency
+
+	if err := context.ShouldBindBodyWithJSON(&entities); err != nil {
+		context.JSON(http.StatusBadRequest, responses.NewErrorResponse(err))
+		return
+	}
+
+	result, err := h._CurrencyService.Import(context, entities)
+	if err != nil {
+		context.JSON(http.StatusInternalServerError, responses.NewErrorResponse(err))
+		return
+	}
+
+	context.JSON(http.StatusCreated, responses.NewSuccessResponse(result))
+}

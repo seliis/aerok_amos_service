@@ -82,3 +82,18 @@ func (r *CurrencyRepository) All(context context.Context) ([]*entities.Currency,
 
 	return arr, nil
 }
+
+func (r *CurrencyRepository) Import(context context.Context, arr []*entities.Currency) ([]*entities.Currency, error) {
+	var models []*entities.Currency
+
+	for _, entity := range arr {
+		model, err := r.Create(context, entity)
+		if err != nil {
+			return nil, err
+		}
+
+		models = append(models, model)
+	}
+
+	return models, nil
+}
