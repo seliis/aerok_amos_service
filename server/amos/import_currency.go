@@ -16,11 +16,21 @@ type _ImportCurrency struct {
 }
 
 type _Currency struct {
-	XMLName      string  `xml:"currency"`
-	CurrencyCode string  `xml:"currencyCode"`
-	Description  string  `xml:"description"`
-	ExchangeRate float64 `xml:"exchangeRate"`
-	ExchangeBase uint    `xml:"exchangeBase"`
+	XMLName       string          `xml:"currency"`
+	CurrencyCode  string          `xml:"currencyCode"`
+	Description   string          `xml:"description"`
+	ExchangeRate  float64         `xml:"exchangeRate"`
+	ExchangeBase  uint            `xml:"exchangeBase"`
+	ClosureRate   *float64        `xml:"closureRate"`   // Optional
+	ValidFrom     *string         `xml:"validFrom"`     // Optional
+	AlternateCode *_AlternateCode `xml:"alternateCode"` // Optional
+}
+
+type _AlternateCode struct {
+	XMLName       string  `xml:"alternateCode"`
+	SpecCurrency  *string `xml:"specCurrency"`  // Optional
+	FaCurrency    *string `xml:"faCurrency"`    // Optional
+	FedexCurrency *string `xml:"fedexCurrency"` // Optional
 }
 
 func NewImportCurrency(exchangeRates []*entities.ExchangeRateWithCurrency) (*_ImportCurrency, error) {
@@ -47,6 +57,12 @@ func NewImportCurrency(exchangeRates []*entities.ExchangeRateWithCurrency) (*_Im
 			Description:  exchangeRate.Name,
 			ExchangeRate: exchangeRate.Rate / amosCurrencyRate / float64(exchangeRate.Base),
 			ExchangeBase: 1,
+			ValidFrom:    &exchangeRate.Date,
+			AlternateCode: &_AlternateCode{
+				XMLName:      "alternateCode",
+				FaCurrency:   &exchangeRate.Code,
+				SpecCurrency: &exchangeRate.Code,
+			},
 		})
 	}
 
@@ -71,7 +87,7 @@ func (importCurrency *_ImportCurrency) Push() error {
 	}
 
 	if r.StatusCode() != http.StatusOK {
-		return errors.New("failed to push data")
+		return errors.New("amos import currency failed")
 	}
 
 	return nil

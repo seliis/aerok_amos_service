@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"errors"
 	"net/http"
 	"packages/server/internal/requests"
 	"packages/server/internal/responses"
@@ -35,6 +36,21 @@ func (h *AmosHandler) ImportCurrency(context *gin.Context) {
 	}
 
 	if err := h._AmosService.ImportCurrency(context, exchangeRates); err != nil {
+		context.JSON(http.StatusInternalServerError, responses.NewErrorResponse(err))
+		return
+	}
+
+	context.JSON(http.StatusOK, responses.NewSuccessResponse(nil))
+}
+
+func (h *AmosHandler) TransferFutureFlights(context *gin.Context) {
+	fromDate, isOk := context.GetQuery("from")
+	if !isOk {
+		context.JSON(http.StatusBadRequest, responses.NewErrorResponse(errors.New("from_date is required")))
+		return
+	}
+
+	if err := h._AmosService.TransferFutureFlights(context, fromDate); err != nil {
 		context.JSON(http.StatusInternalServerError, responses.NewErrorResponse(err))
 		return
 	}

@@ -27,9 +27,9 @@ func (r *CurrencyRepository) Create(context context.Context, entity *entities.Cu
 	return (*entities.Currency)(&model.InnerCurrency), nil
 }
 
-func (r *CurrencyRepository) Read(context context.Context, id string) (*entities.Currency, error) {
+func (r *CurrencyRepository) Read(context context.Context, currencyCode string) (*entities.Currency, error) {
 	model, err := database.Client.Currency.FindUnique(
-		db.Currency.ID.Equals(id),
+		db.Currency.Code.Equals(currencyCode),
 	).Exec(context)
 
 	if err != nil {
@@ -41,7 +41,7 @@ func (r *CurrencyRepository) Read(context context.Context, id string) (*entities
 
 func (r *CurrencyRepository) Update(context context.Context, entity *entities.Currency) (*entities.Currency, error) {
 	model, err := database.Client.Currency.FindUnique(
-		db.Currency.ID.Equals(entity.ID),
+		db.Currency.Code.Equals(entity.Code),
 	).Update(
 		db.Currency.Code.Set(entity.Code),
 		db.Currency.Name.Set(entity.Name),
@@ -55,9 +55,9 @@ func (r *CurrencyRepository) Update(context context.Context, entity *entities.Cu
 	return (*entities.Currency)(&model.InnerCurrency), nil
 }
 
-func (r *CurrencyRepository) Delete(context context.Context, id string) (*entities.Currency, error) {
+func (r *CurrencyRepository) Delete(context context.Context, currencyCode string) (*entities.Currency, error) {
 	model, err := database.Client.Currency.FindUnique(
-		db.Currency.ID.Equals(id),
+		db.Currency.Code.Equals(currencyCode),
 	).Delete().Exec(context)
 
 	if err != nil {
@@ -81,19 +81,4 @@ func (r *CurrencyRepository) All(context context.Context) ([]*entities.Currency,
 	}
 
 	return arr, nil
-}
-
-func (r *CurrencyRepository) Import(context context.Context, arr []*entities.Currency) ([]*entities.Currency, error) {
-	var models []*entities.Currency
-
-	for _, entity := range arr {
-		model, err := r.Create(context, entity)
-		if err != nil {
-			return nil, err
-		}
-
-		models = append(models, model)
-	}
-
-	return models, nil
 }

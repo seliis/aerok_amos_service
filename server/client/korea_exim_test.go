@@ -11,7 +11,7 @@ func TestRequestCurrencyExchangeDataFromKoreaExim(t *testing.T) {
 		t.Error(err)
 	}
 
-	r, err := client.RequestCurrencyExchangeDataFromKoreaExim("2025-02-26")
+	r, err := client.RequestCurrencyExchangeDataFromKoreaExim("2025-03-01")
 	if err != nil {
 		t.Error(err)
 	}

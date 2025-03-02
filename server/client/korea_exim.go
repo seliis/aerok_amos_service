@@ -1,6 +1,7 @@
 package client
 
 import (
+	"errors"
 	"log"
 	"packages/server/config"
 	"time"
@@ -54,6 +55,10 @@ func RequestCurrencyExchangeDataFromKoreaExim(date string) ([]*_KoreaEximCurrenc
 	_, err := client.R().SetQueryParams(queryParams).SetResult(&result).Get(config.KoreaExim.Path)
 	if err != nil {
 		return nil, err
+	}
+
+	if len(result) == 0 {
+		return nil, errors.New("error: data fetched from korea-exim is empty")
 	}
 
 	return result, nil

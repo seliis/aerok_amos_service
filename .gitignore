@@ -1,3 +1,4 @@
-prisma
+prisma/
 go.sum
 *.log
+data/

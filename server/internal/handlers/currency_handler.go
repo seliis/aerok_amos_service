@@ -3,7 +3,6 @@ package handlers
 import (
 	"net/http"
 	"packages/server/internal/entities"
-	"packages/server/internal/requests"
 	"packages/server/internal/responses"
 	"packages/server/internal/services"
 
@@ -38,7 +37,7 @@ func (h *CurrencyHandler) Create(context *gin.Context) {
 }
 
 func (h *CurrencyHandler) Read(context *gin.Context) {
-	result, err := h._CurrencyService.Read(context, requests.GetID(context))
+	result, err := h._CurrencyService.Read(context, context.Param("currency_code"))
 	if err != nil {
 		context.JSON(http.StatusInternalServerError, responses.NewErrorResponse(err))
 		return
@@ -65,7 +64,7 @@ func (h *CurrencyHandler) Update(context *gin.Context) {
 }
 
 func (h *CurrencyHandler) Delete(context *gin.Context) {
-	result, err := h._CurrencyService.Delete(context, requests.GetID(context))
+	result, err := h._CurrencyService.Delete(context, context.Param("currency_code"))
 	if err != nil {
 		context.JSON(http.StatusInternalServerError, responses.NewErrorResponse(err))
 		return

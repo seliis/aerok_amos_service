@@ -10,7 +10,7 @@ import (
 	"testing"
 )
 
-func TestNewImportCurrency(t *testing.T) {
+func TestImportCurrency(t *testing.T) {
 	if err := config.Load("../../settings.toml"); err != nil {
 		t.Error(err)
 	}
@@ -55,4 +55,10 @@ func TestNewImportCurrency(t *testing.T) {
 			t.Error(err)
 		}
 	})
+
+	defer func() {
+		if err := database.Disconnect(); err != nil {
+			t.Error(err)
+		}
+	}()
 }

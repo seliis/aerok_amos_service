@@ -18,7 +18,7 @@ func (r *ExchangeRateRepository) Create(context context.Context, entity *entitie
 		db.ExchangeRate.Date.Set(entity.Date),
 		db.ExchangeRate.Rate.Set(entity.Rate),
 		db.ExchangeRate.Currency.Link(
-			db.Currency.ID.Equals(entity.CurrencyID),
+			db.Currency.Code.Equals(entity.CurrencyCode),
 		),
 	).Exec(context)
 
@@ -48,7 +48,7 @@ func (r *ExchangeRateRepository) Update(context context.Context, entity *entitie
 		db.ExchangeRate.Date.Set(entity.Date),
 		db.ExchangeRate.Rate.Set(entity.Rate),
 		db.ExchangeRate.Currency.Link(
-			db.Currency.ID.Equals(entity.CurrencyID),
+			db.Currency.Code.Equals(entity.CurrencyCode),
 		),
 	).Exec(context)
 
@@ -106,27 +106,19 @@ func (r *ExchangeRateRepository) ListByDate(context context.Context, date string
 }
 
 func (r *ExchangeRateRepository) UpsertExchangeRate(context context.Context, entity *entities.ExchangeRate) error {
-	_, err := database.Client.Prisma.ExecuteRaw(`
-			insert or replace into exchange_rates (
-				id,
-				date,
-				rate,
-				currency_id
-			) values (
-			 	?,
-			 	?,
-				?,
-				?
-			) on conflict(
-				currency_id,
-				date
-			) do update set
-				rate = excluded.rate
-		`,
-		entity.ID,
-		entity.Date,
-		entity.Rate,
-		entity.CurrencyID,
+	_, err := database.Client.ExchangeRate.UpsertOne(
+		db.ExchangeRate.CurrencyCodeDate(
+			db.ExchangeRate.CurrencyCode.Equals(entity.CurrencyCode),
+			db.ExchangeRate.Date.Equals(entity.Date),
+		),
+	).Create(
+		db.ExchangeRate.Date.Set(entity.Date),
+		db.ExchangeRate.Rate.Set(entity.Rate),
+		db.ExchangeRate.Currency.Link(
+			db.Currency.Code.Equals(entity.CurrencyCode),
+		),
+	).Update(
+		db.ExchangeRate.Rate.Set(entity.Rate),
 	).Exec(context)
 
 	if err != nil {
@@ -151,13 +143,12 @@ func (r *ExchangeRateRepository) GetExchangeRates(context context.Context, date 
 
 	for _, model := range models {
 		arr = append(arr, &entities.ExchangeRateWithCurrency{
-			ExchangeRateID: model.ID,
-			CurrencyID:     model.CurrencyID,
-			Code:           model.RelationsExchangeRate.Currency.Code,
-			Name:           model.RelationsExchangeRate.Currency.Name,
-			Base:           model.RelationsExchangeRate.Currency.Base,
-			Date:           model.Date,
-			Rate:           model.Rate,
+			ID:   model.ID,
+			Code: model.RelationsExchangeRate.Currency.Code,
+			Name: model.RelationsExchangeRate.Currency.Name,
+			Base: model.RelationsExchangeRate.Currency.Base,
+			Date: model.Date,
+			Rate: model.Rate,
 		})
 	}
 

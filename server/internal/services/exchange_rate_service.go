@@ -7,8 +7,6 @@ import (
 	"packages/server/internal/repositories"
 	"strconv"
 	"strings"
-
-	"github.com/google/uuid"
 )
 
 type ExchangeRateService struct {
@@ -63,10 +61,9 @@ func (s *ExchangeRateService) UpdateExchangeRates(context context.Context, date 
 				}
 
 				entity := &entities.ExchangeRate{
-					ID:         uuid.NewString(),
-					Date:       date,
-					Rate:       exchangeRate,
-					CurrencyID: currency.ID,
+					Date:         date,
+					Rate:         exchangeRate,
+					CurrencyCode: currency.Code,
 				}
 
 				if err = s._ExchangeRateRepository.UpsertExchangeRate(context, entity); err != nil {
