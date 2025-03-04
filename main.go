@@ -1,27 +1,14 @@
 package main
 
 import (
-	"io"
-	"log"
-	"os"
 	"packages/server"
 	"packages/server/config"
 	"packages/server/database"
+	"packages/server/logger"
 )
 
-func startLogging(path string) error {
-	f, err := os.OpenFile(path, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
-	if err != nil {
-		return err
-	}
-
-	log.SetOutput(io.MultiWriter(os.Stdout, f))
-
-	return nil
-}
-
 func init() {
-	if err := startLogging("server.log"); err != nil {
+	if err := logger.Start("server.log"); err != nil {
 		panic(err)
 	}
 

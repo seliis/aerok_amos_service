@@ -171,7 +171,7 @@ func (futureFlights *_FutureFlights) Push() error {
 	}
 
 	if r.StatusCode() != http.StatusOK {
-		return errors.New("amos transfer future flights failed")
+		return errors.New("transfer future flights failed")
 	}
 
 	return nil

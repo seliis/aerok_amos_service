@@ -87,7 +87,7 @@ func (importCurrency *_ImportCurrency) Push() error {
 	}
 
 	if r.StatusCode() != http.StatusOK {
-		return errors.New("amos import currency failed")
+		return errors.New("import currency failed")
 	}
 
 	return nil

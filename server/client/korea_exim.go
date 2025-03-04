@@ -31,12 +31,12 @@ func RequestCurrencyExchangeDataFromKoreaExim(date string) ([]*_KoreaEximCurrenc
 		SetRetryMaxWaitTime(60 * time.Second).
 		AddRetryConditions(func(r *resty.Response, err error) bool {
 			if err != nil {
-				log.Printf("error: unknown error occured on fetching data from korea-exim, retrying...")
+				log.Printf("unknown error occured on fetching data from korea-exim, retrying...")
 				return true
 			}
 
 			if r.StatusCode() != 200 {
-				log.Printf("error: http status code %s received when fetching data from korea-exim, retrying....", r.Status())
+				log.Printf("http status code %s received when fetching data from korea-exim, retrying....", r.Status())
 				return true
 			}
 
@@ -58,7 +58,7 @@ func RequestCurrencyExchangeDataFromKoreaExim(date string) ([]*_KoreaEximCurrenc
 	}
 
 	if len(result) == 0 {
-		return nil, errors.New("error: data fetched from korea-exim is empty")
+		return nil, errors.New("data fetched from korea-exim but empty")
 	}
 
 	return result, nil
