@@ -14,8 +14,7 @@ void showSuccess(BuildContext context, String message) {
         overflow: TextOverflow.ellipsis,
         style: TextStyle(
           color: colorScheme.onSecondary,
-          fontWeight: FontWeight.w700,
-          fontFamily: "CascadiaCode",
+          fontWeight: FontWeight.w400,
           fontSize: 16,
         ),
       ),
@@ -24,61 +23,44 @@ void showSuccess(BuildContext context, String message) {
 }
 
 void showError(BuildContext context, String message) {
-  message = message.replaceAll("Exception:", "").toUpperCase();
-  final colorScheme = Theme.of(context).colorScheme;
-  final messanger = ScaffoldMessenger.of(context);
-  messanger.clearSnackBars();
+  final themeData = Theme.of(context);
 
-  messanger.showSnackBar(
-    SnackBar(
-      dismissDirection: DismissDirection.horizontal,
-      backgroundColor: colorScheme.error,
-      content: Text(
-        message,
-        overflow: TextOverflow.ellipsis,
-        style: TextStyle(
-          color: colorScheme.onError,
-          fontWeight: FontWeight.w700,
-          fontFamily: "CascadiaCode",
-          fontSize: 16,
+  showDialog<void>(
+    context: context,
+    useRootNavigator: true,
+    builder: (context) {
+      return AlertDialog(
+        title: Row(
+          children: [
+            Icon(
+              Icons.warning_amber_outlined,
+              color: themeData.colorScheme.error,
+            ),
+            SizedBox(width: 8),
+            Text("ERROR", style: themeData.textTheme.titleLarge),
+          ],
         ),
-      ),
-      duration: Duration(seconds: 60),
-      action: SnackBarAction(
-        label: "SHOW",
-        textColor: colorScheme.onError,
-        onPressed: () {
-          showDialog<void>(
-            context: context,
-            builder: (context) {
-              return AlertDialog(
-                title: Text(
-                  "ERROR",
-                  style: TextStyle(fontWeight: FontWeight.w700),
-                ),
-                contentPadding: EdgeInsets.all(16),
-                content: SizedBox(
-                  width: 512,
-                  height: 256,
-                  child: Text(
-                    message,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(fontFamily: "CascadiaCode", fontSize: 16),
-                  ),
-                ),
-                actions: [
-                  TextButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    child: Text("OK"),
-                  ),
-                ],
-              );
+        contentPadding: EdgeInsets.all(16),
+        content: SizedBox(
+          width: 512,
+          height: 128,
+          child: Text(
+            message.replaceAll("Exception:", "").toUpperCase(),
+            overflow: TextOverflow.ellipsis,
+            style: themeData.textTheme.bodySmall?.copyWith(
+              fontFamily: "CasdadiaCode",
+            ),
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
             },
-          );
-        },
-      ),
-    ),
+            child: Text("OK"),
+          ),
+        ],
+      );
+    },
   );
 }

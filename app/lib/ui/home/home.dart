@@ -186,18 +186,27 @@ final class _DialogState extends State<_Dialog> {
   @override
   Widget build(context) {
     final rate = widget.exchangeRate.rate.toStringAsFixed(2);
+    final themeData = Theme.of(context);
 
     return AlertDialog(
-      title: Text("${widget.exchangeRate.code} (${widget.exchangeRate.name})"),
+      title: Text(
+        "${widget.exchangeRate.code} (${widget.exchangeRate.name})",
+        style: themeData.textTheme.titleLarge,
+      ),
       content: SizedBox(
         width: 512,
         height: 128,
         child: ListTile(
           contentPadding: EdgeInsets.zero,
-          title: Text(rate),
+          title: Text(rate, style: themeData.textTheme.titleMedium),
           subtitle: Padding(
             padding: EdgeInsets.only(top: 8),
-            child: Text(widget.exchangeRate.date),
+            child: Text(
+              widget.exchangeRate.date,
+              style: themeData.textTheme.bodySmall?.copyWith(
+                fontWeight: FontWeight.w200,
+              ),
+            ),
           ),
           trailing: TextButton(
             onPressed: () {

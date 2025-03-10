@@ -117,8 +117,10 @@ final class _Dialog extends StatelessWidget {
 
   @override
   Widget build(context) {
+    final themeData = Theme.of(context);
+
     return AlertDialog(
-      title: Text(title, style: TextStyle(fontWeight: FontWeight.w200)),
+      title: Text(title, style: themeData.textTheme.titleLarge),
       contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 32),
       content: SizedBox(width: 512, height: 256, child: child),
       actions: actions,

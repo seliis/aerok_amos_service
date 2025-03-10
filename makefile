@@ -21,7 +21,9 @@ build-clear:
 	@mkdir -p build/prisma public
 
 build-server:
-	@go build -o build/main.exe main.go
+	@GOOS=linux GOARCH=amd64 go build -o build/main-linux.exe main.go
+	@GOOS=darwin GOARCH=amd64 go build -o build/main-darwin.exe main.go
+	@GOOS=windows GOARCH=amd64 go build -o build/main-windows.exe main.go
 	@cp settings.toml build/settings.toml
 
 build-app:
