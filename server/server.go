@@ -6,10 +6,14 @@ import (
 	"packages/server/internal/handlers"
 
 	"github.com/gin-contrib/cors"
+	"github.com/gin-contrib/static"
 	"github.com/gin-gonic/gin"
+	"github.com/quic-go/quic-go/http3"
 )
 
-func Start() {
+func Start() error {
+	gin.SetMode(gin.ReleaseMode)
+
 	app := gin.Default()
 
 	app.Use(cors.New(cors.Config{
@@ -19,9 +23,17 @@ func Start() {
 		AllowCredentials: true,
 	}))
 
+	app.Use(static.Serve("/", static.LocalFile("public", true)))
+
 	setRoutes(app.Group("/api"))
 
-	app.Run(fmt.Sprintf(":%d", config.Server.Port))
+	addr := fmt.Sprintf(":%d", config.Server.Port)
+
+	if err := http3.ListenAndServeTLS(addr, "cert.pem", "key.pem", app); err != nil {
+		return err
+	}
+
+	return nil
 }
 
 func setRoutes(api *gin.RouterGroup) {
@@ -51,7 +63,8 @@ func setExchangeRateRoutes(g *gin.RouterGroup) {
 	g.DELETE("/:id", h.Delete)
 	g.GET("/", h.All)
 	g.PATCH("/", h.UpdateExchangeRates)
-	g.GET("/data", h.GetExchangeRates)
+	g.GET("/list", h.GetExchangeRates)
+	g.GET("/currency", h.GetExchangeRate)
 }
 
 func setFlightScheduleRoutes(g *gin.RouterGroup) {
@@ -65,4 +78,5 @@ func setAmosRoutes(g *gin.RouterGroup) {
 
 	g.POST("/import-currency", h.ImportCurrency)
 	g.POST("/transfer-future-flights", h.TransferFutureFlights)
+	g.POST("/authorize", h.Authorize)
 }

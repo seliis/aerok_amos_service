@@ -22,7 +22,9 @@ func init() {
 }
 
 func main() {
-	server.Start()
+	if err := server.Start(); err != nil {
+		panic(err)
+	}
 
 	defer func() {
 		if err := database.Disconnect(); err != nil {

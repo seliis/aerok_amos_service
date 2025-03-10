@@ -101,3 +101,24 @@ func (s *ExchangeRateService) GetExchangeRates(context context.Context, date str
 
 	return exchangeRates, nil
 }
+
+func (s *ExchangeRateService) GetExchangeRate(context context.Context, code string, date string) (*entities.ExchangeRateWithCurrency, error) {
+	isExist, err := s._ExchangeRateRepository.IsExist(context, code, date)
+	if err != nil {
+		return nil, err
+	}
+
+	if !isExist {
+		err := s.UpdateExchangeRates(context, date)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	exchangeRate, err := s._ExchangeRateRepository.GetExchangeRate(context, code, date)
+	if err != nil {
+		return nil, err
+	}
+
+	return exchangeRate, nil
+}

@@ -20,6 +20,10 @@ func GetDate(context *gin.Context) (string, error) {
 	return date, nil
 }
 
+func GetAuthorization(context *gin.Context) string {
+	return context.GetHeader("Authorization")
+}
+
 func GetWorkbook(context *gin.Context, name string) (*excelize.File, error) {
 	header, err := context.FormFile(name)
 	if err != nil {

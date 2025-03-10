@@ -3,14 +3,14 @@ package responses
 type Response struct {
 	IsOK    bool    `json:"is_ok"`
 	Message *string `json:"message"`
-	Result  any     `json:"result"`
+	Data    any     `json:"data"`
 }
 
-func NewSuccessResponse(result any) *Response {
+func NewSuccessResponse(data any) *Response {
 	return &Response{
 		IsOK:    true,
 		Message: nil,
-		Result:  result,
+		Data:    data,
 	}
 }
 
@@ -20,6 +20,6 @@ func NewErrorResponse(err error) *Response {
 	return &Response{
 		IsOK:    false,
 		Message: &message,
-		Result:  nil,
+		Data:    nil,
 	}
 }

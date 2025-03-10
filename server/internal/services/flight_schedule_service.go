@@ -33,6 +33,10 @@ func (s *FlightScheduleService) UpdateFlightSchedulesFromWorkbook(context contex
 		}
 
 		if _, err := time.Parse("02/01/06", row[0]); err == nil {
+			if row[4] == "" { // Omit Aircraft Not Assigned Records
+				continue
+			}
+
 			flightSchedule, err := entities.NewFlightScheduleFromRow(row)
 			if err != nil {
 				return err

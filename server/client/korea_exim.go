@@ -23,8 +23,8 @@ type _KoreaEximCurrencyExchangeData struct {
 	MoneyBrokerBookPrice    string `json:"yy_kftc_bkpr"`
 }
 
-func RequestCurrencyExchangeDataFromKoreaExim(date string) ([]*_KoreaEximCurrencyExchangeData, error) {
-	client := resty.New().
+func _GetClientForExim() *resty.Client {
+	return resty.New().
 		SetBaseURL(config.KoreaExim.Host).
 		SetRetryCount(30).
 		SetRetryWaitTime(2 * time.Second).
@@ -42,6 +42,12 @@ func RequestCurrencyExchangeDataFromKoreaExim(date string) ([]*_KoreaEximCurrenc
 
 			return false
 		})
+}
+
+func RequestCurrencyExchangeDataFromKoreaExim(date string) ([]*_KoreaEximCurrencyExchangeData, error) {
+	var result []*_KoreaEximCurrencyExchangeData
+
+	client := _GetClientForExim()
 	defer client.Close()
 
 	queryParams := map[string]string{
@@ -50,7 +56,29 @@ func RequestCurrencyExchangeDataFromKoreaExim(date string) ([]*_KoreaEximCurrenc
 		"data":       "AP01",
 	}
 
+	_, err := client.R().SetQueryParams(queryParams).SetResult(&result).Get(config.KoreaExim.Path)
+	if err != nil {
+		return nil, err
+	}
+
+	if len(result) == 0 {
+		return nil, errors.New("data fetched from korea-exim but empty")
+	}
+
+	return result, nil
+}
+
+func RequestCurrencyExchangeMonthAmountData(date string) ([]*_KoreaEximCurrencyExchangeData, error) {
 	var result []*_KoreaEximCurrencyExchangeData
+
+	client := _GetClientForExim()
+	defer client.Close()
+
+	queryParams := map[string]string{
+		"authkey":    config.KoreaExim.Auth,
+		"searchdate": date,
+		"data":       "AP02",
+	}
 
 	_, err := client.R().SetQueryParams(queryParams).SetResult(&result).Get(config.KoreaExim.Path)
 	if err != nil {

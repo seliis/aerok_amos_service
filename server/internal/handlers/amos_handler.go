@@ -22,7 +22,21 @@ func NewAmosHandler() *AmosHandler {
 	}
 }
 
+func (h *AmosHandler) Authorize(context *gin.Context) {
+	if !h._AmosService.Authorize(requests.GetAuthorization(context)) {
+		context.JSON(http.StatusUnauthorized, responses.NewErrorResponse(errors.New("Unauthorized")))
+		return
+	}
+
+	context.JSON(http.StatusOK, responses.NewSuccessResponse("Authorized"))
+}
+
 func (h *AmosHandler) ImportCurrency(context *gin.Context) {
+	if !h._AmosService.Authorize(requests.GetAuthorization(context)) {
+		context.JSON(http.StatusUnauthorized, responses.NewErrorResponse(errors.New("Unauthorized")))
+		return
+	}
+
 	date, err := requests.GetDate(context)
 	if err != nil {
 		context.JSON(http.StatusBadRequest, responses.NewErrorResponse(err))
@@ -44,13 +58,18 @@ func (h *AmosHandler) ImportCurrency(context *gin.Context) {
 }
 
 func (h *AmosHandler) TransferFutureFlights(context *gin.Context) {
-	fromDate, isOk := context.GetQuery("from")
-	if !isOk {
-		context.JSON(http.StatusBadRequest, responses.NewErrorResponse(errors.New("from_date is required")))
+	if !h._AmosService.Authorize(requests.GetAuthorization(context)) {
+		context.JSON(http.StatusUnauthorized, responses.NewErrorResponse(errors.New("Unauthorized")))
 		return
 	}
 
-	if err := h._AmosService.TransferFutureFlights(context, fromDate); err != nil {
+	date, err := requests.GetDate(context)
+	if err != nil {
+		context.JSON(http.StatusBadRequest, responses.NewErrorResponse(err))
+		return
+	}
+
+	if err := h._AmosService.TransferFutureFlights(context, date); err != nil {
 		context.JSON(http.StatusInternalServerError, responses.NewErrorResponse(err))
 		return
 	}

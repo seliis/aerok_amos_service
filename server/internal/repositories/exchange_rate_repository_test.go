@@ -34,6 +34,15 @@ func TestExchangeRateRepository(t *testing.T) {
 		}
 	})
 
+	t.Run("IsExist", func(t *testing.T) {
+		isExist, err := r.IsExist(context.Background(), "USD", "2025-03-06")
+		if err != nil {
+			t.Error(err)
+		}
+
+		t.Log("IsExist: ", isExist)
+	})
+
 	defer func() {
 		if err := database.Disconnect(); err != nil {
 			t.Error(err)

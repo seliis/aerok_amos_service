@@ -154,3 +154,42 @@ func (r *ExchangeRateRepository) GetExchangeRates(context context.Context, date 
 
 	return arr, nil
 }
+
+func (r *ExchangeRateRepository) GetExchangeRate(context context.Context, currencyCode string, date string) (*entities.ExchangeRateWithCurrency, error) {
+	model, err := database.Client.ExchangeRate.FindUnique(
+		db.ExchangeRate.CurrencyCodeDate(
+			db.ExchangeRate.CurrencyCode.Equals(currencyCode),
+			db.ExchangeRate.Date.Equals(date),
+		),
+	).With(
+		db.ExchangeRate.Currency.Fetch(),
+	).Exec(context)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &entities.ExchangeRateWithCurrency{
+		ID:   model.ID,
+		Code: model.RelationsExchangeRate.Currency.Code,
+		Name: model.RelationsExchangeRate.Currency.Name,
+		Base: model.RelationsExchangeRate.Currency.Base,
+		Date: model.Date,
+		Rate: model.Rate,
+	}, nil
+}
+
+func (r *ExchangeRateRepository) IsExist(context context.Context, code string, date string) (bool, error) {
+	_, err := database.Client.ExchangeRate.FindUnique(
+		db.ExchangeRate.CurrencyCodeDate(
+			db.ExchangeRate.CurrencyCode.Equals(code),
+			db.ExchangeRate.Date.Equals(date),
+		),
+	).Exec(context)
+
+	if err != nil && err != db.ErrNotFound {
+		return false, err
+	}
+
+	return err != db.ErrNotFound, nil
+}

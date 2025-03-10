@@ -10,7 +10,7 @@ path = "/site/program/financial/exchangeJSON"
 auth = "CtRNXmPEu3mUfNA8XqDXOHzZHlFxvWBL"
 
 [amos]
-host = "https://10.0.54.70"
+host = "https://10.0.54.2"
 port = 5081
 
 # Production: 10.0.54.2
@@ -27,4 +27,3 @@ amos_currency_code = "USD"
 
 [amos.services.transfer_future_flights]
 end_point = "transferFutureFlights"
-days_ahead = 14

@@ -1,3 +1,11 @@
+# App
+.flutter-plugins*
+pubspec.lock
+.dart_tool/
+build/
+
+# Server
+public/
 prisma/
 go.sum
 *.log

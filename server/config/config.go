@@ -47,8 +47,7 @@ type _AMOS struct {
 			AmosCurrencyCode string `toml:"amos_currency_code"`
 		} `toml:"import_currency"`
 		TransferFutureFlights struct {
-			EndPoint  string `toml:"end_point"`
-			DaysAhead int    `toml:"days_ahead"`
+			EndPoint string `toml:"end_point"`
 		} `toml:"transfer_future_flights"`
 	} `toml:"services"`
 }
