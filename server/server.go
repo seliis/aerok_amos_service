@@ -8,6 +8,7 @@ import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-contrib/static"
 	"github.com/gin-gonic/gin"
+	"github.com/quic-go/quic-go/http3"
 )
 
 func Start() error {
@@ -26,15 +27,7 @@ func Start() error {
 
 	setRoutes(app.Group("/api"))
 
-	// if err := http3.ListenAndServeTLS(fmt.Sprintf(":%d", config.Server.Port), "cert.pem", "key.pem", app); err != nil {
-	// 	return err
-	// }
-
-	// if err := app.RunTLS(fmt.Sprintf(":%d", config.Server.Port), "cert.pem", "key.pem"); err != nil {
-	// 	return err
-	// }
-
-	if err := app.Run(fmt.Sprintf(":%d", config.Server.Port)); err != nil {
+	if err := http3.ListenAndServeTLS(fmt.Sprintf(":%d", config.Server.Port), "cert.pem", "key.pem", app); err != nil {
 		return err
 	}
 
