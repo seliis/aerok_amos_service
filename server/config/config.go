@@ -21,7 +21,8 @@ type _Config struct {
 }
 
 type _Server struct {
-	Port int `toml:"port"`
+	Protocol int `toml:"protocol"`
+	Port     int `toml:"port"`
 }
 
 type _Database struct {

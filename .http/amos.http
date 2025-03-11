@@ -1,10 +1,10 @@
-@addr=http://127.0.0.1:8080/api/amos-aim-webservice
+@addr=https://127.0.0.1:8080/api/amos-aim-webservice
 
 POST {{addr}}/import-currency?date=2025-03-04
 
 ###
 
-POST {{addr}}/transfer-future-flights?from=2025-03-06
+POST {{addr}}/transfer-future-flights?date=2025-03-11
 
 
 ###

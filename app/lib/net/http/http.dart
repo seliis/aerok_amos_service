@@ -9,6 +9,23 @@ part "response.dart";
 
 enum HttpMethod { get, post }
 
+final class ServerException implements Exception {
+  const ServerException({
+    required this.statusCode,
+    this.reasonPhrase = "NO_REASON_PHRASE",
+    this.message = "NO_MESSAGE",
+  });
+
+  final int statusCode;
+  final String? reasonPhrase;
+  final String? message;
+
+  @override
+  String toString() {
+    return "[$statusCode $reasonPhrase]: $message)";
+  }
+}
+
 final class Http {
   static Uri target = Uri.parse(
     "${web.window.location.protocol}//${web.window.location.hostname}:${dotenv.env["PORT"]}/api",
@@ -40,7 +57,11 @@ final class Http {
     if (response.isOk) {
       return response;
     } else {
-      throw Exception("${response.statusCode}: ${response.message}");
+      throw ServerException(
+        statusCode: response.statusCode,
+        reasonPhrase: response.reasonPhrase,
+        message: response.message,
+      );
     }
   }
 
@@ -59,13 +80,17 @@ final class Http {
 
     request.headers.addAll(headers ?? {});
 
-    final response = await request.send();
+    final response = Response.fromPrimitive(
+      await http.Response.fromStream(await request.send()),
+    );
 
-    if (response.statusCode == 200) {
-      return Response.fromPrimitive(await http.Response.fromStream(response));
+    if (response.isOk) {
+      return response;
     } else {
-      throw Exception(
-        "${response.statusCode}: multipart request error on $path",
+      throw ServerException(
+        statusCode: response.statusCode,
+        reasonPhrase: response.reasonPhrase,
+        message: response.message,
       );
     }
   }

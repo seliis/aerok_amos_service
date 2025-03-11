@@ -6,6 +6,10 @@ final class ExchangeRateRepository {
     return await Http.request(method: HttpMethod.get, path: "/currency/").then((
       response,
     ) {
+      if (response.data == null) {
+        throw Exception("Currencies Not Found");
+      }
+
       return (response.data as List<dynamic>).map((e) {
         return Currency.fromJson(e as Map<String, dynamic>);
       }).toList();

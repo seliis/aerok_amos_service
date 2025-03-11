@@ -36,7 +36,10 @@ final class _HomeState extends State<Home> {
           }
 
           if (state is GetCurrenciesStateFailure) {
-            return Text(state.message);
+            return Text(
+              state.message.replaceAll("Exception:", "").toUpperCase(),
+              style: Theme.of(context).textTheme.titleLarge,
+            );
           }
 
           return const SizedBox.shrink();
@@ -151,7 +154,7 @@ final class _BodyState extends State<_Body> {
                 width: double.infinity,
                 onPressed: () {
                   if (!formKey.currentState!.validate()) {
-                    common_ui.showError(context, "Invalid");
+                    common_ui.showError(context, "Invalid Date Format");
 
                     return;
                   }

@@ -55,7 +55,13 @@ final class _TransferFutureFlightsDialogState
                     ? null
                     : () async {
                       if (!formKey.currentState!.validate()) {
-                        common_ui.showError(context, "Invalid");
+                        common_ui.showError(context, "No Password Entered");
+
+                        return;
+                      }
+
+                      if (pickedFile == null) {
+                        common_ui.showError(context, "No File Selected");
 
                         return;
                       }
@@ -94,8 +100,8 @@ final class _TransferFutureFlightsDialogState
                           ? null
                           : () async {
                             final result = await FilePicker.platform.pickFiles(
-                              type: FileType.custom,
                               allowedExtensions: ["xlsx"],
+                              type: FileType.custom,
                             );
 
                             if (result == null) {

@@ -17,10 +17,11 @@ func (r *FlightScheduleRepository) UpsertFlightSchedule(context context.Context,
 	if _, err := database.Client.FlightSchedule.UpsertOne(
 		db.FlightSchedule.ScheduledDateDepartureFlightNumber(
 			db.FlightSchedule.ScheduledDateDeparture.Equals(entity.ScheduledDateDeparture),
-			db.FlightSchedule.FlightNumber.Equals(int(entity.FlightNumber)),
+			db.FlightSchedule.FlightNumber.Equals(entity.FlightNumber),
 		),
 	).Create(
-		db.FlightSchedule.FlightNumber.Set(int(entity.FlightNumber)),
+		db.FlightSchedule.FlightNumber.Set(entity.FlightNumber),
+		db.FlightSchedule.FlightSuffix.Set(entity.FlightSuffix),
 		db.FlightSchedule.CarrierCode.Set(entity.CarrierCode),
 		db.FlightSchedule.ServiceTypeCode.Set(entity.ServiceTypeCode),
 		db.FlightSchedule.AircraftRegistration.Set(entity.AircraftRegistration),
@@ -30,7 +31,7 @@ func (r *FlightScheduleRepository) UpsertFlightSchedule(context context.Context,
 		db.FlightSchedule.ScheduledDateArrival.Set(entity.ScheduledDateArrival),
 		db.FlightSchedule.ScheduledTimeArrival.Set(entity.ScheduledTimeArrival),
 		db.FlightSchedule.ArrivalAirportCode.Set(entity.ArrivalAirportCode),
-		db.FlightSchedule.EstimatedLegDuration.Set(int(entity.EstimatedLegDuration)),
+		db.FlightSchedule.EstimatedLegDuration.Set(entity.EstimatedLegDuration),
 	).Update(
 		db.FlightSchedule.CarrierCode.Set(entity.CarrierCode),
 		db.FlightSchedule.ServiceTypeCode.Set(entity.ServiceTypeCode),
@@ -40,7 +41,7 @@ func (r *FlightScheduleRepository) UpsertFlightSchedule(context context.Context,
 		db.FlightSchedule.ScheduledDateArrival.Set(entity.ScheduledDateArrival),
 		db.FlightSchedule.ScheduledTimeArrival.Set(entity.ScheduledTimeArrival),
 		db.FlightSchedule.ArrivalAirportCode.Set(entity.ArrivalAirportCode),
-		db.FlightSchedule.EstimatedLegDuration.Set(int(entity.EstimatedLegDuration)),
+		db.FlightSchedule.EstimatedLegDuration.Set(entity.EstimatedLegDuration),
 	).Exec(context); err != nil {
 		return err
 	}

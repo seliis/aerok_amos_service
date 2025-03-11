@@ -27,11 +27,29 @@ func Start() error {
 
 	setRoutes(app.Group("/api"))
 
-	if err := http3.ListenAndServeTLS(fmt.Sprintf(":%d", config.Server.Port), "cert.pem", "key.pem", app); err != nil {
-		return err
-	}
+	addr := fmt.Sprintf(":%d", config.Server.Port)
+	protocol := config.Server.Protocol
 
-	return nil
+	switch protocol {
+	case 2:
+		return startWithHttp2(app, addr, "cert.pem", "key.pem")
+	case 3:
+		return startWithHttp3(app, addr, "cert.pem", "key.pem")
+	default:
+		return startWithHttp1(app, addr)
+	}
+}
+
+func startWithHttp1(app *gin.Engine, addr string) error {
+	return app.Run(addr)
+}
+
+func startWithHttp2(app *gin.Engine, addr, cert, key string) error {
+	return app.RunTLS(addr, cert, key)
+}
+
+func startWithHttp3(app *gin.Engine, addr, cert, key string) error {
+	return http3.ListenAndServeTLS(addr, cert, key, app)
 }
 
 func setRoutes(api *gin.RouterGroup) {

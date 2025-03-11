@@ -36,6 +36,7 @@ model FlightSchedule {
 
     ID String @id @default(uuid()) @map("id")
     FlightNumber Int @map("flight_number")
+    FlightSuffix String @map("flight_suffix")
     CarrierCode String @map("carrier_code")
     ServiceTypeCode String @map("service_type_code")
     AircraftRegistration String @map("aircraft_registration")

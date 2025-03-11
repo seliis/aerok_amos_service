@@ -44,11 +44,12 @@ void showError(BuildContext context, String message) {
         content: SizedBox(
           width: 512,
           height: 128,
-          child: Text(
-            message.replaceAll("Exception:", "").toUpperCase(),
-            overflow: TextOverflow.ellipsis,
-            style: themeData.textTheme.bodySmall?.copyWith(
-              fontFamily: "CasdadiaCode",
+          child: SingleChildScrollView(
+            child: Text(
+              message.replaceAll("Exception:", "").toUpperCase(),
+              style: themeData.textTheme.bodySmall?.copyWith(
+                fontFamily: "CascadiaCode",
+              ),
             ),
           ),
         ),

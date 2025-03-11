@@ -1,4 +1,9 @@
 [server]
+# Protocols:
+# HTTP/1: 1
+# HTTP/2: 2
+# HTTP/3: 3
+protocol = 3
 port = 8080
 
 [database]
@@ -10,12 +15,12 @@ path = "/site/program/financial/exchangeJSON"
 auth = "CtRNXmPEu3mUfNA8XqDXOHzZHlFxvWBL"
 
 [amos]
-host = "https://10.0.54.2"
-port = 5081
-
+# Environments:
 # Production: 10.0.54.2
 # Playground: 10.0.54.68
 # Acceptance: 10.0.54.70
+host = "https://10.0.54.2"
+port = 5081
 
 [amos.auth]
 id = "admin"

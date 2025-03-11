@@ -118,10 +118,22 @@ func NewFutureFlights(flightSchedules []*entities.FlightSchedule) _FutureFlights
 		for _, flightForDateAndAircraft := range flightsForDateAndAircrafts {
 			if flightForDateAndAircraft.SchedDepartureDate == flightSchedule.ScheduledDateDeparture && flightForDateAndAircraft.AircraftRegistration == flightSchedule.AircraftRegistration {
 				flightForDateAndAircraft.Legs = append(flightForDateAndAircraft.Legs, &_Leg{
-					Carrier:                                  flightSchedule.CarrierCode,
-					FlightNumber:                             uint(flightSchedule.FlightNumber),
-					FlightSuffix:                             nil,
-					ServiceType:                              &flightSchedule.ServiceTypeCode,
+					Carrier:      flightSchedule.CarrierCode,
+					FlightNumber: uint(flightSchedule.FlightNumber),
+					FlightSuffix: func() *string {
+						if flightSchedule.FlightSuffix == "" {
+							return nil
+						}
+
+						return &flightSchedule.FlightSuffix
+					}(),
+					ServiceType: func() *string {
+						if flightSchedule.ServiceTypeCode == "" {
+							return nil
+						}
+
+						return &flightSchedule.ServiceTypeCode
+					}(),
 					ScheduledDepartureDateTime:               fmt.Sprintf("%sT%s:00.00", flightSchedule.ScheduledDateDeparture, flightSchedule.ScheduledTimeDeparture),
 					EstimatedDepartureDateTime:               nil,
 					ScheduledDepartureAirport:                flightSchedule.DepartureAirportCode,

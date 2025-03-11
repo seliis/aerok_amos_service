@@ -88,16 +88,24 @@ final class _Footer extends StatelessWidget {
 
   @override
   Widget build(context) {
+    final theme = Theme.of(context);
+
     return Column(
       children: [
         Text(
           "Aero_K Airlines AMOS Service",
-          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+          style: theme.textTheme.titleMedium?.copyWith(
+            color: theme.colorScheme.secondary,
+            fontWeight: FontWeight.w400,
+          ),
         ),
-        SizedBox(height: 4),
+        SizedBox(height: 8),
         Text(
           "© 2025 Developed by In Son",
-          style: TextStyle(fontSize: 10, fontWeight: FontWeight.w200),
+          style: theme.textTheme.bodySmall?.copyWith(
+            color: theme.colorScheme.secondary,
+            fontWeight: FontWeight.w200,
+          ),
         ),
       ],
     );

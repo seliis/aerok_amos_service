@@ -1,12 +1,12 @@
-@addr=http://127.0.0.1:8080/api/flight-schedule
+@addr=https://127.0.0.1:8080/api/flight-schedule
 
 POST {{addr}}/update
 Accept-Encoding: gzip, deflate
 Content-Type: multipart/form-data; boundary=flight_schedule
 
 --flight_schedule
-Content-Disposition: form-data; name="flight_schedule"; filename="aims.xlsx"
+Content-Disposition: form-data; name="flight_schedule"; filename="amos_future_flights.xlsx"
 Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
 
-< ../data/aims.xlsx
+< ../data/amos_future_flights.xlsx
 --flight_schedule--
