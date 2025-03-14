@@ -122,7 +122,7 @@ final class _TransferFutureFlightsDialogState
                 width: 512,
                 controller: dateController,
                 enabled: !isLoading,
-                isLimitedToNow: true,
+                isLimitedUpToNow: true,
               ),
               SizedBox(height: 16),
               common_ui.PasswordInput(

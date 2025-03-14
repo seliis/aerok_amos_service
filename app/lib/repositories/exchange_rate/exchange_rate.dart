@@ -16,21 +16,21 @@ final class ExchangeRateRepository {
     });
   }
 
-  Future<ExchangeRateWithCurrency> getExchangeRate(
-    String code,
-    String date,
-  ) async {
-    return await Http.request(
-      method: HttpMethod.get,
-      path: "/exchange-rate/currency?code=$code&date=$date",
-    ).then((response) {
-      if (response.data == null) {
-        throw Exception("Data Not Found");
-      }
-
-      return ExchangeRateWithCurrency.fromJson(
-        response.data as Map<String, dynamic>,
-      );
-    });
+  Future<ExchangeRateWithCurrency> getExchangeRate({
+    required String code,
+    required String date,
+  }) async {
+    try {
+      return await Http.request(
+        method: HttpMethod.get,
+        path: "/exchange-rate/currency?code=$code&date=$date",
+      ).then((response) {
+        return ExchangeRateWithCurrency.fromJson(
+          response.data as Map<String, dynamic>,
+        );
+      });
+    } catch (e) {
+      rethrow;
+    }
   }
 }

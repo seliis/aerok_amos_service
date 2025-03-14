@@ -14,7 +14,7 @@ final class GetExchangeRate extends Cubit<GetExchangeRateState> {
     try {
       emit(
         GetExchangeRateStateSuccess(
-          await exchangeRateRepository.getExchangeRate(code, date),
+          await exchangeRateRepository.getExchangeRate(code: code, date: date),
         ),
       );
     } catch (e) {

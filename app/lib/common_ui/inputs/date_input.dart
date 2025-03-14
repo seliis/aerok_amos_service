@@ -8,14 +8,14 @@ final class DateInput extends StatelessWidget {
     this.width = 256,
     this.height = 48,
     this.enabled = true,
-    this.isLimitedToNow = false,
+    this.isLimitedUpToNow = false,
   });
 
   final TextEditingController controller;
+  final bool isLimitedUpToNow;
   final double width;
   final double height;
   final bool enabled;
-  final bool isLimitedToNow;
 
   @override
   Widget build(context) {
@@ -55,7 +55,7 @@ final class DateInput extends StatelessWidget {
               return "Invalid Year, Month, or Day";
             }
 
-            if (isLimitedToNow && date.isAfter(DateTime.now())) {
+            if (isLimitedUpToNow && date.isAfter(DateTime.now())) {
               return "Date Cannot Be in the Future";
             }
           } catch (e) {

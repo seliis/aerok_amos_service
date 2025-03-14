@@ -64,7 +64,7 @@ final class _BodyState extends State<_Body> {
   );
 
   final formKey = GlobalKey<FormState>();
-  late Currency selectedCurrency;
+  late Currency? selectedCurrency;
   bool isLoading = false;
   bool isCopied = false;
 
@@ -115,38 +115,46 @@ final class _BodyState extends State<_Body> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              DropdownMenu(
-                enabled: !isLoading,
-                label: Text("Currency"),
-                menuHeight: 256,
-                initialSelection: selectedCurrency.code,
-                dropdownMenuEntries:
-                    widget.currencies.map((currency) {
-                      return DropdownMenuEntry(
-                        value: currency.code,
-                        label: "${currency.code} (${currency.name})",
-                        labelWidget: Text(
-                          "${currency.code} (${currency.name})",
-                          style: TextStyle(fontFamily: "CascadiaCode"),
-                        ),
-                      );
-                    }).toList(),
-                expandedInsets: EdgeInsets.zero,
-                onSelected: (code) {
+              InkWell(
+                onTap: () {
                   setState(() {
-                    selectedCurrency =
-                        widget.currencies
-                            .where((currency) => currency.code == code)
-                            .first;
+                    selectedCurrency = null;
                   });
                 },
+                child: DropdownMenu(
+                  enabled: !isLoading,
+                  label: Text("Currency"),
+                  menuHeight: 256,
+                  initialSelection:
+                      selectedCurrency?.code ?? "Please Select Currency",
+                  dropdownMenuEntries:
+                      widget.currencies.map((currency) {
+                        return DropdownMenuEntry(
+                          value: currency.code,
+                          label: "${currency.code} (${currency.name})",
+                          labelWidget: Text(
+                            "${currency.code} (${currency.name})",
+                            style: TextStyle(fontFamily: "CascadiaCode"),
+                          ),
+                        );
+                      }).toList(),
+                  expandedInsets: EdgeInsets.zero,
+                  onSelected: (code) {
+                    setState(() {
+                      selectedCurrency =
+                          widget.currencies
+                              .where((currency) => currency.code == code)
+                              .first;
+                    });
+                  },
+                ),
               ),
               const SizedBox(height: 16),
               common_ui.DateInput(
                 controller: dateInputController,
                 width: double.infinity,
+                isLimitedUpToNow: true,
                 enabled: !isLoading,
-                isLimitedToNow: true,
               ),
               const SizedBox(height: 16),
               common_ui.ActionButton(
@@ -155,12 +163,16 @@ final class _BodyState extends State<_Body> {
                 onPressed: () {
                   if (!formKey.currentState!.validate()) {
                     common_ui.showError(context, "Invalid Date Format");
+                    return;
+                  }
 
+                  if (selectedCurrency == null) {
+                    common_ui.showError(context, "Please Select Currency");
                     return;
                   }
 
                   context.read<GetExchangeRate>().execute(
-                    code: selectedCurrency.code,
+                    code: selectedCurrency!.code,
                     date: dateInputController.text,
                   );
                 },

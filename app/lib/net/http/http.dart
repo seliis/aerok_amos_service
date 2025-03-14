@@ -11,18 +11,18 @@ enum HttpMethod { get, post }
 
 final class ServerException implements Exception {
   const ServerException({
-    required this.statusCode,
+    this.statusCode = 0,
     this.reasonPhrase = "NO_REASON_PHRASE",
     this.message = "NO_MESSAGE",
   });
 
-  final int statusCode;
+  final int? statusCode;
   final String? reasonPhrase;
   final String? message;
 
   @override
   String toString() {
-    return "[$statusCode $reasonPhrase]: $message)";
+    return "[$statusCode $reasonPhrase]: $message";
   }
 }
 
@@ -46,8 +46,8 @@ final class Http {
       case HttpMethod.post:
         primitive = await http.post(
           Uri.parse("$target$path"),
-          headers: headers,
           body: jsonEncode(body),
+          headers: headers,
         );
         break;
     }

@@ -88,7 +88,7 @@ final class _ImportCurrencyDialogState extends State<_ImportCurrencyDialog> {
                 width: 512,
                 controller: dateController,
                 enabled: !isLoading,
-                isLimitedToNow: true,
+                isLimitedUpToNow: true,
               ),
               SizedBox(height: 16),
               common_ui.PasswordInput(

@@ -46,7 +46,7 @@ void showError(BuildContext context, String message) {
           height: 128,
           child: SingleChildScrollView(
             child: Text(
-              message.replaceAll("Exception:", "").toUpperCase(),
+              message,
               style: themeData.textTheme.bodySmall?.copyWith(
                 fontFamily: "CascadiaCode",
               ),
