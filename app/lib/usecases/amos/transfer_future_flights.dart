@@ -29,11 +29,11 @@ final class TransferFutureFlights extends Cubit<TransferFutureFlightsState> {
 
       emit(
         TransferFutureFlightsSuccess(
-          await amosRepository.transferFutureFlights(password, date),
+          message: await amosRepository.transferFutureFlights(password, date),
         ),
       );
     } catch (e) {
-      emit(TransferFutureFlightsFailure(e.toString()));
+      emit(TransferFutureFlightsFailure(message: e.toString()));
     }
   }
 }
@@ -51,13 +51,13 @@ final class TransferFutureFlightsLoading extends TransferFutureFlightsState {
 }
 
 final class TransferFutureFlightsSuccess extends TransferFutureFlightsState {
-  const TransferFutureFlightsSuccess(this.message);
+  const TransferFutureFlightsSuccess({required this.message});
 
   final String? message;
 }
 
 final class TransferFutureFlightsFailure extends TransferFutureFlightsState {
-  const TransferFutureFlightsFailure(this.message);
+  const TransferFutureFlightsFailure({required this.message});
 
   final String message;
 }

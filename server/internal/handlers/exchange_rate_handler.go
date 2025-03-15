@@ -131,7 +131,7 @@ func (h *ExchangeRateHandler) GetExchangeRates(context *gin.Context) {
 	context.JSON(http.StatusOK, responses.NewSuccessResponse(result))
 }
 
-func (h *ExchangeRateHandler) GetExchangeRate(context *gin.Context) {
+func (h *ExchangeRateHandler) GetLatestExchangeRate(context *gin.Context) {
 	currencyCode, isOk := context.GetQuery("code")
 	if !isOk {
 		context.JSON(http.StatusBadRequest, responses.NewErrorResponse(errors.New("code is required")))
@@ -144,7 +144,7 @@ func (h *ExchangeRateHandler) GetExchangeRate(context *gin.Context) {
 		return
 	}
 
-	result, err := h._ExchangeRateService.GetExchangeRate(context, currencyCode, date)
+	result, err := h._ExchangeRateService.GetLatestExchangeRate(context, currencyCode, date)
 	if err != nil {
 		context.JSON(http.StatusInternalServerError, responses.NewErrorResponse(err))
 		return

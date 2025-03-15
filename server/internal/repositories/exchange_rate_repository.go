@@ -179,6 +179,30 @@ func (r *ExchangeRateRepository) GetExchangeRate(context context.Context, curren
 	}, nil
 }
 
+func (r *ExchangeRateRepository) GetLatestExchangeRate(context context.Context, currencyCode string, date string) (*entities.ExchangeRateWithCurrency, error) {
+	model, err := database.Client.ExchangeRate.FindFirst(
+		db.ExchangeRate.CurrencyCode.Equals(currencyCode),
+		db.ExchangeRate.Date.Lte(date),
+	).OrderBy(
+		db.ExchangeRate.Date.Order(db.DESC),
+	).With(
+		db.ExchangeRate.Currency.Fetch(),
+	).Exec(context)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &entities.ExchangeRateWithCurrency{
+		ID:   model.ID,
+		Code: model.RelationsExchangeRate.Currency.Code,
+		Name: model.RelationsExchangeRate.Currency.Name,
+		Base: model.RelationsExchangeRate.Currency.Base,
+		Date: model.Date,
+		Rate: model.Rate,
+	}, nil
+}
+
 func (r *ExchangeRateRepository) IsExist(context context.Context, code string, date string) (bool, error) {
 	_, err := database.Client.ExchangeRate.FindUnique(
 		db.ExchangeRate.CurrencyCodeDate(

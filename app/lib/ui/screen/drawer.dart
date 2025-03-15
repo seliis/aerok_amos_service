@@ -5,20 +5,52 @@ final class _Drawer extends StatelessWidget {
 
   @override
   Widget build(context) {
+    final theme = Theme.of(context);
+
     return Drawer(
       child: Padding(
         padding: EdgeInsets.all(16),
         child: Column(
           children: [
-            _MenuGroup(
-              groupName: "Public Services",
-              menuItems: [
-                _Menu(
-                  title: "Exchange Rates",
-                  icon: Icons.monetization_on_outlined,
-                  onTap: () {},
-                ),
-              ],
+            Expanded(
+              child: Column(
+                children: [
+                  _MenuGroup(
+                    groupName: "Public Services",
+                    menuItems: [
+                      _Menu(
+                        title: "Exchange Rates",
+                        icon: Icons.monetization_on_outlined,
+                        onTap: () {
+                          context.go("/exchange-rates");
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 16),
+                  _MenuGroup(
+                    groupName: "Administration",
+                    menuItems: [
+                      _Menu(
+                        title: "AMOS AIM Web-Services",
+                        icon: Icons.webhook,
+                        onTap: () {
+                          context.go("/amos-aim-web-services");
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(bottom: 8),
+              child: Text(
+                "Developed by In Son",
+                style: theme.textTheme.bodySmall,
+              ),
             ),
           ],
         ),

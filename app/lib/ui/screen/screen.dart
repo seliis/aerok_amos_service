@@ -17,8 +17,21 @@ final class Screen extends StatelessWidget {
 
   @override
   Widget build(context) {
+    final theme = Theme.of(context);
+
     return Scaffold(
       appBar: AppBar(
+        title: InkWell(
+          onTap: () {
+            context.go("/");
+          },
+          child: Text(
+            "Aero K Airlines AMOS Service",
+            style: theme.textTheme.titleMedium?.copyWith(
+              fontWeight: FontWeight.w400,
+            ),
+          ),
+        ),
         notificationPredicate: (notification) {
           if (notification is OverscrollNotification) {
             return true;
@@ -30,12 +43,7 @@ final class Screen extends StatelessWidget {
         actionsPadding: EdgeInsets.only(right: 16),
       ),
       drawer: _Drawer(),
-      body: Column(
-        children: [
-          Expanded(child: child),
-          Padding(padding: EdgeInsets.all(32), child: _Footer()),
-        ],
-      ),
+      body: child,
     );
   }
 }
@@ -81,35 +89,6 @@ final class _AmosServiceMenu extends StatelessWidget {
           ),
         ];
       },
-    );
-  }
-}
-
-final class _Footer extends StatelessWidget {
-  const _Footer();
-
-  @override
-  Widget build(context) {
-    final theme = Theme.of(context);
-
-    return Column(
-      children: [
-        Text(
-          "Aero_K Airlines AMOS Service",
-          style: theme.textTheme.titleMedium?.copyWith(
-            color: theme.colorScheme.secondary,
-            fontWeight: FontWeight.w400,
-          ),
-        ),
-        SizedBox(height: 8),
-        Text(
-          "© 2025 Developed by In Son",
-          style: theme.textTheme.bodySmall?.copyWith(
-            color: theme.colorScheme.secondary,
-            fontWeight: FontWeight.w200,
-          ),
-        ),
-      ],
     );
   }
 }

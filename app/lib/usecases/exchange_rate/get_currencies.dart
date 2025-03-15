@@ -13,10 +13,12 @@ final class GetCurrencies extends Cubit<GetCurrenciesState> {
 
     try {
       emit(
-        GetCurrenciesStateSuccess(await exchangeRateRepository.getCurrencies()),
+        GetCurrenciesStateSuccess(
+          currencies: await exchangeRateRepository.getCurrencies(),
+        ),
       );
     } catch (e) {
-      emit(GetCurrenciesStateFailure(e.toString()));
+      emit(GetCurrenciesStateFailure(message: e.toString()));
     }
   }
 }
@@ -34,13 +36,13 @@ final class GetCurrenciesStateLoading extends GetCurrenciesState {
 }
 
 final class GetCurrenciesStateSuccess extends GetCurrenciesState {
-  const GetCurrenciesStateSuccess(this.currencies);
+  const GetCurrenciesStateSuccess({required this.currencies});
 
   final List<Currency> currencies;
 }
 
 final class GetCurrenciesStateFailure extends GetCurrenciesState {
-  const GetCurrenciesStateFailure(this.message);
+  const GetCurrenciesStateFailure({required this.message});
 
   final String message;
 }

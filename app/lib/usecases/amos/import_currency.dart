@@ -13,11 +13,11 @@ final class ImportCurrency extends Cubit<ImportCurrencyState> {
     try {
       emit(
         ImportCurrencyStateSuccess(
-          await amosRepository.importCurrency(password, date),
+          result: await amosRepository.importCurrency(password, date),
         ),
       );
     } catch (e) {
-      emit(ImportCurrencyStateFailure(e.toString()));
+      emit(ImportCurrencyStateFailure(message: e.toString()));
     }
   }
 }
@@ -35,13 +35,13 @@ final class ImportCurrencyStateLoading extends ImportCurrencyState {
 }
 
 final class ImportCurrencyStateSuccess extends ImportCurrencyState {
-  const ImportCurrencyStateSuccess(this.result);
+  const ImportCurrencyStateSuccess({required this.result});
 
   final String? result;
 }
 
 final class ImportCurrencyStateFailure extends ImportCurrencyState {
-  const ImportCurrencyStateFailure(this.message);
+  const ImportCurrencyStateFailure({required this.message});
 
   final String message;
 }

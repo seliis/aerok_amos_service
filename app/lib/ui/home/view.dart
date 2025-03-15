@@ -7,14 +7,14 @@ import "package:flutter/material.dart";
 import "package:flutter/services.dart";
 import "package:intl/intl.dart";
 
-final class Home extends StatefulWidget {
-  const Home({super.key});
+final class HomeView extends StatefulWidget {
+  const HomeView({super.key});
 
   @override
-  State<Home> createState() => _HomeState();
+  State<HomeView> createState() => _HomeViewState();
 }
 
-final class _HomeState extends State<Home> {
+final class _HomeViewState extends State<HomeView> {
   @override
   void initState() {
     super.initState();
@@ -37,7 +37,7 @@ final class _HomeState extends State<Home> {
 
           if (state is GetCurrenciesStateFailure) {
             return Text(
-              state.message.replaceAll("Exception:", "").toUpperCase(),
+              state.message,
               style: Theme.of(context).textTheme.titleLarge,
             );
           }

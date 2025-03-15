@@ -14,11 +14,14 @@ final class GetExchangeRate extends Cubit<GetExchangeRateState> {
     try {
       emit(
         GetExchangeRateStateSuccess(
-          await exchangeRateRepository.getExchangeRate(code: code, date: date),
+          exchangeRate: await exchangeRateRepository.getExchangeRate(
+            code: code,
+            date: date,
+          ),
         ),
       );
     } catch (e) {
-      emit(GetExchangeRateStateFailure(e.toString()));
+      emit(GetExchangeRateStateFailure(message: e.toString()));
     }
   }
 }
@@ -36,13 +39,13 @@ final class GetExchangeRateStateLoading extends GetExchangeRateState {
 }
 
 final class GetExchangeRateStateSuccess extends GetExchangeRateState {
-  const GetExchangeRateStateSuccess(this.exchangeRate);
+  const GetExchangeRateStateSuccess({required this.exchangeRate});
 
   final ExchangeRateWithCurrency exchangeRate;
 }
 
 final class GetExchangeRateStateFailure extends GetExchangeRateState {
-  const GetExchangeRateStateFailure(this.message);
+  const GetExchangeRateStateFailure({required this.message});
 
   final String message;
 }

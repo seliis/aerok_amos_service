@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"packages/server/client"
+	"packages/server/domain"
 	"packages/server/internal/entities"
 	"packages/server/internal/repositories"
 	"strconv"
@@ -51,7 +52,7 @@ func (s *ExchangeRateService) UpdateExchangeRates(context context.Context, date 
 	}
 
 	if len(primitives) == 0 {
-		return errors.New("data fetched from korea-exim but empty")
+		return domain.ErrKoreaEximExchangeRateNotFound
 	}
 
 	currencies, err := s._CurrencyRepository.All(context)
@@ -92,7 +93,7 @@ func (s *ExchangeRateService) UpdateAnnualExchangeRates(context context.Context,
 	}
 
 	if yearInt < 1991 || yearInt > today.Year() {
-		return errors.New("year must be between 1995 and current year")
+		return errors.New("year must be between 1991 and current year")
 	}
 
 	start, err := time.Parse("2006-01-02", fmt.Sprintf("%s-01-01", year))
@@ -111,7 +112,7 @@ func (s *ExchangeRateService) UpdateAnnualExchangeRates(context context.Context,
 
 	for date := start; !date.After(end); date = date.AddDate(0, 0, 1) {
 		err := s.UpdateExchangeRates(context, date.Format("2006-01-02"))
-		if err != nil && err.Error() != "data fetched from korea-exim but empty" {
+		if err != nil && err != domain.ErrKoreaEximExchangeRateNotFound {
 			return err
 		}
 	}
@@ -145,7 +146,7 @@ func (s *ExchangeRateService) GetExchangeRates(context context.Context, date str
 	return exchangeRates, nil
 }
 
-func (s *ExchangeRateService) GetExchangeRate(context context.Context, code string, date string) (*entities.ExchangeRateWithCurrency, error) {
+func (s *ExchangeRateService) GetLatestExchangeRate(context context.Context, code string, date string) (*entities.ExchangeRateWithCurrency, error) {
 	isExist, err := s._ExchangeRateRepository.IsExist(context, code, date)
 	if err != nil {
 		return nil, err
@@ -153,12 +154,12 @@ func (s *ExchangeRateService) GetExchangeRate(context context.Context, code stri
 
 	if !isExist {
 		err := s.UpdateExchangeRates(context, date)
-		if err != nil {
+		if err != nil && err != domain.ErrKoreaEximExchangeRateNotFound {
 			return nil, err
 		}
 	}
 
-	exchangeRate, err := s._ExchangeRateRepository.GetExchangeRate(context, code, date)
+	exchangeRate, err := s._ExchangeRateRepository.GetLatestExchangeRate(context, code, date)
 	if err != nil {
 		return nil, err
 	}

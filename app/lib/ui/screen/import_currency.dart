@@ -53,7 +53,6 @@ final class _ImportCurrencyDialogState extends State<_ImportCurrencyDialog> {
                     : () async {
                       if (!formKey.currentState!.validate()) {
                         common_ui.showError(context, "Invalid Date Format");
-
                         return;
                       }
 

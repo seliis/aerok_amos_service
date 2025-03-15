@@ -76,6 +76,11 @@ final class _UseCases extends StatelessWidget {
             );
           },
         ),
+        BlocProvider<GetAuth>(
+          create: (context) {
+            return GetAuth();
+          },
+        ),
       ],
       child: child,
     );

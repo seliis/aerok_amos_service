@@ -34,6 +34,15 @@ func TestExchangeRateRepository(t *testing.T) {
 		}
 	})
 
+	t.Run("GetLatestExchangeRates", func(t *testing.T) {
+		exchangeRate, err := r.GetLatestExchangeRate(context.Background(), "USD", "2025-01-01")
+		if err != nil {
+			t.Error(err)
+		}
+
+		t.Logf("%+v", exchangeRate)
+	})
+
 	t.Run("IsExist", func(t *testing.T) {
 		isExist, err := r.IsExist(context.Background(), "USD", "2025-03-06")
 		if err != nil {
