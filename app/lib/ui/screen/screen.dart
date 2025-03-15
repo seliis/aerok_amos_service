@@ -6,6 +6,7 @@ import "package:go_router/go_router.dart";
 import "package:flutter/material.dart";
 import "package:intl/intl.dart";
 
+part "drawer.dart";
 part "import_currency.dart";
 part "transfer_flight_schedule.dart";
 
@@ -28,6 +29,7 @@ final class Screen extends StatelessWidget {
         actions: [_AmosServiceMenu()],
         actionsPadding: EdgeInsets.only(right: 16),
       ),
+      drawer: _Drawer(),
       body: Column(
         children: [
           Expanded(child: child),

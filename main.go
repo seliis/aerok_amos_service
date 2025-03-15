@@ -19,6 +19,10 @@ func init() {
 	if err := database.Connect(config.Database.URL); err != nil {
 		panic(err)
 	}
+
+	if err := database.UpsertCurrencies(); err != nil {
+		panic(err)
+	}
 }
 
 func main() {

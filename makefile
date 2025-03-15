@@ -24,6 +24,7 @@ build-server:
 	@GOOS=linux GOARCH=amd64 go build -o build/main-linux main.go
 	@GOOS=darwin GOARCH=amd64 go build -o build/main-darwin main.go
 	@GOOS=windows GOARCH=amd64 go build -o build/main-windows.exe main.go
+	@cp currencies.json build/currencies.json
 	@cp settings.toml build/settings.toml
 
 build-app:

@@ -2,11 +2,14 @@ package services
 
 import (
 	"context"
+	"errors"
+	"fmt"
 	"packages/server/client"
 	"packages/server/internal/entities"
 	"packages/server/internal/repositories"
 	"strconv"
 	"strings"
+	"time"
 )
 
 type ExchangeRateService struct {
@@ -47,6 +50,10 @@ func (s *ExchangeRateService) UpdateExchangeRates(context context.Context, date 
 		return err
 	}
 
+	if len(primitives) == 0 {
+		return errors.New("data fetched from korea-exim but empty")
+	}
+
 	currencies, err := s._CurrencyRepository.All(context)
 	if err != nil {
 		return err
@@ -70,6 +77,42 @@ func (s *ExchangeRateService) UpdateExchangeRates(context context.Context, date 
 					return err
 				}
 			}
+		}
+	}
+
+	return nil
+}
+
+func (s *ExchangeRateService) UpdateAnnualExchangeRates(context context.Context, year string) error {
+	today := time.Now()
+
+	yearInt, err := strconv.Atoi(year)
+	if err != nil {
+		return err
+	}
+
+	if yearInt < 1991 || yearInt > today.Year() {
+		return errors.New("year must be between 1995 and current year")
+	}
+
+	start, err := time.Parse("2006-01-02", fmt.Sprintf("%s-01-01", year))
+	if err != nil {
+		return err
+	}
+
+	end, err := time.Parse("2006-01-02", fmt.Sprintf("%s-12-31", year))
+	if err != nil {
+		return err
+	}
+
+	if today.Year() == start.Year() && today.Before(end) {
+		end = today
+	}
+
+	for date := start; !date.After(end); date = date.AddDate(0, 0, 1) {
+		err := s.UpdateExchangeRates(context, date.Format("2006-01-02"))
+		if err != nil && err.Error() != "data fetched from korea-exim but empty" {
+			return err
 		}
 	}
 

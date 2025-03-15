@@ -61,10 +61,6 @@ func RequestCurrencyExchangeDataFromKoreaExim(date string) ([]*_KoreaEximCurrenc
 		return nil, err
 	}
 
-	if len(result) == 0 {
-		return nil, errors.New("data fetched from korea-exim but empty")
-	}
-
 	return result, nil
 }
 

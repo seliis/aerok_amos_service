@@ -100,6 +100,21 @@ func (h *ExchangeRateHandler) UpdateExchangeRates(context *gin.Context) {
 	context.JSON(http.StatusOK, responses.NewSuccessResponse(nil))
 }
 
+func (h *ExchangeRateHandler) UpdateAnnualExchangeRates(context *gin.Context) {
+	year, isOk := context.GetQuery("year")
+	if !isOk {
+		context.JSON(http.StatusBadRequest, responses.NewErrorResponse(errors.New("year is required")))
+		return
+	}
+
+	if err := h._ExchangeRateService.UpdateAnnualExchangeRates(context, year); err != nil {
+		context.JSON(http.StatusInternalServerError, responses.NewErrorResponse(err))
+		return
+	}
+
+	context.JSON(http.StatusOK, responses.NewSuccessResponse(nil))
+}
+
 func (h *ExchangeRateHandler) GetExchangeRates(context *gin.Context) {
 	date, err := requests.GetDate(context)
 	if err != nil {

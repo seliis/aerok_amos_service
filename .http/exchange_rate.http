@@ -44,3 +44,7 @@ GET {{addr}}/list?date=2025-02-28
 ###
 
 GET {{addr}}/currency?code=USD&date=2025-02-28
+
+###
+
+POST {{addr}}/annual?year=2025
