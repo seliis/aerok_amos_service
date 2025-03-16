@@ -174,10 +174,10 @@ func NewFutureFlights(flightSchedules []*entities.FlightSchedule) _FutureFlights
 	}
 }
 
-func (futureFlights *_FutureFlights) Push() error {
+func (futureFlights *_FutureFlights) Push(auth string) error {
 	config := config.AMOS.Services.TransferFutureFlights
 
-	r, err := client.GetAmosRequest().SetBody(futureFlights).Post(config.EndPoint)
+	r, err := client.GetAmosRequest(auth).SetBody(futureFlights).Post(config.EndPoint)
 	if err != nil {
 		return err
 	}

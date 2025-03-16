@@ -33,9 +33,9 @@ final class _Repositories extends StatelessWidget {
             return FlightScheduleRepository();
           },
         ),
-        RepositoryProvider<AmosRepository>(
+        RepositoryProvider<AmosAimWebServicesRepository>(
           create: (context) {
-            return AmosRepository();
+            return AmosAimWebServicesRepository();
           },
         ),
       ],
@@ -63,22 +63,22 @@ final class _UseCases extends StatelessWidget {
             return GetExchangeRate(context.read<ExchangeRateRepository>());
           },
         ),
+        BlocProvider<GetAuth>(
+          create: (context) {
+            return GetAuth(context.read<AmosAimWebServicesRepository>());
+          },
+        ),
         BlocProvider<ImportCurrency>(
           create: (context) {
-            return ImportCurrency(context.read<AmosRepository>());
+            return ImportCurrency(context.read<AmosAimWebServicesRepository>());
           },
         ),
         BlocProvider<TransferFutureFlights>(
           create: (context) {
             return TransferFutureFlights(
               context.read<FlightScheduleRepository>(),
-              context.read<AmosRepository>(),
+              context.read<AmosAimWebServicesRepository>(),
             );
-          },
-        ),
-        BlocProvider<GetAuth>(
-          create: (context) {
-            return GetAuth();
           },
         ),
       ],

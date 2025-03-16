@@ -78,10 +78,10 @@ func NewImportCurrency(exchangeRates []*entities.ExchangeRateWithCurrency) (*_Im
 	}, nil
 }
 
-func (importCurrency *_ImportCurrency) Push() error {
+func (importCurrency *_ImportCurrency) Push(auth string) error {
 	config := config.AMOS.Services.ImportCurrency
 
-	r, err := client.GetAmosRequest().SetBody(importCurrency).Post(config.EndPoint)
+	r, err := client.GetAmosRequest(auth).SetBody(importCurrency).Post(config.EndPoint)
 	if err != nil {
 		return err
 	}

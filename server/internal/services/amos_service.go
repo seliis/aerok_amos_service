@@ -8,6 +8,7 @@ import (
 	"packages/server/internal/entities"
 	"packages/server/internal/repositories"
 	"strings"
+	"time"
 )
 
 type AmosService struct {
@@ -20,53 +21,57 @@ func NewAmosService() *AmosService {
 	}
 }
 
-func (s *AmosService) Authorize(header string) bool {
+func (s *AmosService) Authorize(header string) (string, bool) {
 	if !strings.HasPrefix(header, "Basic ") {
-		return false
+		return "", false
 	}
 
-	decoded, err := base64.StdEncoding.DecodeString(strings.TrimPrefix(header, "Basic "))
+	token := strings.TrimPrefix(header, "Basic ")
+
+	decoded, err := base64.StdEncoding.DecodeString(token)
 	if err != nil {
-		return false
+		return "", false
 	}
 
 	credentials := strings.SplitN(string(decoded), ":", 2)
 	if len(credentials) != 2 {
-		return false
+		return "", false
 	}
 
 	if credentials[0] != config.AMOS.Auth.ID {
-		return false
+		return "", false
 	}
 
 	if credentials[1] != config.AMOS.Auth.Password {
-		return false
+		return "", false
 	}
 
-	return true
+	return token, true
 }
 
-func (s *AmosService) ImportCurrency(context context.Context, exchangeRates []*entities.ExchangeRateWithCurrency) error {
+func (s *AmosService) ImportCurrency(context context.Context, token string, exchangeRates []*entities.ExchangeRateWithCurrency) error {
 	data, err := amos.NewImportCurrency(exchangeRates)
 	if err != nil {
 		return err
 	}
 
-	if err := data.Push(); err != nil {
+	if err := data.Push(token); err != nil {
 		return err
 	}
 
 	return nil
 }
 
-func (s *AmosService) TransferFutureFlights(context context.Context, date string) error {
+func (s *AmosService) TransferFutureFlights(context context.Context, token string) error {
+	date := time.Now().Format("2006-01-02")
+
 	flightSchedules, err := s._FlightScheduleRepository.GetFlightSchedulesFromDate(context, date)
 	if err != nil {
 		return err
 	}
 
 	data := amos.NewFutureFlights(flightSchedules)
-	if err := data.Push(); err != nil {
+	if err := data.Push(token); err != nil {
 		return err
 	}
 

@@ -8,11 +8,11 @@ import (
 	"resty.dev/v3"
 )
 
-func GetAmosRequest() *resty.Request {
+func GetAmosRequest(auth string) *resty.Request {
 	c := resty.New()
 
 	c.SetBaseURL(fmt.Sprintf("%s:%d/service/", config.AMOS.Host, config.AMOS.Port))
-	c.SetBasicAuth(config.AMOS.Auth.ID, config.AMOS.Auth.Password)
+	c.SetHeader("Authorization", fmt.Sprintf("Basic %s", auth))
 	c.SetHeader("Content-Type", "application/xml")
 
 	c.SetTLSClientConfig(

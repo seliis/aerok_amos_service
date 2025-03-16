@@ -8,6 +8,7 @@ final class ActionButton extends StatelessWidget {
     this.height = 48,
     this.title = "Execute",
     this.isLoading = false,
+    this.enabled = true,
   });
 
   final void Function()? onPressed;
@@ -15,6 +16,7 @@ final class ActionButton extends StatelessWidget {
   final double height;
   final String title;
   final bool isLoading;
+  final bool enabled;
 
   @override
   Widget build(context) {
@@ -25,7 +27,7 @@ final class ActionButton extends StatelessWidget {
         style: FilledButton.styleFrom(
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
         ),
-        onPressed: isLoading ? null : onPressed,
+        onPressed: !enabled || isLoading ? null : onPressed,
         child:
             isLoading
                 ? Transform.scale(

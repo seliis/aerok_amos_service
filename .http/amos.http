@@ -1,4 +1,4 @@
-@addr=https://127.0.0.1:8080/api/amos-aim-webservice
+@addr=http://127.0.0.1:8080/api/amos-aim-webservice
 
 POST {{addr}}/import-currency?date=2025-03-04
 

@@ -2,18 +2,21 @@ import "package:aerok_amos_service/repositories/index.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 
 final class ImportCurrency extends Cubit<ImportCurrencyState> {
-  ImportCurrency(this.amosRepository)
+  ImportCurrency(this.amosAimWebServicesRepository)
     : super(const ImportCurrencyStateInitial());
 
-  final AmosRepository amosRepository;
+  final AmosAimWebServicesRepository amosAimWebServicesRepository;
 
-  Future<void> execute(String password, String date) async {
+  Future<void> execute({required String token, required String date}) async {
     emit(const ImportCurrencyStateLoading());
 
     try {
       emit(
         ImportCurrencyStateSuccess(
-          result: await amosRepository.importCurrency(password, date),
+          result: await amosAimWebServicesRepository.importCurrency(
+            token,
+            date,
+          ),
         ),
       );
     } catch (e) {

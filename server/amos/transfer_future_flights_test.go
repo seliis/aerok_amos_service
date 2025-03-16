@@ -2,6 +2,8 @@ package amos_test
 
 import (
 	"context"
+	"encoding/base64"
+	"fmt"
 	"packages/server/config"
 	"packages/server/database"
 	"packages/server/internal/services"
@@ -20,7 +22,9 @@ func TestTransferFutureFlights(t *testing.T) {
 	t.Run("TransferFutureFlights", func(t *testing.T) {
 		s := services.NewAmosService()
 
-		if err := s.TransferFutureFlights(context.Background(), "2025-03-01"); err != nil {
+		token := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%s:%s", config.AMOS.Auth.ID, config.AMOS.Auth.Password))))
+
+		if err := s.TransferFutureFlights(context.Background(), token); err != nil {
 			t.Error(err)
 		}
 	})

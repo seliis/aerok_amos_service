@@ -1,19 +1,15 @@
-part of "screen.dart";
+part of "view.dart";
 
-final class _TransferFutureFlightsDialog extends StatefulWidget {
-  const _TransferFutureFlightsDialog();
+final class _TransferFutureFlights extends StatefulWidget {
+  const _TransferFutureFlights({required this.token});
+
+  final String token;
 
   @override
-  State<_TransferFutureFlightsDialog> createState() =>
-      _TransferFutureFlightsDialogState();
+  State<_TransferFutureFlights> createState() => _TransferFutureFlightsState();
 }
 
-final class _TransferFutureFlightsDialogState
-    extends State<_TransferFutureFlightsDialog> {
-  final passwordController = TextEditingController();
-  final dateController = TextEditingController(
-    text: DateFormat("yyyy-MM-dd").format(DateTime.now()),
-  );
+final class _TransferFutureFlightsState extends State<_TransferFutureFlights> {
   final formKey = GlobalKey<FormState>();
   PlatformFile? pickedFile;
   bool isLoading = false;
@@ -30,7 +26,6 @@ final class _TransferFutureFlightsDialogState
 
         if (state is TransferFutureFlightsFailure) {
           common_ui.showError(context, state.message);
-
           setState(() {
             isLoading = false;
           });
@@ -38,53 +33,18 @@ final class _TransferFutureFlightsDialogState
 
         if (state is TransferFutureFlightsSuccess) {
           common_ui.showSuccess(context, "Transferred");
-
-          context.pop();
-
           setState(() {
             isLoading = false;
           });
         }
       },
-      child: _Dialog(
-        title: "Transfer Future Flights",
-        actions: [
-          TextButton(
-            onPressed:
-                isLoading
-                    ? null
-                    : () async {
-                      if (!formKey.currentState!.validate()) {
-                        common_ui.showError(context, "No Password Entered");
-
-                        return;
-                      }
-
-                      if (pickedFile == null) {
-                        common_ui.showError(context, "No File Selected");
-
-                        return;
-                      }
-
-                      await context.read<TransferFutureFlights>().execute(
-                        file: pickedFile!,
-                        password: passwordController.text,
-                        date: dateController.text,
-                      );
-                    },
-            child:
-                isLoading
-                    ? Transform.scale(
-                      scale: 0.5,
-                      child: CircularProgressIndicator(),
-                    )
-                    : Text("Execute"),
-          ),
-        ],
+      child: Padding(
+        padding: const EdgeInsets.all(16),
         child: Form(
           key: formKey,
           autovalidateMode: AutovalidateMode.always,
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               SizedBox(
                 width: 512,
@@ -118,15 +78,21 @@ final class _TransferFutureFlightsDialogState
                 ),
               ),
               SizedBox(height: 16),
-              common_ui.DateInput(
+              common_ui.ActionButton(
                 width: 512,
-                controller: dateController,
-                enabled: !isLoading,
-                isLimitedUpToNow: true,
-              ),
-              SizedBox(height: 16),
-              common_ui.PasswordInput(
-                controller: passwordController,
+                enabled: pickedFile != null,
+                onPressed: () {
+                  if (pickedFile == null) {
+                    common_ui.showError(context, "Please select a file");
+                    return;
+                  }
+
+                  context.read<TransferFutureFlights>().execute(
+                    token: widget.token,
+                    file: pickedFile!,
+                  );
+                },
+                title: "TRANSFER",
                 isLoading: isLoading,
               ),
             ],

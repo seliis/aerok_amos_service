@@ -21,7 +21,6 @@ final class DateInput extends StatelessWidget {
   Widget build(context) {
     return SizedBox(
       width: width,
-      //height: height,
       child: TextFormField(
         enabled: enabled,
         controller: controller,

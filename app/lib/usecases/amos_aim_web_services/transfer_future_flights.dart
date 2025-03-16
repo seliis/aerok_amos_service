@@ -3,16 +3,17 @@ import "package:flutter_bloc/flutter_bloc.dart";
 import "package:file_picker/file_picker.dart";
 
 final class TransferFutureFlights extends Cubit<TransferFutureFlightsState> {
-  TransferFutureFlights(this.flightScheduleRepository, this.amosRepository)
-    : super(const TransferFutureFlightsInitial());
+  TransferFutureFlights(
+    this.flightScheduleRepository,
+    this.amosAimWebServiceRepository,
+  ) : super(const TransferFutureFlightsInitial());
 
   final FlightScheduleRepository flightScheduleRepository;
-  final AmosRepository amosRepository;
+  final AmosAimWebServicesRepository amosAimWebServiceRepository;
 
   Future<void> execute({
     required PlatformFile file,
-    required String password,
-    required String date,
+    required String token,
   }) async {
     emit(const TransferFutureFlightsLoading());
 
@@ -20,7 +21,6 @@ final class TransferFutureFlights extends Cubit<TransferFutureFlightsState> {
       final result = await flightScheduleRepository.updateFlightSchedule(
         bytes: file.bytes!,
         fileName: file.name,
-        password: password,
       );
 
       if (result != null) {
@@ -29,7 +29,9 @@ final class TransferFutureFlights extends Cubit<TransferFutureFlightsState> {
 
       emit(
         TransferFutureFlightsSuccess(
-          message: await amosRepository.transferFutureFlights(password, date),
+          message: await amosAimWebServiceRepository.transferFutureFlights(
+            token,
+          ),
         ),
       );
     } catch (e) {

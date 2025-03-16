@@ -1,7 +1,36 @@
 part of "screen.dart";
 
-final class _Drawer extends StatelessWidget {
+final class _Drawer extends StatefulWidget {
   const _Drawer();
+
+  @override
+  State<_Drawer> createState() => _DrawerState();
+}
+
+final class _DrawerState extends State<_Drawer> {
+  PackageInfo packageInfo = PackageInfo(
+    appName: "Unknown",
+    packageName: "Unknown",
+    version: "Unknown",
+    buildNumber: "Unknown",
+    buildSignature: "Unknown",
+    installerStore: null,
+    installTime: null,
+    updateTime: null,
+  );
+
+  @override
+  void initState() {
+    super.initState();
+    _init();
+  }
+
+  Future<void> _init() async {
+    final info = await PackageInfo.fromPlatform();
+    setState(() {
+      packageInfo = info;
+    });
+  }
 
   @override
   Widget build(context) {
@@ -12,11 +41,22 @@ final class _Drawer extends StatelessWidget {
         padding: EdgeInsets.all(16),
         child: Column(
           children: [
+            DrawerHeader(
+              padding: EdgeInsets.all(16),
+              margin: EdgeInsets.only(bottom: 16),
+              child: Text(
+                "v${packageInfo.version}",
+                style: theme.textTheme.titleSmall?.copyWith(
+                  fontWeight: FontWeight.w200,
+                  fontFamily: "CascadiaCode",
+                ),
+              ),
+            ),
             Expanded(
               child: Column(
                 children: [
                   _MenuGroup(
-                    groupName: "Public Services",
+                    groupName: "PUBLIC SERVICES",
                     menuItems: [
                       _Menu(
                         title: "Exchange Rates",
@@ -30,7 +70,7 @@ final class _Drawer extends StatelessWidget {
                   ),
                   SizedBox(height: 16),
                   _MenuGroup(
-                    groupName: "Administration",
+                    groupName: "ADMINISTRATION",
                     menuItems: [
                       _Menu(
                         title: "AMOS AIM Web-Services",
@@ -48,8 +88,11 @@ final class _Drawer extends StatelessWidget {
             Padding(
               padding: EdgeInsets.only(bottom: 8),
               child: Text(
-                "Developed by In Son",
-                style: theme.textTheme.bodySmall,
+                "@2025 DEV. BY K00373",
+                style: theme.textTheme.bodySmall?.copyWith(
+                  fontWeight: FontWeight.w200,
+                  fontFamily: "CascadiaCode",
+                ),
               ),
             ),
           ],
@@ -75,7 +118,9 @@ final class _MenuGroup extends StatelessWidget {
         Text(
           groupName,
           style: theme.textTheme.bodySmall?.copyWith(
+            color: theme.colorScheme.primary,
             fontWeight: FontWeight.w200,
+            fontFamily: "CascadiaCode",
           ),
         ),
         SizedBox(height: 4),

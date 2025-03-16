@@ -23,16 +23,18 @@ func NewAmosHandler() *AmosHandler {
 }
 
 func (h *AmosHandler) Authorize(context *gin.Context) {
-	if !h._AmosService.Authorize(requests.GetAuthorization(context)) {
+	token, isOk := h._AmosService.Authorize(requests.GetAuthorization(context))
+	if !isOk {
 		context.JSON(http.StatusUnauthorized, responses.NewErrorResponse(errors.New("Unauthorized")))
 		return
 	}
 
-	context.JSON(http.StatusOK, responses.NewSuccessResponse("Authorized"))
+	context.JSON(http.StatusOK, responses.NewSuccessResponse(token))
 }
 
 func (h *AmosHandler) ImportCurrency(context *gin.Context) {
-	if !h._AmosService.Authorize(requests.GetAuthorization(context)) {
+	token, isOk := h._AmosService.Authorize(requests.GetAuthorization(context))
+	if !isOk {
 		context.JSON(http.StatusUnauthorized, responses.NewErrorResponse(errors.New("Unauthorized")))
 		return
 	}
@@ -49,7 +51,7 @@ func (h *AmosHandler) ImportCurrency(context *gin.Context) {
 		return
 	}
 
-	if err := h._AmosService.ImportCurrency(context, exchangeRates); err != nil {
+	if err := h._AmosService.ImportCurrency(context, token, exchangeRates); err != nil {
 		context.JSON(http.StatusInternalServerError, responses.NewErrorResponse(err))
 		return
 	}
@@ -58,18 +60,13 @@ func (h *AmosHandler) ImportCurrency(context *gin.Context) {
 }
 
 func (h *AmosHandler) TransferFutureFlights(context *gin.Context) {
-	if !h._AmosService.Authorize(requests.GetAuthorization(context)) {
+	token, isOk := h._AmosService.Authorize(requests.GetAuthorization(context))
+	if !isOk {
 		context.JSON(http.StatusUnauthorized, responses.NewErrorResponse(errors.New("Unauthorized")))
 		return
 	}
 
-	date, err := requests.GetDate(context)
-	if err != nil {
-		context.JSON(http.StatusBadRequest, responses.NewErrorResponse(err))
-		return
-	}
-
-	if err := h._AmosService.TransferFutureFlights(context, date); err != nil {
+	if err := h._AmosService.TransferFutureFlights(context, token); err != nil {
 		context.JSON(http.StatusInternalServerError, responses.NewErrorResponse(err))
 		return
 	}

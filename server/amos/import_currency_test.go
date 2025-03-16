@@ -2,7 +2,9 @@ package amos_test
 
 import (
 	"context"
+	"encoding/base64"
 	"encoding/json"
+	"fmt"
 	"packages/server/amos"
 	"packages/server/config"
 	"packages/server/database"
@@ -51,7 +53,9 @@ func TestImportCurrency(t *testing.T) {
 			t.Error(err)
 		}
 
-		if err := data.Push(); err != nil {
+		token := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%s:%s", config.AMOS.Auth.ID, config.AMOS.Auth.Password))))
+
+		if err := data.Push(token); err != nil {
 			t.Error(err)
 		}
 	})

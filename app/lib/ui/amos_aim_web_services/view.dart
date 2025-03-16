@@ -1,7 +1,14 @@
 import "package:aerok_amos_service/common_ui/index.dart" as common_ui;
 import "package:aerok_amos_service/usecases/index.dart";
+import "package:file_picker/file_picker.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:flutter/material.dart";
+import "package:intl/intl.dart";
+
+part "body.dart";
+part "sign_in.dart";
+part "import_currency.dart";
+part "transfer_future_flights.dart";
 
 final class AmosAimWebServicesView extends StatefulWidget {
   const AmosAimWebServicesView({super.key});
@@ -14,6 +21,7 @@ final class _AmosAimWebServicesViewState extends State<AmosAimWebServicesView> {
   @override
   void initState() {
     super.initState();
+    context.read<GetAuth>().reset();
   }
 
   @override
@@ -27,57 +35,15 @@ final class _AmosAimWebServicesViewState extends State<AmosAimWebServicesView> {
           }
 
           if (state is GetAuthSuccess) {
-            return const Center(child: Text("Authorized"));
+            return _Body(token: state.token);
           }
 
           if (state is GetAuthFailure) {
-            return const Center(child: Text("Unauthorized"));
+            return Center(child: Text(state.message));
           }
 
-          return _Auth();
+          return _SignIn();
         },
-      ),
-    );
-  }
-}
-
-final class _Auth extends StatefulWidget {
-  const _Auth();
-
-  @override
-  State<_Auth> createState() => _AuthState();
-}
-
-final class _AuthState extends State<_Auth> {
-  final TextEditingController controller = TextEditingController();
-  final formKey = GlobalKey<FormState>();
-
-  @override
-  Widget build(context) {
-    return Form(
-      key: formKey,
-      autovalidateMode: AutovalidateMode.onUserInteraction,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          SizedBox(
-            width: 512,
-            child: common_ui.PasswordInput(controller: controller),
-          ),
-          const SizedBox(height: 8),
-          common_ui.ActionButton(
-            width: 512,
-            title: "Authorize",
-            onPressed: () {
-              if (!formKey.currentState!.validate()) {
-                common_ui.showError(context, "Invalid Password");
-                return;
-              }
-
-              context.read<GetAuth>().execute();
-            },
-          ),
-        ],
       ),
     );
   }
