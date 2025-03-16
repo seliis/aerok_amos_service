@@ -9,7 +9,7 @@ final class ExchangeRatesView extends StatefulWidget {
 
 final class _ExchangeRatesViewState extends State<ExchangeRatesView> {
   @override
-  Widget build(BuildContext context) {
-    return Text("Exchange Rates");
+  Widget build(context) {
+    return Center(child: Text("Work-In-Progress"));
   }
 }
