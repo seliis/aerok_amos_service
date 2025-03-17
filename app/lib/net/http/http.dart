@@ -22,7 +22,7 @@ final class ServerException implements Exception {
 
   @override
   String toString() {
-    return "[$statusCode $reasonPhrase]: $message";
+    return "$statusCode: $message";
   }
 }
 

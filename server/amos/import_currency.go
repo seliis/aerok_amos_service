@@ -45,7 +45,7 @@ func NewImportCurrency(exchangeRates []*entities.ExchangeRateWithCurrency) (*_Im
 	}
 
 	if amosCurrencyRate == 0 {
-		return nil, errors.New("amos currency rate not found")
+		return nil, errors.New("amos.import_currency.go: NewImportCurrency, Currency Rate Not Found for AMOS")
 	}
 
 	var data []*_Currency

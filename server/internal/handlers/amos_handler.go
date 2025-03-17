@@ -51,6 +51,10 @@ func (h *AmosHandler) ImportCurrency(context *gin.Context) {
 		return
 	}
 
+	if len(exchangeRates) == 0 {
+
+	}
+
 	if err := h._AmosService.ImportCurrency(context, token, exchangeRates); err != nil {
 		context.JSON(http.StatusInternalServerError, responses.NewErrorResponse(err))
 		return

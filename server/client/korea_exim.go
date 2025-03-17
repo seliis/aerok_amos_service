@@ -61,6 +61,20 @@ func RequestCurrencyExchangeDataFromKoreaExim(date string) ([]*_KoreaEximCurrenc
 		return nil, err
 	}
 
+	if len(result) == 1 {
+		switch result[0].RequestResult {
+		case 1:
+			// Success
+			break
+		case 2:
+			return nil, errors.New("korea-exim-error: wrong data code")
+		case 3:
+			return nil, errors.New("korea-exim-error: wrong auth code")
+		case 4:
+			return nil, errors.New("korea-exim-error: exceed daily request limit")
+		}
+	}
+
 	return result, nil
 }
 
