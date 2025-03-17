@@ -63,7 +63,7 @@ func (s *AmosService) ImportCurrency(context context.Context, token string, exch
 }
 
 func (s *AmosService) TransferFutureFlights(context context.Context, token string) error {
-	date := time.Now().Format("2006-01-02")
+	date := time.Now().AddDate(0, 0, -7).Format("2006-01-02")
 
 	flightSchedules, err := s._FlightScheduleRepository.GetFlightSchedulesFromDate(context, date)
 	if err != nil {
