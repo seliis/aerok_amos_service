@@ -81,6 +81,7 @@ func setExchangeRateRoutes(g *gin.RouterGroup) {
 	g.PATCH("/", h.UpdateExchangeRates)
 	g.GET("/list", h.GetExchangeRates)
 	g.GET("/currency", h.GetLatestExchangeRate)
+	g.GET("/annual", h.GetAnnualExchangeRates)
 	g.POST("/annual", h.UpdateAnnualExchangeRates)
 }
 

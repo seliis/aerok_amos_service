@@ -166,3 +166,12 @@ func (s *ExchangeRateService) GetLatestExchangeRate(context context.Context, cod
 
 	return exchangeRate, nil
 }
+
+func (s *ExchangeRateService) GetAnnualExchangeRates(context context.Context, code, year string) ([]*entities.ExchangeRateWithCurrency, error) {
+	arr, err := s._ExchangeRateRepository.GetAnnualExchangeRates(context, code, year)
+	if err != nil {
+		return nil, err
+	}
+
+	return arr, nil
+}

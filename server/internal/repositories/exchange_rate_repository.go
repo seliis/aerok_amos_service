@@ -203,6 +203,34 @@ func (r *ExchangeRateRepository) GetLatestExchangeRate(context context.Context, 
 	}, nil
 }
 
+func (r *ExchangeRateRepository) GetAnnualExchangeRates(context context.Context, code, year string) ([]*entities.ExchangeRateWithCurrency, error) {
+	models, err := database.Client.ExchangeRate.FindMany(
+		db.ExchangeRate.CurrencyCode.Equals(code),
+		db.ExchangeRate.Date.StartsWith(year),
+	).With(
+		db.ExchangeRate.Currency.Fetch(),
+	).Exec(context)
+
+	if err != nil {
+		return nil, err
+	}
+
+	var arr []*entities.ExchangeRateWithCurrency
+
+	for _, model := range models {
+		arr = append(arr, &entities.ExchangeRateWithCurrency{
+			ID:   model.ID,
+			Code: model.RelationsExchangeRate.Currency.Code,
+			Name: model.RelationsExchangeRate.Currency.Name,
+			Base: model.RelationsExchangeRate.Currency.Base,
+			Date: model.Date,
+			Rate: model.Rate,
+		})
+	}
+
+	return arr, nil
+}
+
 func (r *ExchangeRateRepository) IsExist(context context.Context, code string, date string) (bool, error) {
 	_, err := database.Client.ExchangeRate.FindUnique(
 		db.ExchangeRate.CurrencyCodeDate(

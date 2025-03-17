@@ -33,4 +33,22 @@ final class ExchangeRateRepository {
       rethrow;
     }
   }
+
+  Future<List<ExchangeRateWithCurrency>> getAnnualExchangeRates({
+    required String code,
+    required String year,
+  }) async {
+    try {
+      return await Http.request(
+        method: HttpMethod.get,
+        path: "/exchange-rate/annual?code=$code&year=$year",
+      ).then((response) {
+        return (response.data as List<dynamic>).map((e) {
+          return ExchangeRateWithCurrency.fromJson(e as Map<String, dynamic>);
+        }).toList();
+      });
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

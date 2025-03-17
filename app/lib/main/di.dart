@@ -63,6 +63,13 @@ final class _UseCases extends StatelessWidget {
             return GetExchangeRate(context.read<ExchangeRateRepository>());
           },
         ),
+        BlocProvider<GetAnnualExchangeRates>(
+          create: (context) {
+            return GetAnnualExchangeRates(
+              context.read<ExchangeRateRepository>(),
+            );
+          },
+        ),
         BlocProvider<GetAuth>(
           create: (context) {
             return GetAuth(context.read<AmosAimWebServicesRepository>());

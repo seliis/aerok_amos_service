@@ -1,36 +1,7 @@
 part of "screen.dart";
 
-final class _Drawer extends StatefulWidget {
+final class _Drawer extends StatelessWidget {
   const _Drawer();
-
-  @override
-  State<_Drawer> createState() => _DrawerState();
-}
-
-final class _DrawerState extends State<_Drawer> {
-  PackageInfo packageInfo = PackageInfo(
-    appName: "Unknown",
-    packageName: "Unknown",
-    version: "Unknown",
-    buildNumber: "Unknown",
-    buildSignature: "Unknown",
-    installerStore: null,
-    installTime: null,
-    updateTime: null,
-  );
-
-  @override
-  void initState() {
-    super.initState();
-    _init();
-  }
-
-  Future<void> _init() async {
-    final info = await PackageInfo.fromPlatform();
-    setState(() {
-      packageInfo = info;
-    });
-  }
 
   @override
   Widget build(context) {
@@ -45,7 +16,7 @@ final class _DrawerState extends State<_Drawer> {
               padding: EdgeInsets.all(16),
               margin: EdgeInsets.only(bottom: 16),
               child: Text(
-                "v${packageInfo.version}",
+                "v${dotenv.env["VERSION"]}",
                 style: theme.textTheme.titleSmall?.copyWith(
                   fontWeight: FontWeight.w200,
                   fontFamily: "CascadiaCode",
@@ -55,19 +26,19 @@ final class _DrawerState extends State<_Drawer> {
             Expanded(
               child: Column(
                 children: [
-                  _MenuGroup(
-                    groupName: "PUBLIC SERVICES",
-                    menuItems: [
-                      _Menu(
-                        title: "Exchange Rates",
-                        icon: Icons.monetization_on_outlined,
-                        onTap: () {
-                          context.go("/exchange-rates");
-                          Navigator.of(context).pop();
-                        },
-                      ),
-                    ],
-                  ),
+                  // _MenuGroup(
+                  //   groupName: "PUBLIC SERVICES",
+                  //   menuItems: [
+                  //     _Menu(
+                  //       title: "Exchange Rates",
+                  //       icon: Icons.monetization_on_outlined,
+                  //       onTap: () {
+                  //         context.go("/exchange-rates");
+                  //         Navigator.of(context).pop();
+                  //       },
+                  //     ),
+                  //   ],
+                  // ),
                   SizedBox(height: 16),
                   _MenuGroup(
                     groupName: "ADMINISTRATION",

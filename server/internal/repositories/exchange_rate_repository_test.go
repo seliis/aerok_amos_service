@@ -43,6 +43,17 @@ func TestExchangeRateRepository(t *testing.T) {
 		t.Logf("%+v", exchangeRate)
 	})
 
+	t.Run("GetAnnualExchangeRates", func(t *testing.T) {
+		arr, err := r.GetAnnualExchangeRates(context.Background(), "USD", "2025")
+		if err != nil {
+			t.Error(err)
+		}
+
+		for _, v := range arr {
+			t.Logf("%+v", v)
+		}
+	})
+
 	t.Run("IsExist", func(t *testing.T) {
 		isExist, err := r.IsExist(context.Background(), "USD", "2025-03-06")
 		if err != nil {
