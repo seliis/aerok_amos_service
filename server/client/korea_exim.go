@@ -1,6 +1,7 @@
 package client
 
 import (
+	"crypto/tls"
 	"errors"
 	"log"
 	"packages/server/config"
@@ -26,6 +27,9 @@ type _KoreaEximCurrencyExchangeData struct {
 func _GetClientForExim() *resty.Client {
 	return resty.New().
 		SetBaseURL(config.KoreaExim.Host).
+		SetTLSClientConfig(
+			&tls.Config{InsecureSkipVerify: true},
+		).
 		SetRetryCount(30).
 		SetRetryWaitTime(2 * time.Second).
 		SetRetryMaxWaitTime(60 * time.Second).
